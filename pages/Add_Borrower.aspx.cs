@@ -2,13 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using Newtonsoft.Json;
 
-public partial class _Default : System.Web.UI.Page
+public partial class Add_Borrower : System.Web.UI.Page
 {
+    private static Maintenance Borrower;
     protected void Page_Load(object sender, EventArgs e)
     {
+        Borrower = new Maintenance();
+    }
 
+    [WebMethod]
+    public static string AddBorrower(Tables.USER_MASTER request)
+    {
+        //request.USER_ID = user;
+        var data = Borrower.AddBorrower(request);
+        return JsonConvert.SerializeObject(data);
     }
 }

@@ -2,41 +2,28 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
-    <style type="text/css">
-        .profile-user-img {
-            width: 150px !important;
-        }
-    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Profile</h3>
+                    <h3 class="box-title">Required Fields</h3>
                 </div>
+                        <div class="box-header">
+                            <!-- Profile Image -->
+                                <div class="box-body box-profile">
+                                    <img class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" alt="User profile picture">
+                                </div>
+                        </div>
                 <div class="box-body">
                     <div class="row">
-
                         <form class="form-horizontal">
-
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <div class="col-sm-3">
-                                       
-                                    <div class="box-body box-profile">
-                                        <img class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" alt="User profile picture">
-                                    </div>
-                                    </div>
-                                </div>
-                            </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="txtUserAccess" class="col-sm-3 control-label">User Access</label>
-
+                                    <label for="inputID" class="col-sm-3 control-label">ID #</label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtUserAccess" placeholder="Manager">
-                                        Note: User access can only be changed by the owner or a manager
+                                        <input type="text" class="form-control" id="inputID" placeholder="01">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -54,13 +41,6 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="txtLastName" class="col-sm-3 control-label">Last name</label>
-
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtLastName" placeholder="Last name">
-                                    </div>
-                                </div>
-                                <div class="form-group">
                                     <label for="txtExtensionName" class="col-sm-3 control-label">Extension name</label>
 
                                     <div class="col-sm-9">
@@ -68,14 +48,19 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="txtCompanyName" class="col-sm-3 control-label">Company Name</label>
+                                    <label for="txtEmail" class="col-sm-3 control-label">Email</label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtCompanyName" placeholder="Company Name">
+                                        <input type="email" class="form-control" id="txtEmail" placeholder="Email">
                                     </div>
                                 </div>
-                                
-                                
+                                <div class="form-group">
+                                    <label for="txtLandlinePhone" class="col-sm-3 control-label">Landline Phone</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="txtLandlinePhone" placeholder="Landline Phone">
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label for="txtRegion" class="col-sm-3 control-label">Region</label>
 
@@ -97,14 +82,29 @@
                                         <input type="text" class="form-control" id="txtCity" placeholder="City">
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="InputFile_BorrowerPhoto" class="col-sm-3 control-label">Borrower Photo</label>
+                                    <div class="col-sm-9">
+                                        <input type="file" id="InputFile_BorrowerPhoto">
+
+                                        <%--<p class="help-block">Example block-level help text here.</p>--%>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="InputFileSignature" class="col-sm-3 control-label">Signature of Borrower</label>
+                                    <div class="col-sm-9">
+                                        <input type="file" id="InputFileSignature">
+
+                                        <%--<p class="help-block">Example block-level help text here.</p>--%>
+                                    </div>
+                                </div>
                             </div>
 
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label for="txtUsername" class="col-sm-3 control-label">Username</label>
-
+                                    <label class="col-sm-3 control-label"></label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtUsername" placeholder="Username">
+                                        <input type="text" class="form-control">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -137,10 +137,17 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="txtEmail" class="col-sm-3 control-label">Email</label>
+                                    <label for="txtAge" class="col-sm-3 control-label">Marital Status</label>
 
                                     <div class="col-sm-9">
-                                        <input type="email" class="form-control" id="txtEmail" placeholder="Email">
+                                        <input type="text" class="form-control" id="txtMaritalStatus" placeholder="Marital Status">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtSpouseName" class="col-sm-3 control-label">Spouse Name</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="txtSpouseName" placeholder="Spouse Name">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -164,6 +171,14 @@
                                         <input type="text" class="form-control" id="txtStNo" placeholder="Street Name, Bldg. House No.">
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label for="InputFileValidID" class="col-sm-3 control-label">Valid ID of Borrower</label>
+                                    <div class="col-sm-9">
+                                        <input type="file" id="InputFileValidID">
+
+                                        <%--<p class="help-block">Example block-level help text here.</p>--%>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -171,7 +186,175 @@
             </div>
         </div>
 
-       
+        <!-- OTHER FIELDS -->
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Other Fields</h3>
+                </div>
+
+                <div class="box-body">
+                    <div class="row">
+                        <form class="form-horizontal">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtBusinessName" class="col-sm-3 control-label">Business Name</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="txtBusinessName" placeholder="Business Name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtMonthlyGrossIncome" class="col-sm-3 control-label">Monthly Gross Income</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="txtMonthlyGrossIncome" placeholder="Monthly Gross Income">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtCoguarantorName" class="col-sm-3 control-label">Name of Co-guarantor</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="txtCoguarantorName" placeholder="Co-guarantor Name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="InputFile_CoguarantorSignature" class="col-sm-3 control-label">Signature of Co-guarantor</label>
+                                    <div class="col-sm-9">
+                                        <input type="file" id="InputFile_CoguarantorSignature">
+                                        Note: Three signature in one photo
+                                        <%--<p class="help-block">Example block-level help text here.</p>--%>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtBusinessName" class="col-sm-3 control-label">Nature of Work</label>
+
+                                    <div class="col-sm-9">
+                                        <select class="form-control select2">
+                                            <option selected="selected">Alabama</option>
+                                            <option>Alaska</option>
+                                            <option>California</option>
+                                            <option>Delaware</option>
+                                            <option>Tennessee</option>
+                                            <option>Texas</option>
+                                            <option>Washington</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtCharacterReference" class="col-sm-3 control-label">Character Reference</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="txtCharacterReference" placeholder="Character Reference">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtCoguarantorName" class="col-sm-3 control-label">Phone Number of Co-guarantor</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="txtCoguarantorPhoneNumber" data-inputmask='"mask": "(9999) 999-9999"' placeholder="Coguarantor Phone Number" data-mask>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="InputFile_CoguarantorValidID" class="col-sm-3 control-label">Valid ID of Co-guarantor</label>
+                                    <div class="col-sm-9">
+                                        <input type="file" id="InputFile_CoguarantorValidID">
+                                        Note: Co-guarantor included in the photo (selfie)
+                                        <%--<p class="help-block">Example block-level help text here.</p>--%>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COLLATERAL REGISTER -->
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header with-border">
+                    <h3 class="box-title">Collateral Register</h3>
+                </div>
+                <div class="box-body">
+                    <div class="row">
+                        <form class="form-horizontal">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="selectType" class="col-sm-3 control-label">Type</label>
+
+                                    <div class="col-sm-9">
+                                        <select class="form-control select2">
+                                            <option selected="selected">Alabama</option>
+                                            <option>Alaska</option>
+                                            <option>California</option>
+                                            <option>Delaware</option>
+                                            <option>Tennessee</option>
+                                            <option>Texas</option>
+                                            <option>Washington</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtNatureofCollateral" class="col-sm-3 control-label">Nature of Collateral</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="txtNatureofCollateral" placeholder="Nature of Collateral">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtDescription" class="col-sm-3 control-label">Description</label>
+
+                                    <div class="col-sm-9">
+                                        <textarea class="form-control" rows="3" id="txtDescription" placeholder="Enter ..."></textarea>
+                                        Note: Indicate other details abput the Collateral. (Ex. year model acquisition of car)
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtStatus" class="col-sm-3 control-label">Status</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="txtStatus" placeholder="Status">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="txtValue" class="col-sm-3 control-label">Value</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="txtValue" placeholder="Value">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="InputFile_ProofofCollateral" class="col-sm-3 control-label">Attach Proof of Collateral</label>
+                                    <div class="col-sm-9">
+                                        <input type="file" id="InputFile_ProofofCollateral">
+                                        Note: Borrower included in the photo
+                                        <%--<p class="help-block">Example block-level help text here.</p>--%>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="InputFile_ProofofReceipt" class="col-sm-3 control-label">Attach Proof of Receipt</label>
+                                    <div class="col-sm-9">
+                                        <input type="file" id="InputFile_ProofofReceipt">
+
+                                        <%--<p class="help-block">Example block-level help text here.</p>--%>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- ACTION -->
         <div class="col-xs-12">
 

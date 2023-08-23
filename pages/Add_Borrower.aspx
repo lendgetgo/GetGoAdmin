@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/GetGo_MasterPage.master" AutoEventWireup="true" CodeFile="Add_Borrower.aspx.cs" Inherits="_Default" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/GetGo_MasterPage.master" AutoEventWireup="true" CodeFile="Add_Borrower.aspx.cs" Inherits="Add_Borrower" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
@@ -14,7 +14,7 @@
                     <div class="row">
                         <form class="form-horizontal">
                             <div class="col-md-6">
-                                <div class="form-group">
+                                <div class="form-group" style="display:none">
                                     <label for="inputID" class="col-sm-3 control-label">ID #</label>
 
                                     <div class="col-sm-9">
@@ -33,6 +33,13 @@
 
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" id="txtMiddleName" placeholder="Middle name">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtLastName" class="col-sm-3 control-label">Last name</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="txtLastName" placeholder="Last name">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -99,7 +106,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-3 control-label"></label>
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control">
+                                       <p><br /></p>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -124,10 +131,10 @@
                                     <label for="txtAge" class="col-sm-3 control-label">Sex</label>
 
                                     <div class="col-sm-9">
-                                        <select class="form-control">
+                                        <select class="form-control" id="slctSex">
                                             <option></option>
-                                            <option>Male</option>
-                                            <option>Female</option>
+                                            <option value="M">Male</option>
+                                            <option value="F">Female</option>
                                         </select>
                                     </div>
                                 </div>
@@ -227,7 +234,7 @@
                                     <label for="txtBusinessName" class="col-sm-3 control-label">Nature of Work</label>
 
                                     <div class="col-sm-9">
-                                        <select class="form-control select2">
+                                        <select class="form-control select2" id="slctNatureOfWork">
                                             <option selected="selected">Alabama</option>
                                             <option>Alaska</option>
                                             <option>California</option>
@@ -281,7 +288,7 @@
                                     <label for="selectType" class="col-sm-3 control-label">Type</label>
 
                                     <div class="col-sm-9">
-                                        <select class="form-control select2">
+                                        <select class="form-control select2" id="slctType">
                                             <option selected="selected">Alabama</option>
                                             <option>Alaska</option>
                                             <option>California</option>
@@ -354,8 +361,8 @@
         <div class="col-xs-12">
 
             <div class="box-footer">
-                <button type="submit" class="btn btn-default">Cancel</button>
-                <button type="submit" class="btn btn-info pull-right">Submit</button>
+                <button type="button" class="btn btn-default" id="btnCancel">Cancel</button>
+                <button type="submit" class="btn btn-info pull-right" id="btnSubmit">Submit</button>
             </div>
 
         </div>
