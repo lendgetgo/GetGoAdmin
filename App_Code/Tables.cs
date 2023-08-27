@@ -43,4 +43,18 @@ public class Tables
         public string UPDATED_BY { get; set; }
 
     }
+
+    public class TBL_T_USER_LOAN
+    {
+        public string USER_ID { get; set; }
+        public string PRODUCT { get; set; }
+        public DateTime RELEASED_DATE { get; set; }
+        public DateTime MATURITY_DATE { get; set; }
+        public decimal AMOUNT { get; set; }
+        public int INSTALLMENT_ID { get; set; }
+        public string TENURE { get; set; }
+        public decimal PROCESSING_FEE { get; set; }
+        public int INTEREST_RATE { get; set; }
+
+    }
 }

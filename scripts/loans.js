@@ -4,4 +4,5 @@
         autoclose: true
     })
 
+    tblBorrowersLoan
 });

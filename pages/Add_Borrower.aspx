@@ -2,9 +2,10 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="../bower_components/toastr/toastr.min.css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <div class="row">
+    <div class="row" id="content">
         <div class="col-xs-12">
             <div class="box">
                 <div class="box-header with-border">
@@ -369,6 +370,8 @@
 
     </div>
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/toastr/toastr.min.js"></script>
+    <script src="../scripts/notification.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
     <script src="../scripts/borrowers.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
 </asp:Content>
 
