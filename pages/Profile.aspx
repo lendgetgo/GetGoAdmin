@@ -10,12 +10,12 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Required Fields</h3>
                 </div>
-                        <div class="box-header">
-                            <!-- Profile Image -->
-                                <div class="box-body box-profile">
-                                    <img class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" alt="User profile picture">
-                                </div>
-                        </div>
+                <div class="box-header">
+                    <!-- Profile Image -->
+                    <div class="box-body box-profile">
+                        <img class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" alt="User profile picture">
+                    </div>
+                </div>
                 <div class="box-body">
                     <div class="row">
                         <form class="form-horizontal">

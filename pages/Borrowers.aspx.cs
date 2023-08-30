@@ -57,4 +57,11 @@ public partial class _Default : System.Web.UI.Page
         return JsonConvert.SerializeObject(data);
     }
 
+    [WebMethod]
+    public static string GetBorrowerLoan(string _USER_ID)
+    {
+        var data = Borrower.GetBorrowerLoan(_USER_ID);
+        return data;
+    }
+
 }

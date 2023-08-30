@@ -125,7 +125,7 @@
                         </a>
                         <ul class="treeview-menu">
                             <li><a href="./Add_Loan.aspx"><i class="fa fa-circle-o"></i>Add Loans</a></li>
-                            <li><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i>View All Loans</a></li>
+                            <li><a href="./View_Loan.aspx"><i class="fa fa-circle-o"></i>View All Loans</a></li>
                             <li><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i>Past Maturity Date</a></li>
                             <li><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i>3 Months Late Loans</a></li>
                         </ul>

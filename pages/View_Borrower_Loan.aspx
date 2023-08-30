@@ -1,10 +1,10 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/GetGo_MasterPage.master" AutoEventWireup="true" CodeFile="View_Borrowers_Loan.aspx.cs" Inherits="View_Borrowers_Loan" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/GetGo_MasterPage.master" AutoEventWireup="true" CodeFile="View_Borrower_Loan.aspx.cs" Inherits="View_Borrower_Loan" %>
 
-<asp:Content ID="Content1" ContentPlaceHolderID="head" Runat="Server">
-        <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="../bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" />
 </asp:Content>
-<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" Runat="Server">
+<asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
      <div class="row">
         <div class="col-xs-12">
             <div class="box">
@@ -51,6 +51,6 @@
     </div>
 
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-     <script src="../scripts/loans.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
+    <script src="../scripts/loans.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
 </asp:Content>
 

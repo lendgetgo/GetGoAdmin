@@ -451,54 +451,54 @@
                 <div class="modal-body" id="add_loan_modal_content">
                     <div class="row">
                         <div class="col-xs-12">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">Required Fields</h3>
-                                </div>
-                                <div class="box-body">
-                                    <div class="row">
-                                        <form class="form-horizontal">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="txtBorrowerName" class="col-sm-3 control-label">Borrower Name</label>
+                            <div class="box-header with-border">
+                                <h3 class="box-title">Required Fields</h3>
+                            </div>
+                            <div class="box-body">
+                                <div class="row">
+                                    <form class="form-horizontal">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="txtBorrowerName" class="col-sm-3 control-label">Borrower Name</label>
 
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control" id="txtBorrowerName" Disabled>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="txtProduct" class="col-sm-3 control-label">Loan Product</label>
-
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control" id="txtProduct" placeholder="Loan Product">
-                                                        Note: Input reason for loan
-                                                    </div>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="txtBorrowerName" disabled>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="inputID" class="col-sm-3 control-label">Loan Release Date</label>
+                                            <div class="form-group">
+                                                <label for="txtProduct" class="col-sm-3 control-label">Loan Product</label>
 
-                                                    <div class="col-sm-9">
-                                                        <div class="input-group date">
-                                                            <div class="input-group-addon">
-                                                                <i class="fa fa-calendar"></i>
-                                                            </div>
-                                                            <input type="text" class="form-control pull-right" id="datepicker1">
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" id="txtProduct" placeholder="Loan Product">
+                                                    Note: Input reason for loan
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="inputID" class="col-sm-3 control-label">Loan Release Date</label>
+
+                                                <div class="col-sm-9">
+                                                    <div class="input-group date">
+                                                        <div class="input-group-addon">
+                                                            <i class="fa fa-calendar"></i>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="txtLoanAmount" class="col-sm-3 control-label">Loan Amount</label>
-
-                                                    <div class="col-sm-9">
-                                                        <input type="number" class="form-control" id="txtLoanAmount" placeholder="0">
+                                                        <input type="text" class="form-control pull-right" id="datepicker1">
                                                     </div>
                                                 </div>
                                             </div>
-                                        </form>
-                                    </div>
+                                            <div class="form-group">
+                                                <label for="txtLoanAmount" class="col-sm-3 control-label">Loan Amount</label>
+
+                                                <div class="col-sm-9">
+                                                    <input type="number" class="form-control" id="txtLoanAmount" placeholder="0">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
+                        </div>
 
                         <!-- REPAYMENT -->
                         <div class="col-xs-12">
@@ -579,10 +579,127 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="BorrrowerLoanModal" tabindex="-1" role="dialog" aria-labelledby="BorrrowerLoanModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="width: 90% !important">
+
+            <div class="modal-content">
+
+                <div class="modal-header" style="border-bottom: 1px solid #39a2df; margin: 9px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h5 class="modal-title">View Borrower's Loan</h5>
+                </div>
+
+                <div class="modal-body" id="Borrower_loan_modal_content">
+                    <%--<div class="content-wrapper">--%>
+                    <section class="invoice">
+
+
+                        <div class="row invoice-info">
+                            <div class="col-sm-2 invoice-col">
+                                <div class="box-body box-profile">
+                                    <img class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" alt="User profile picture">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 invoice-col">
+                                <address>
+                                    <label id="lblName"></label>
+                                    <br>
+                                    <span id="lblBusinessName"></span>
+                                    <br>
+                                    <span id="lblSex"></span>, <span id="lblAge"></span>years old<br>
+                                    <%-- Phone: (804) 123-5432<br>
+                                        Email: info@almasaeedstudio.com--%>
+                                </address>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-4 invoice-col">
+                                <address>
+                                    <span id="lblStreet"></span>
+                                    <br>
+                                    <span id="lblCity"></span>
+                                    <br>
+                                    <span id="lblProvince"></span>
+                                    <br>
+                                    <span id="lblZipcode"></span>
+                                    <br>
+                                </address>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-3 invoice-col">
+                                <span id="lblLandline"></span>
+                                <br>
+                                <span id="lblEmail"></span>
+                                <br>
+                                <span id="lblContactNo"></span>
+                                <br>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-xs-12">
+                                <button type="button" id="btnAddloanModal" class="btn btn-success pull-right">
+                                    <i class="glyphicon glyphicon-plus-sign"></i> Add Loan
+                                </button>
+                            </div>
+                        </div>
+                    </section>
+
+                    <%--</div>--%>
+
+
+
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <%--<div class="box">--%>
+                            <div class="box-header">
+                                <h3 class="box-title">Loans</h3>
+                            </div>
+                            <!-- /.box-header -->
+                            <div class="box-body">
+                                <table id="tblBorrowersLoan" class="table table-bordered table-striped" style="width: 100% !important">
+                                    <thead>
+                                        <tr>
+                                            <th>USERID</th>
+                                            <th>Name</th>
+                                            <th>Released</th>
+                                            <th>Maturity</th>
+                                            <th>Repayment</th>
+                                            <th>Due</th>
+                                            <th>Paid</th>
+                                            <th>Balance</th>
+                                            <th>Last Repayment</th>
+                                            <th>Status</th>
+                                            <th>Edit</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>USERID</th>
+                                            <th>Name</th>
+                                            <th>Released</th>
+                                            <th>Maturity</th>
+                                            <th>Repayment</th>
+                                            <th>Due</th>
+                                            <th>Paid</th>
+                                            <th>Balance</th>
+                                            <th>Last Repayment</th>
+                                            <th>Status</th>
+                                            <th>Edit</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <%--</div>--%>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-    <%--<script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="../bower_components/datatables.net/js/jquery.dataTables.min.js"></script>
-    <script src="../bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>--%>
     <script src="../bower_components/toastr/toastr.min.js"></script>
     <script src="../scripts/notification.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
     <script src="../scripts/borrowers.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>

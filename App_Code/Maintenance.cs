@@ -89,6 +89,45 @@ public class Maintenance
         return JsonConvert.SerializeObject(dt);
     }
 
+    public string GetLoanList()
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("USP_GET_LOAN_LIST", con) { CommandType = CommandType.StoredProcedure })
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+
+    public string GetBorrowerLoan(string _USER_ID)
+    {
+        DataTable dt = new DataTable();
+        try
+        {
+            using (var con = new SqlConnection(strConn))
+            {
+                using (var cmd = new SqlCommand("USP_GET_BORROWER_LOAN", con) { CommandType = CommandType.StoredProcedure })
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@USER_ID", _USER_ID);
+                    using (var da = new SqlDataAdapter(cmd))
+                        da.Fill(dt);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+    
+
     public List<Tables.TBL_T_USER_LOAN> AddBorrowerLoan(Tables.TBL_T_USER_LOAN items)
     {
         List<Tables.TBL_T_USER_LOAN> list = new List<Tables.TBL_T_USER_LOAN>();

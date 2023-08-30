@@ -1,4 +1,6 @@
-﻿$(document).ready(function () {
+﻿var currentLocation1 = window.location.href;
+
+$(document).ready(function () {
 
     LoadBorrowerListDatatable();
 
@@ -179,7 +181,12 @@ function LoadBorrowerListDatatable() {
                 { "data": "BUSSINESS_NAME" },
                 { "data": "CONTACTNO" },
                 { "data": "CITY" },
-                { "data": "ID" },
+                {
+                    "data": null,
+                    "className": "dt-center editor-view",
+                    "defaultContent": '<button type="button" class="btn btn-block btn-success btn-xs">Loans</button>',
+                    "orderable": false
+                },
                 { "data": "ID" },
                 {
                     "data": null,
@@ -302,6 +309,133 @@ function LoadBorrowerListDatatable() {
                 });
             });
         });
+
+        $('#tblBorrowers').on('click', 'td.editor-view', function (e) {
+            $('#BorrrowerLoanModal').modal('show');
+            var tblBorrowers_Borrowerloan = $('#tblBorrowers').DataTable();
+            var data = tblBorrowers_Borrowerloan.row($(this).closest('tr')).data();
+            var BORROWER_USER_ID = data[Object.keys(data)[0]];
+            var BORROWER_NAME = data[Object.keys(data)[1]];
+            var AGE = data[Object.keys(data)[2]];
+            var GENDER = data[Object.keys(data)[3]];
+            if (GENDER == 'F') { GENDER = 'FEMALE' } else { GENDER = 'MALE'}
+            
+            //console.log(data);
+            $.ajax({
+                url: "Borrowers.aspx/GetBorrowerLoan",
+                type: "POST",
+                data: JSON.stringify({ _USER_ID: BORROWER_USER_ID }),
+                contentType: "application/json;charset=utf-8", 
+                dataType: "json",
+                success: function (e) {
+                    var d = JSON.parse(e.d)
+                    GetBorrowerDetails(BORROWER_USER_ID, function (b) {
+                        $('#lblName').text(BORROWER_NAME);
+                        $('#lblAge').text(AGE);
+                        $('#lblSex').text(GENDER);
+                        $('#lblBusinessName').text(b[0]['BUSSINESS_NAME']);
+                        $('#lblStreet').text(b[0]['STREET_NO'] + ' ' + b[0]['BARANGAY']);
+                        $('#lblCity').text(b[0]['CITY']);
+                        $('#lblProvince').text(b[0]['PROVINCE']);
+                        $('#lblZipcode').text(b[0]['ZIPCODE']);
+                        $('#lblLandline').text('N/A');
+                        $('#lblEmail').text(b[0]['EMAIL_ADDRESS']);
+                        $('#lblContactNo').text(b[0]['CONTACTNO']);
+
+                        
+                        if ($("#tblBorrowersLoan").hasClass("dataTable")) {
+                            $("#tblBorrowersLoan").DataTable().destroy();
+                        }
+                        $('#tblBorrowersLoan').DataTable({
+                            data: d,
+                            columns: [
+                                { "data": "LOAN_ID" },
+                                { "data": "CompleteName" },
+                                { "data": "RELEASED_DATE" },
+                                { "data": "MATURITY_DATE" },
+                                { "data": "MATURITY_DATE" },
+                                { "data": "MATURITY_DATE" },
+                                { "data": "MATURITY_DATE" },
+                                { "data": "MATURITY_DATE" },
+                                { "data": "MATURITY_DATE" },
+                                { "data": "STATUS" },
+                                {
+                                    "data": null,
+                                    "className": "dt-center editor-edit",
+                                    "defaultContent": '<i class="glyphicon glyphicon-edit" style="cursor: pointer"/>',
+                                    "orderable": false
+                                },
+                            ],
+                            columnDefs: [{ "targets": 0, visible: false }]
+                        });
+                    });
+
+                    $('#btnAddloanModal').on('click', function () {
+                        $('#BorrrowerLoanModal').modal('hide');
+                        $('#AddLoanModal').modal('show');
+                        $('#datepicker1').datepicker({
+                            autoclose: true
+                        })
+                        //var tblBorrowers_Addloan = $('#tblBorrowers').DataTable();
+                        //var data = tblBorrowers_Addloan.row($(this).closest('tr')).data();
+                        //var USER_ID_edit = data[Object.keys(data)[0]];
+                        //var name = data[Object.keys(data)[1]];
+                        $('#txtBorrowerName').val(BORROWER_NAME);
+                        GetInstallmentTypeList(function (e) {
+                            $("#slctInstallmentType").html("");
+                            $('<option/>', {
+                                value: 'none',
+                                text: 'Please select'
+                            }).appendTo($("#slctInstallmentType"));
+                            for (var i in e) {
+                                $('<option/>', {
+                                    value: e[i]['INSTALLMENT_ID'],
+                                    text: e[i]['DESCRIPTION']
+                                }).appendTo($("#slctInstallmentType"));
+                            }
+                        });
+
+                        $('#btnAddLoan').on('click', function () {
+                            var PRODUCT = $('#txtProduct').val();
+                            var RELEASED_DATE = $('#datepicker1').val();
+                            //var MATURITY_DATE = $('#')
+                            var AMOUNT = $('#txtLoanAmount').val();
+                            var INSTALLMENT_PLAN_TYPE = $('#slctInstallmentType').val();
+                            var TENURE = $('#txtLoanTenure').val();
+                            var PROCESSING_FEE = $('#txtProcessingFee').val();
+                            var INTEREST_RATE = $('#txtInterestRate').val();
+                            var _LOAN = {};
+
+                            _LOAN.USER_ID = BORROWER_USER_ID;
+                            _LOAN.PRODUCT = PRODUCT;
+                            _LOAN.RELEASED_DATE = RELEASED_DATE;
+                            _LOAN.AMOUNT = AMOUNT;
+                            _LOAN.INSTALLMENT_ID = INSTALLMENT_PLAN_TYPE;
+                            _LOAN.TENURE = TENURE;
+                            _LOAN.PROCESSING_FEE = PROCESSING_FEE;
+                            _LOAN.INTEREST_RATE = INTEREST_RATE;
+
+                            $.ajax({
+                                url: 'Borrowers.aspx/AddBorrowerLoan',
+                                type: 'POST',
+                                contentType: 'application/json;charset=utf-8',
+                                dataType: 'json',
+                                data: JSON.stringify({ request: _LOAN }),
+                                success: function () {
+                                    $('#AddLoanModal').modal('toggle');
+                                    notification('success', 'Save successfully!');
+                                    //$('#content').load(' #content > *');
+                                }
+                            });
+                        });
+                    });
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+            
+        });
     });
 }
 
@@ -314,7 +448,6 @@ function LoadBorrowerList(callback) {
         dataType: "json",
         success: function (e) {
             var d = JSON.parse(e.d)
-            console.log(d);
             if (callback !== undefined) {
                 callback(d);
             }
