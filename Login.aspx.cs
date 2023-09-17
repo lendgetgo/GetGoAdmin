@@ -20,14 +20,17 @@ public partial class Login : System.Web.UI.Page
     [WebMethod]
     public static string GetUserAccess(string EMAIL_ADDRESS, string PASSWORD)
     {
-        //if(data.Length > 0)
-        //{
-        //    data.Count();
-        //}
         return User_Access.GetUserAccess(EMAIL_ADDRESS, PASSWORD);
     }
 
-    private void SendSMS()
+    [WebMethod]
+    public static string GetContactNo(string EMAIL_ADDRESS)
+    {
+        return User_Access.GetContactNo(EMAIL_ADDRESS);
+    }
+
+    [WebMethod]
+    public static void SendSMS()
     {
         var credentials = Credentials.FromApiKeyAndSecret("9657c1eb", "OesGLMO1YuMy2Mip");
 

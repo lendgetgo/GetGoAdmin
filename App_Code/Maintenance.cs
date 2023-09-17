@@ -51,6 +51,30 @@ public class Maintenance
         return JsonConvert.SerializeObject(dt);
     }
 
+    public string GetContactNo(string _EMAILADDRESS)
+    {
+        DataTable dt = new DataTable();
+        try
+        {
+            using (var con = new SqlConnection(strConn))
+            {
+                using (var cmd = new SqlCommand("USP_GET_CONTACT_NUMBER", con) { CommandType = CommandType.StoredProcedure })
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@EMAIL_ADDRESS", _EMAILADDRESS);
+                    using (var da = new SqlDataAdapter(cmd))
+                        da.Fill(dt);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+    
+
     public string GetBorrowerList()
     {
         DataTable dt = new DataTable();
