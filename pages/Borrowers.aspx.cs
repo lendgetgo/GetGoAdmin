@@ -10,9 +10,11 @@ using Newtonsoft.Json;
 public partial class _Default : System.Web.UI.Page
 {
     private static Maintenance Borrower;
+    private static Dropdown DropDown_maint;
     protected void Page_Load(object sender, EventArgs e)
     {
         Borrower = new Maintenance();
+        DropDown_maint = new Dropdown();
     }
 
     [WebMethod]
@@ -63,5 +65,33 @@ public partial class _Default : System.Web.UI.Page
         var data = Borrower.GetBorrowerLoan(_USER_ID);
         return data;
     }
+
+
+
+    /// <summary>
+    /// DROP DOWN LIST
+    /// </summary>
+    /// <returns></returns>
+    [WebMethod]
+    public static string GetLoanAmount()
+    {
+        var data = DropDown_maint.GetLoanAmount();
+        return data;
+    }
+
+    [WebMethod]
+    public static string GetInstallmentPlan()
+    {
+        var data = DropDown_maint.GetInstallmentPlan();
+        return data;
+    }
+
+    [WebMethod]
+    public static string GetLoanTenure(int PLAN_ID)
+    {
+        var data = DropDown_maint.GetLoanTenure(PLAN_ID);
+        return data;
+    }
+    
 
 }

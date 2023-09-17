@@ -87,7 +87,7 @@
                                         <a href="./Profile.aspx" class="btn btn-default btn-flat">Profile</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                                        <a href="/login.aspx" class="btn btn-default btn-flat">Sign out</a>
                                     </div>
                                 </li>
                             </ul>
@@ -104,7 +104,8 @@
                     <li class="header">MAIN NAVIGATION</li>
                     <li class="treeview">
                         <a href="#">
-                            <i><img src="..\resources\side_menu\borrowers.png" class="img_side_menu"/></i>
+                            <i>
+                                <img src="..\resources\side_menu\borrowers.png" class="img_side_menu" /></i>
                             <span>Borrowers</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -117,14 +118,15 @@
                     </li>
                     <li class="treeview">
                         <a href="#">
-                            <i><img src="..\resources\side_menu\loans.png" class="img_side_menu"/></i>
+                            <i>
+                                <img src="..\resources\side_menu\loans.png" class="img_side_menu" /></i>
                             <span>Loans</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="./Add_Loan.aspx"><i class="fa fa-circle-o"></i>Add Loans</a></li>
+                            <%--<li><a href="./Add_Loan.aspx"><i class="fa fa-circle-o"></i>Add Loans</a></li>--%>
                             <li><a href="./View_Loan.aspx"><i class="fa fa-circle-o"></i>View All Loans</a></li>
                             <li><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i>Past Maturity Date</a></li>
                             <li><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i>3 Months Late Loans</a></li>
@@ -132,7 +134,8 @@
                     </li>
                     <li class="treeview">
                         <a href="#">
-                            <i><img src="..\resources\side_menu\repayments.png" class="img_side_menu"/></i>
+                            <i>
+                                <img src="..\resources\side_menu\repayments.png" class="img_side_menu" /></i>
                             <span>Repayments</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -144,7 +147,8 @@
                     </li>
                     <li class="treeview">
                         <a href="#">
-                            <i><img src="..\resources\side_menu\collateral_register.png" class="img_side_menu"/></i>
+                            <i>
+                                <img src="..\resources\side_menu\collateral_register.png" class="img_side_menu" /></i>
                             <span>Collateral Register</span>
                             <%--<span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -156,20 +160,22 @@
                     </li>
                     <li class="treeview">
                         <a href="#">
-                            <i><img src="..\resources\side_menu\accounts.png" class="img_side_menu"/></i>
+                            <i>
+                                <img src="..\resources\side_menu\accounts.png" class="img_side_menu" /></i>
                             <span>Accounts</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i>View Accounts</a></li>
-                            <li><a href="./Add_Borrower.aspx"><i class="fa fa-circle-o"></i>Add Accounts</a></li>
+                            <li><a href="./View_Account.aspx"><i class="fa fa-circle-o"></i>View Accounts</a></li>
+                            <li><a href="./Add_Account.aspx"><i class="fa fa-circle-o"></i>Add Accounts</a></li>
                         </ul>
                     </li>
                     <li class="treeview">
                         <a href="#">
-                            <i><img src="..\resources\side_menu\reports.png" class="img_side_menu"/></i>
+                            <i>
+                                <img src="..\resources\side_menu\reports.png" class="img_side_menu" /></i>
                             <span>Reports</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -183,7 +189,8 @@
                     </li>
                     <li class="treeview">
                         <a href="#">
-                            <i><img src="..\resources\side_menu\view_another_branch.png" class="img_side_menu"/></i>
+                            <i>
+                                <img src="..\resources\side_menu\view_another_branch.png" class="img_side_menu" /></i>
                             <span>View Another Branch</span>
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -245,7 +252,8 @@
     <script src="../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
     <script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="../plugins/timepicker/bootstrap-timepicker.min.js"></script>
+    <script src="../scripts/userAccount.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
     <%--<script src="../dist/js/pages/dashboard.js"></script>--%>
-<%--    <script src="../dist/js/demo.js"></script>--%>
+    <%--    <script src="../dist/js/demo.js"></script>--%>
 </body>
 </html>

@@ -21,8 +21,8 @@
                                 <th>Name</th>
                                 <th>Age</th>
                                 <th>Gender</th>
-                                <th>Mobile</th>
                                 <th>Business</th>
+                                <th>Mobile</th>
                                 <th>City</th>
                                 <th>View</th>
                                 <th>Status</th>
@@ -37,8 +37,8 @@
                                 <th>Name</th>
                                 <th>Age</th>
                                 <th>Gender</th>
-                                <th>Mobile</th>
                                 <th>Business</th>
+                                <th>Mobile</th>
                                 <th>City</th>
                                 <th>View</th>
                                 <th>Status</th>
@@ -491,7 +491,9 @@
                                                 <label for="txtLoanAmount" class="col-sm-3 control-label">Loan Amount</label>
 
                                                 <div class="col-sm-9">
-                                                    <input type="number" class="form-control" id="txtLoanAmount" placeholder="0">
+                                                    <select class="form-control select2" id="txtLoanAmount">
+                                                        </select>
+                                                    <%--<input type="number" class="form-control" id="txtLoanAmount" placeholder="0">--%>
                                                 </div>
                                             </div>
                                         </div>
@@ -524,7 +526,9 @@
                                                     <label for="txtLoanTenure" class="col-sm-3 control-label">Loan Tenure</label>
 
                                                     <div class="col-sm-9">
-                                                        <input type="text" class="form-control" id="txtLoanTenure" placeholder="Loan Tenure">
+                                                        <select class="form-control select2" id="txtLoanTenure">
+                                                        </select>
+                                                        <%--<input type="text" class="form-control" id="txtLoanTenure" placeholder="Loan Tenure">--%>
                                                     </div>
                                                 </div>
                                             </div>
@@ -548,7 +552,7 @@
                                                     <label for="txtProcessingFee" class="col-sm-3 control-label">Processing Fee (10%)</label>
 
                                                     <div class="col-sm-9">
-                                                        <input type="number" class="form-control" id="txtProcessingFee" placeholder="0">
+                                                        <input type="number" class="form-control" id="txtProcessingFee" placeholder="0" disabled="disabled">
                                                     </div>
                                                 </div>
                                             </div>
@@ -557,7 +561,7 @@
                                                     <label for="txtInterestRate" class="col-sm-3 control-label">Interest Rate</label>
 
                                                     <div class="col-sm-9">
-                                                        <input type="number" class="form-control" id="txtInterestRate" placeholder="0">
+                                                        <input type="number" class="form-control" id="txtInterestRate" placeholder="0" disabled="disabled">
                                                     </div>
                                                 </div>
                                             </div>
@@ -664,8 +668,9 @@
                                             <th>USERID</th>
                                             <th>Name</th>
                                             <th>Released</th>
-                                            <th>Maturity</th>
+                                            <th>Start Date</th>
                                             <th>Repayment</th>
+                                            <th>Fees</th>
                                             <th>Due</th>
                                             <th>Paid</th>
                                             <th>Balance</th>
@@ -703,5 +708,6 @@
     <script src="../bower_components/toastr/toastr.min.js"></script>
     <script src="../scripts/notification.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
     <script src="../scripts/borrowers.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
+    <script src="../scripts/dropdown.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
 </asp:Content>
 

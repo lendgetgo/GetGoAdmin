@@ -2,7 +2,9 @@
 
 $(document).ready(function () {
 
-    LoadBorrowerListDatatable();
+    if (currentLocation1.includes('Borrowers.aspx')) {
+        LoadBorrowerListDatatable();
+    }
 
     $('#datepicker').datepicker({
         autoclose: true
@@ -161,6 +163,7 @@ $(document).ready(function () {
 });
 
 function LoadBorrowerListDatatable() {
+    var BORROWER_USER_ID;
     LoadBorrowerList(function (e) {
         if ($("#tblBorrowers").hasClass("dataTable")) {
             $("#tblBorrowers").DataTable().destroy();
@@ -261,19 +264,19 @@ function LoadBorrowerListDatatable() {
             var USER_ID_edit = data[Object.keys(data)[0]];
             var name = data[Object.keys(data)[1]];
             $('#txtBorrowerName').val(name);
-            GetInstallmentTypeList(function (e) {
-                $("#slctInstallmentType").html("");
-                $('<option/>', {
-                    value: 'none',
-                    text: 'Please select'
-                }).appendTo($("#slctInstallmentType"));
-                for (var i in e) {
-                    $('<option/>', {
-                        value: e[i]['INSTALLMENT_ID'],
-                        text: e[i]['DESCRIPTION']
-                    }).appendTo($("#slctInstallmentType"));
-                }
-            });
+            //GetInstallmentTypeList(function (e) {
+            //    $("#slctInstallmentType").html("");
+            //    $('<option/>', {
+            //        value: 'none',
+            //        text: 'Please select'
+            //    }).appendTo($("#slctInstallmentType"));
+            //    for (var i in e) {
+            //        $('<option/>', {
+            //            value: e[i]['INSTALLMENT_ID'],
+            //            text: e[i]['DESCRIPTION']
+            //        }).appendTo($("#slctInstallmentType"));
+            //    }
+            //});
 
             $('#btnAddLoan').on('click', function () {
                 var PRODUCT = $('#txtProduct').val();
@@ -314,7 +317,7 @@ function LoadBorrowerListDatatable() {
             $('#BorrrowerLoanModal').modal('show');
             var tblBorrowers_Borrowerloan = $('#tblBorrowers').DataTable();
             var data = tblBorrowers_Borrowerloan.row($(this).closest('tr')).data();
-            var BORROWER_USER_ID = data[Object.keys(data)[0]];
+            BORROWER_USER_ID = data[Object.keys(data)[0]];
             var BORROWER_NAME = data[Object.keys(data)[1]];
             var AGE = data[Object.keys(data)[2]];
             var GENDER = data[Object.keys(data)[3]];
@@ -381,53 +384,19 @@ function LoadBorrowerListDatatable() {
                         //var USER_ID_edit = data[Object.keys(data)[0]];
                         //var name = data[Object.keys(data)[1]];
                         $('#txtBorrowerName').val(BORROWER_NAME);
-                        GetInstallmentTypeList(function (e) {
-                            $("#slctInstallmentType").html("");
-                            $('<option/>', {
-                                value: 'none',
-                                text: 'Please select'
-                            }).appendTo($("#slctInstallmentType"));
-                            for (var i in e) {
-                                $('<option/>', {
-                                    value: e[i]['INSTALLMENT_ID'],
-                                    text: e[i]['DESCRIPTION']
-                                }).appendTo($("#slctInstallmentType"));
-                            }
-                        });
-
-                        $('#btnAddLoan').on('click', function () {
-                            var PRODUCT = $('#txtProduct').val();
-                            var RELEASED_DATE = $('#datepicker1').val();
-                            //var MATURITY_DATE = $('#')
-                            var AMOUNT = $('#txtLoanAmount').val();
-                            var INSTALLMENT_PLAN_TYPE = $('#slctInstallmentType').val();
-                            var TENURE = $('#txtLoanTenure').val();
-                            var PROCESSING_FEE = $('#txtProcessingFee').val();
-                            var INTEREST_RATE = $('#txtInterestRate').val();
-                            var _LOAN = {};
-
-                            _LOAN.USER_ID = BORROWER_USER_ID;
-                            _LOAN.PRODUCT = PRODUCT;
-                            _LOAN.RELEASED_DATE = RELEASED_DATE;
-                            _LOAN.AMOUNT = AMOUNT;
-                            _LOAN.INSTALLMENT_ID = INSTALLMENT_PLAN_TYPE;
-                            _LOAN.TENURE = TENURE;
-                            _LOAN.PROCESSING_FEE = PROCESSING_FEE;
-                            _LOAN.INTEREST_RATE = INTEREST_RATE;
-
-                            $.ajax({
-                                url: 'Borrowers.aspx/AddBorrowerLoan',
-                                type: 'POST',
-                                contentType: 'application/json;charset=utf-8',
-                                dataType: 'json',
-                                data: JSON.stringify({ request: _LOAN }),
-                                success: function () {
-                                    $('#AddLoanModal').modal('toggle');
-                                    notification('success', 'Save successfully!');
-                                    //$('#content').load(' #content > *');
-                                }
-                            });
-                        });
+                        //GetInstallmentTypeList(function (e) {
+                        //    $("#slctInstallmentType").html("");
+                        //    $('<option/>', {
+                        //        value: 'none',
+                        //        text: 'Please select'
+                        //    }).appendTo($("#slctInstallmentType"));
+                        //    for (var i in e) {
+                        //        $('<option/>', {
+                        //            value: e[i]['INSTALLMENT_ID'],
+                        //            text: e[i]['DESCRIPTION']
+                        //        }).appendTo($("#slctInstallmentType"));
+                        //    }
+                        //});
                     });
                 },
                 error: function (errormessage) {
@@ -435,6 +404,40 @@ function LoadBorrowerListDatatable() {
                 }
             });
             
+        });
+    });
+
+    $('#btnAddLoan').on('click', function () {
+        var PRODUCT = $('#txtProduct').val();
+        var RELEASED_DATE = $('#datepicker1').val();
+        //var MATURITY_DATE = $('#')
+        var AMOUNT = $('#txtLoanAmount').val();
+        var INSTALLMENT_PLAN_TYPE = $('#slctInstallmentType').val();
+        var TENURE = $('#txtLoanTenure').val();
+        var PROCESSING_FEE = $('#txtProcessingFee').val();
+        var INTEREST_RATE = $('#txtInterestRate').val();
+        var _LOAN = {};
+
+        _LOAN.USER_ID = BORROWER_USER_ID;
+        _LOAN.PRODUCT = PRODUCT;
+        _LOAN.RELEASED_DATE = RELEASED_DATE;
+        _LOAN.AMOUNT = AMOUNT;
+        _LOAN.INSTALLMENT_ID = INSTALLMENT_PLAN_TYPE;
+        _LOAN.TENURE = TENURE;
+        _LOAN.PROCESSING_FEE = PROCESSING_FEE;
+        _LOAN.INTEREST_RATE = INTEREST_RATE;
+
+        $.ajax({
+            url: 'Borrowers.aspx/AddBorrowerLoan',
+            type: 'POST',
+            contentType: 'application/json;charset=utf-8',
+            dataType: 'json',
+            data: JSON.stringify({ request: _LOAN }),
+            success: function () {
+                $('#AddLoanModal').modal('hide');
+                notification('success', 'Save successfully!');
+                //$('#content').load(' #content > *');
+            }
         });
     });
 }

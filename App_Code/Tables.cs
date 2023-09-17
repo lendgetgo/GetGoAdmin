@@ -42,6 +42,33 @@ public class Tables
         public string CREATED_BY { get; set; }
         public string UPDATED_BY { get; set; }
 
+        public string USER_ACCESS { get; set; }
+
+    }
+
+    public class TBL_M_USER
+    {
+        public int ID { get; set; }
+        public string USER_ID { get; set; }
+        public string USER_ACCESS { get; set; }
+        public string FIRST_NAME { get; set; }
+        public string MIDDLE_NAME { get; set; }
+        public string LAST_NAME { get; set; }
+        public string EXTENSION_NAME { get; set; }
+        public int AGE { get; set; }
+        public string DATE_OF_BIRTH { get; set; }
+        public string SEX { get; set; }
+        public string USERNAME { get; set; }
+        public string PASSWORD { get; set; }
+        public string EMAIL_ADDRESS { get; set; }
+        public string CONTACT_NO { get; set; }
+        public string REGION { get; set; }
+        public string PROVINCE { get; set; }
+        public string CITY { get; set; }
+        public string BARANGAY { get; set; }
+        public string STREET_NO { get; set; }
+        public int ZIPCODE { get; set; }
+
     }
 
     public class TBL_T_USER_LOAN
