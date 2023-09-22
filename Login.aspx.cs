@@ -30,16 +30,22 @@ public partial class Login : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static void SendSMS()
+    public static void UpdatePassword(string _USER_ID, string _PASSWORD)
+    {
+        User_Access.UpdatePassword(_USER_ID, _PASSWORD);
+    }
+
+    [WebMethod]
+    public static void SendSMS(string ContactNo, string AutheticationCode)
     {
         var credentials = Credentials.FromApiKeyAndSecret("9657c1eb", "OesGLMO1YuMy2Mip");
 
         var VonageClient = new VonageClient(credentials);
         var response = VonageClient.SmsClient.SendAnSms(new Vonage.Messaging.SendSmsRequest()
         {
-            To = "639182144853",
-            From = "OYO MEA",
-            Text = "3091801"
+            To = ContactNo,
+            From = "TEST",
+            Text = AutheticationCode
         });
     }
 }

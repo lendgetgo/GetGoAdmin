@@ -369,4 +369,28 @@ public class Maintenance
             throw ex;
         }
     }
+
+    public void UpdatePassword(string USER_ID, string PASSWORD)
+    {
+        try
+        {
+            using (var connection = Maintenance.Create())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    connection.Open();
+                    command.CommandText = "USP_UPDATE_PASSWORD";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@USER_ID", USER_ID);
+                    command.Parameters.AddWithValue("@PASSWORD", PASSWORD);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
 }

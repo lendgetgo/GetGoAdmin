@@ -43,6 +43,10 @@
             text-align: center;
         }
 
+        .btn {
+            width: 300px !important;
+        }
+
         .Code {
             display: flex;
             justify-content: center;
@@ -61,20 +65,25 @@
             <img src="resources/images/logo.png" style="width: 500px" alt="Logo">
         </div>
         <div class="login-form" id="loginContent">
-            <h2>Hello
+            <h1 style="color: #1B5B6B; font-size: 60px; padding-bottom: 50px; font-family: 'Arial Rounded MT'">Hello
                 <br />
-                Welcome back!</h2>
+                Welcome back!</h1>
 
-            <input type="email" id="_emailAddress" class="form-control" placeholder="Email" />
-            <input type="password" id="_password" class="form-control" placeholder="Password" />
-
-            <button type="submit" id="btnLogin" class="btn btn-primary btn-block btn-flat">Log In</button>
+            <input type="email" id="_emailAddress" class="form-control input-lg" placeholder="Email" />
+            <br />
+            <input type="password" id="_password" class="form-control input-lg" placeholder="Password" />
             <label id="lblforgotPass" style="cursor: pointer;"><u>Forgot Password?</u></label>
+            <br />
+            <center>
+
+                <button type="submit" id="btnLogin" class="btn btn-primary btn-block btn-lg" style="width: 300px;">Log In</button>
+            </center>
+            <br />
 
         </div>
 
         <div class="login-form" id="ForgotPassContent" hidden="hidden">
-            <h2>Forgot Password?</h2>
+            <h1 style="color: #1B5B6B; font-size: 60px; padding-bottom: 50px; font-family: 'Arial Rounded MT'">Forgot Password?</h1>
             <br />
 
             <h4>Don't worry! It happens.
@@ -82,32 +91,54 @@
 
             </h4>
 
-            <input type="email" id="_emailForgotPass" class="form-control" placeholder="Email" />
+            <input type="email" id="_emailForgotPass" class="form-control input-lg" placeholder="Email" />
+            <br />
             <label id="txtContactNo"></label>
 
-            <button type="submit" id="btnSubmit" class="btn btn-primary btn-block btn-flat">Submit</button>
-            <button id="btnNext" class="btn btn-primary btn-block btn-flat" hidden="hidden">Next</button>
-            <a href="Login.aspx">
-                <button id="btnBack" class="btn btn-primary btn-block btn-flat">Go Back</button></a>
+            <div style="display: flex; flex-direction: row; gap: 10px; justify-content: space-evenly;">
+                <button type="submit" id="btnSubmit" class="btn btn-primary btn-block btn-lg">Submit</button>
+                <button id="btnNext" class="btn btn-primary btn-block btn-lg" style="display: none">Next</button>
+                <a href="Login.aspx">
+                    <button id="btnBack" class="btn btn-primary btn-block btn-lg">Go Back</button></a>
+            </div>
 
         </div>
 
         <div class="login-form" id="AuthenticationContent" hidden="hidden">
-            <h2>Enter Authentication
+            <h1 style="color: #1B5B6B; font-size: 60px; padding-bottom: 50px; font-family: 'Arial Rounded MT'">Enter Authentication
                 <br />
-                Code</h2>
+                Code</h1>
             <h4>We have sent a authentication code via SMS.
             </h4>
             <div class="Code">
-                <input type="text" id="txtCode1" class="form-control" />
-                <input type="text" id="txtCode2" class="form-control" />
-                <input type="text" id="txtCode3" class="form-control" />
-                <input type="text" id="txtCode4" class="form-control" />
-                <input type="text" id="txtCode5" class="form-control" />
-                <input type="text" id="txtCode6" class="form-control" />
+                <input type="text" id="txtCode1" class="form-control input-lg inputs" maxlength="1"/>
+                <input type="text" id="txtCode2" class="form-control input-lg inputs" maxlength="1" />
+                <input type="text" id="txtCode3" class="form-control input-lg inputs" maxlength="1" />
+                <input type="text" id="txtCode4" class="form-control input-lg inputs" maxlength="1" />
+                <input type="text" id="txtCode5" class="form-control input-lg inputs" maxlength="1" />
+                <input type="text" id="txtCode6" class="form-control input-lg inputs" maxlength="1" />
             </div>
             <br />
-            <button type="submit" id="btnSubmitAuthentication" class="btn btn-primary btn-block btn-flat">Submit</button>
+            <center>
+                <button type="submit" id="btnSubmitAuthentication" class="btn btn-primary btn-block btn-lg">Submit</button>
+            </center>
+        </div>
+
+        <div class="login-form" id="ChangePassContent" hidden="hidden">
+            <h1 style="color: #1B5B6B; font-size: 60px; padding-bottom: 50px; font-family: 'Arial Rounded MT'">
+                Enter New Login
+                <br />
+                Password</h1>
+
+            <input type="password" id="_changePassword" class="form-control input-lg" placeholder="Enter New Password" />
+            <br />
+            <input type="password" id="_confirmPassword" class="form-control input-lg" placeholder="Confirm New Password" />
+            <br />
+            <center>
+
+                <button type="submit" id="btnConfirm" class="btn btn-primary btn-block btn-lg" style="width: 300px;">Submit</button>
+            </center>
+            <br />
 
         </div>
     </div>

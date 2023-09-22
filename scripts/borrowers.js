@@ -204,7 +204,7 @@ function LoadBorrowerListDatatable() {
                     "orderable": false
                 }
             ],
-            columnDefs: [{ "targets": 0, visible: false }]
+            columnDefs: [{ "targets": 0, visible: false }, { "targets": 1, visible: false }]
         });
 
         $('#tblBorrowers').on('click', 'td.editor-delete', function (e) {
