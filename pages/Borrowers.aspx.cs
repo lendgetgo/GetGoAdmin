@@ -66,6 +66,17 @@ public partial class _Default : System.Web.UI.Page
         return data;
     }
 
+    [WebMethod]
+    public static string GetBorrowerLoanDetails(string _LOAN_ID)
+    {
+        return Borrower.GetBorrowerLoanDetails(_LOAN_ID);
+    }
+
+    [WebMethod]
+    public static string GetUserDetail(string EMAIL_ADDRESS)
+    {
+        return Borrower.GetUserDetail(EMAIL_ADDRESS);
+    }
 
 
     /// <summary>
@@ -92,6 +103,5 @@ public partial class _Default : System.Web.UI.Page
         var data = DropDown_maint.GetLoanTenure(PLAN_ID);
         return data;
     }
-    
 
 }

@@ -32,6 +32,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
+            gap: 20px;
         }
 
         .login-form {
@@ -56,27 +58,42 @@
             .Code input {
                 width: 50px;
             }
+
+        .txt {
+            width: 80% !important;
+            margin: auto;
+            box-shadow: 5px 5px 5px 0px rgba(0,0,0,0.26);
+        }
     </style>
     <title>Login</title>
 </head>
 <body>
     <div class="login-container">
         <div class="login-logo">
-            <img src="resources/images/logo.png" style="width: 500px" alt="Logo">
+            <img src="resources/images/logo.png" style="width: 450px" alt="Logo">
+            <div style="width: 350px; background-color: #fff; display: flex; flex-direction: row; align-items: center; border-radius: 25px; padding-right: 20px;">
+                <img src="resources/images/5.png" style="width: 100px">
+                <div style="display: flex; flex-direction: column; text-align: end">
+                    <h3><b style="color:green">Get</b><b style="color:red">Go</b></h3>
+                    <p>
+                        Make the time-consuming process of getting a loan easier and more enjoyable.
+                    </p>
+                </div>
+            </div>
         </div>
         <div class="login-form" id="loginContent">
             <h1 style="color: #1B5B6B; font-size: 60px; padding-bottom: 50px; font-family: 'Arial Rounded MT'">Hello
                 <br />
                 Welcome back!</h1>
 
-            <input type="email" id="_emailAddress" class="form-control input-lg" placeholder="Email" />
+            <input type="email" id="_emailAddress" class="form-control input-lg txt" placeholder="Email" />
             <br />
-            <input type="password" id="_password" class="form-control input-lg" placeholder="Password" />
+            <input type="password" id="_password" class="form-control input-lg txt" placeholder="Password" />
+            <br />
             <label id="lblforgotPass" style="cursor: pointer;"><u>Forgot Password?</u></label>
             <br />
             <center>
-
-                <button type="submit" id="btnLogin" class="btn btn-primary btn-block btn-lg" style="width: 300px;">Log In</button>
+                <button type="submit" id="btnLogin" class="btn btn-primary btn-block btn-lg" style="width: 300px;">Login</button>
             </center>
             <br />
 
@@ -91,7 +108,7 @@
 
             </h4>
 
-            <input type="email" id="_emailForgotPass" class="form-control input-lg" placeholder="Email" />
+            <input type="email" id="_emailForgotPass" class="form-control input-lg txt" placeholder="Email" />
             <br />
             <label id="txtContactNo"></label>
 
@@ -111,7 +128,7 @@
             <h4>We have sent a authentication code via SMS.
             </h4>
             <div class="Code">
-                <input type="text" id="txtCode1" class="form-control input-lg inputs" maxlength="1"/>
+                <input type="text" id="txtCode1" class="form-control input-lg inputs" maxlength="1" />
                 <input type="text" id="txtCode2" class="form-control input-lg inputs" maxlength="1" />
                 <input type="text" id="txtCode3" class="form-control input-lg inputs" maxlength="1" />
                 <input type="text" id="txtCode4" class="form-control input-lg inputs" maxlength="1" />
@@ -125,14 +142,13 @@
         </div>
 
         <div class="login-form" id="ChangePassContent" hidden="hidden">
-            <h1 style="color: #1B5B6B; font-size: 60px; padding-bottom: 50px; font-family: 'Arial Rounded MT'">
-                Enter New Login
+            <h1 style="color: #1B5B6B; font-size: 60px; padding-bottom: 50px; font-family: 'Arial Rounded MT'">Enter New Login
                 <br />
                 Password</h1>
 
-            <input type="password" id="_changePassword" class="form-control input-lg" placeholder="Enter New Password" />
+            <input type="password" id="_changePassword" class="form-control input-lg txt" placeholder="Enter New Password" />
             <br />
-            <input type="password" id="_confirmPassword" class="form-control input-lg" placeholder="Confirm New Password" />
+            <input type="password" id="_confirmPassword" class="form-control input-lg txt" placeholder="Confirm New Password" />
             <br />
             <center>
 

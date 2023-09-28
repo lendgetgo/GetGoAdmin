@@ -493,7 +493,7 @@
 
                                                 <div class="col-sm-9">
                                                     <select class="form-control select2" id="txtLoanAmount">
-                                                        </select>
+                                                    </select>
                                                     <%--<input type="number" class="form-control" id="txtLoanAmount" placeholder="0">--%>
                                                 </div>
                                             </div>
@@ -644,7 +644,7 @@
                             <!-- /.col -->
                             <div class="col-xs-12">
                                 <button type="button" id="btnAddloanModal" class="btn btn-success pull-right">
-                                    <i class="glyphicon glyphicon-plus-sign"></i> Add Loan
+                                    <i class="glyphicon glyphicon-plus-sign"></i>Add Loan
                                 </button>
                             </div>
                         </div>
@@ -685,14 +685,95 @@
                                             <th>USERID</th>
                                             <th>Name</th>
                                             <th>Released</th>
-                                            <th>Maturity</th>
+                                            <th>Start Date</th>
                                             <th>Repayment</th>
+                                            <th>Fees</th>
                                             <th>Due</th>
                                             <th>Paid</th>
                                             <th>Balance</th>
                                             <th>Last Repayment</th>
                                             <th>Status</th>
                                             <th>Edit</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <%--</div>--%>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="BorrrowerLoanModalDetails" tabindex="-1" role="dialog" aria-labelledby="BorrrowerLoanModalDetails" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="width: 90% !important">
+
+            <div class="modal-content">
+
+                <div class="modal-header" style="border-bottom: 1px solid #39a2df; margin: 9px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h5 class="modal-title">View Borrower's Loan Details</h5>
+                </div>
+
+                <div class="modal-body" id="Borrower_loan_modal_detail_content">
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <%--<div class="box">--%>
+                            <div class="box-header">
+                                <h3 class="box-title">Loans</h3>
+                            </div>
+                            <!-- /.box-header -->
+                             <div class="box-body">
+                                <table id="tblBorrowersLoanHeader" class="table table-bordered table-striped" style="width: 100% !important">
+                                    <thead>
+                                        <tr>
+                                             <th>USERID</th>
+                                            <th>Name</th>
+                                            <th>Released</th>
+                                            <th>Start Date</th>
+                                            <th>Repayment</th>
+                                            <th>Fees</th>
+                                            <th>Due</th>
+                                            <th>Paid</th>
+                                            <th>Balance</th>
+                                            <th>Last Repayment</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+
+                            <div class="box-body">
+                                <table id="tblBorrowersLoanDetails" class="table table-bordered table-striped" style="width: 100% !important">
+                                    <thead>
+                                        <tr>
+                                            <th>USERID</th>
+                                            <th>Name</th>
+                                            <th>Loan #</th>
+                                            <th>Method</th>
+                                            <th>Collected By</th>
+                                            <th>Collection Date</th>
+                                            <th>Paid Amount</th>
+                                            <th>Edit</th>
+                                            <th>Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>USERID</th>
+                                            <th>Name</th>
+                                            <th>Loan #</th>
+                                            <th>Method</th>
+                                            <th>Collected By</th>
+                                            <th>Collection Date</th>
+                                            <th>Paid Amount</th>
+                                            <th>Edit</th>
+                                            <th>Delete</th>
                                         </tr>
                                     </tfoot>
                                 </table>

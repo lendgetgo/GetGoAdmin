@@ -43,43 +43,45 @@ $(document).ready(function () {
         var UPDATED_BY = 'ABCDE';
         var _request = {};
 
-        _request.FIRST_NAME = FIRST_NAME;
-        _request.MIDDLE_NAME = MIDDLE_NAME;
-        _request.LAST_NAME = LAST_NAME;
-        _request.EXTENSION_NAME = EXTENSION_NAME;
-        _request.EMAIL_ADDRESS = EMAIL_ADDRESS;
-        _request.CONTACTNO = CONTACTNO;
-        _request.REGION = REGION;
-        _request.PROVINCE = PROVINCE;
-        _request.CITY = CITY;
-        _request.AGE = AGE;
-        _request.DATE_OF_BIRTH = DATE_OF_BIRTH;
-        _request.SEX = SEX;
-        _request.MARITAL_STATUS = MARITAL_STATUS;
-        _request.SPOUSE_NAME = SPOUSE_NAME;
-        _request.BARANGAY = BARANGAY;
-        _request.ZIPCODE = ZIPCODE;
-        _request.STREET_NO = STREET_NO;
-        _request.BUSSINESS_NAME = BUSSINESS_NAME;
-        _request.MONTHLY_GROSS = MONTHLY_GROSS;
-        _request.CO_GUARANTOR_NAME = CO_GUARANTOR_NAME;
-        _request.NATURE_OF_WORK = NATURE_OF_WORK;
-        _request.CHARACTER_REFERENCE = CHARACTER_REFERENCE;
-        _request.CO_GUARANTOR_NUMBER = CO_GUARANTOR_NUMBER;
-        _request.CREATED_BY = CREATED_BY;
-        _request.UPDATED_BY = UPDATED_BY;
+        GetUserDetail(EMAIL_ADDRESS, function () {
+            _request.FIRST_NAME = FIRST_NAME;
+            _request.MIDDLE_NAME = MIDDLE_NAME;
+            _request.LAST_NAME = LAST_NAME;
+            _request.EXTENSION_NAME = EXTENSION_NAME;
+            _request.EMAIL_ADDRESS = EMAIL_ADDRESS;
+            _request.CONTACTNO = CONTACTNO;
+            _request.REGION = REGION;
+            _request.PROVINCE = PROVINCE;
+            _request.CITY = CITY;
+            _request.AGE = AGE;
+            _request.DATE_OF_BIRTH = DATE_OF_BIRTH;
+            _request.SEX = SEX;
+            _request.MARITAL_STATUS = MARITAL_STATUS;
+            _request.SPOUSE_NAME = SPOUSE_NAME;
+            _request.BARANGAY = BARANGAY;
+            _request.ZIPCODE = ZIPCODE;
+            _request.STREET_NO = STREET_NO;
+            _request.BUSSINESS_NAME = BUSSINESS_NAME;
+            _request.MONTHLY_GROSS = MONTHLY_GROSS;
+            _request.CO_GUARANTOR_NAME = CO_GUARANTOR_NAME;
+            _request.NATURE_OF_WORK = NATURE_OF_WORK;
+            _request.CHARACTER_REFERENCE = CHARACTER_REFERENCE;
+            _request.CO_GUARANTOR_NUMBER = CO_GUARANTOR_NUMBER;
+            _request.CREATED_BY = CREATED_BY;
+            _request.UPDATED_BY = UPDATED_BY;
 
-        $.ajax({
-            url: 'Add_Borrower.aspx/AddBorrower',
-            type: 'POST',
-            contentType: 'application/json;charset=utf-8',
-            dataType: 'json',
-            data: JSON.stringify({ request: _request }),
-            success: function (e) {
-                notification('success', 'Save successfully!');
-                $('html, body').animate({ scrollTop: '0px' }, 0);
-                $('#content').load(' #content > *');
-            }
+            $.ajax({
+                url: 'Add_Borrower.aspx/AddBorrower',
+                type: 'POST',
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                data: JSON.stringify({ request: _request }),
+                success: function (e) {
+                    notification('success', 'Save successfully!');
+                    $('html, body').animate({ scrollTop: '0px' }, 0);
+                    $('#content').load(' #content > *');
+                }
+            });
         });
     })
 
@@ -353,15 +355,25 @@ function LoadBorrowerListDatatable() {
                             data: d,
                             columns: [
                                 { "data": "LOAN_ID" },
-                                { "data": "CompleteName" },
+                                { "data": "COMPLETE_NAME" },
                                 { "data": "RELEASED_DATE" },
-                                { "data": "MATURITY_DATE" },
-                                { "data": "MATURITY_DATE" },
-                                { "data": "MATURITY_DATE" },
-                                { "data": "MATURITY_DATE" },
-                                { "data": "MATURITY_DATE" },
-                                { "data": "MATURITY_DATE" },
-                                { "data": "STATUS" },
+                                { "data": "START_DATE" },
+                                { "data": "INSTALLMENT_PLAN" },
+                                { "data": "PROCESSING_FEE" },
+                                { "data": "PENALTY" },
+                                { "data": "AMOUNT" },
+                                { "data": "AMOUNT_PAID" },
+                                { "data": "BALANCE" }, 
+                                //{ "data": "STATUS" }, 
+                                {
+                                    "data": "STATUS",
+                                    render: function (data, type, row) {
+                                        return '<button type="button" class="btn btn-block btn-success btn-xs btn-status">' + data + '</button>';
+                                    }
+                                    //"className": "dt-center editor-status",
+                                    //"defaultContent": '<button type="button" class="btn btn-block btn-success btn-xs">' + data[0] + '</button>',
+                                    //"orderable": false
+                                },
                                 {
                                     "data": null,
                                     "className": "dt-center editor-edit",
@@ -371,10 +383,46 @@ function LoadBorrowerListDatatable() {
                             ],
                             columnDefs: [{ "targets": 0, visible: false }]
                         });
+
+                        $('#tblBorrowersLoan').on('click', 'button.btn-status', function (e) {
+                            var tblBorrowersLoan_view = $('#tblBorrowersLoan').DataTable();
+                            var data = tblBorrowersLoan_view.row($(this).closest('tr')).data();
+                            var LOAN_ID = data[Object.keys(data)[0]];
+                            GetBorrowerLoanDetails(LOAN_ID, function (e) {
+                                $('#BorrrowerLoanModalDetails').modal('show');
+                                if ($("#tblBorrowersLoanHeader").hasClass("dataTable")) {
+                                    $("#tblBorrowersLoanHeader").DataTable().destroy();
+                                }
+                                $('#tblBorrowersLoanHeader').DataTable({
+                                    data: e,
+                                    columns: [
+                                        { "data": "LOAN_ID" },
+                                        { "data": "COMPLETE_NAME" },
+                                        { "data": "RELEASED_DATE" },
+                                        { "data": "START_DATE" },
+                                        { "data": "INSTALLMENT_PLAN" },
+                                        { "data": "PROCESSING_FEE" },
+                                        { "data": "PENALTY" },
+                                        { "data": "AMOUNT" },
+                                        { "data": "AMOUNT_PAID" },
+                                        { "data": "BALANCE" },
+                                        {
+                                            "data": "STATUS",
+                                            render: function (data, type, row) {
+                                                return '<button type="button" class="btn btn-block btn-success btn-xs btn-status">' + data + '</button>';
+                                            }
+                                        }
+                                    ],
+                                    columnDefs: [{ "targets": 0, visible: false }],
+                                    searchable: false,
+                                    pagination: false
+                                });
+                            });
+                        });
                     });
 
                     $('#btnAddloanModal').on('click', function () {
-                        $('#BorrrowerLoanModal').modal('hide');
+                        $('#BorrrowerLoanModal').modal('hide'); 
                         $('#AddLoanModal').modal('show');
                         $('#datepicker1').datepicker({
                             autoclose: true
@@ -442,6 +490,30 @@ function LoadBorrowerListDatatable() {
     });
 }
 
+function GetUserDetail(emailAddress, callback) {
+    $.ajax({
+        url: "Borrowers.aspx/GetUserDetail",
+        type: "POST",
+        data: JSON.stringify({ EMAIL_ADDRESS: emailAddress }),
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (e) {
+            var d = JSON.parse(e.d)
+            if (callback !== undefined) {
+                if (d.length == 0) {
+                    callback(d);
+                }
+                else {
+                    notification("warning", "Email Already exist!");
+                }
+            }
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}
+
 function LoadBorrowerList(callback) {
     $.ajax({
         url: "Borrowers.aspx/GetBorrowerList",
@@ -485,6 +557,25 @@ function GetBorrowerDetails(_USERID, callback) {
         url: "Borrowers.aspx/GetBorrowerDetails",
         type: "POST",
         data: JSON.stringify({ _USER_ID: _USERID }),
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (e) {
+            var d = JSON.parse(e.d)
+            if (callback !== undefined) {
+                callback(d);
+            }
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}
+
+function GetBorrowerLoanDetails(_LOANID, callback) {
+    $.ajax({
+        url: "Borrowers.aspx/GetBorrowerLoanDetails",
+        type: "POST",
+        data: JSON.stringify({ _LOAN_ID: _LOANID }),
         contentType: "application/json;charset=utf-8",
         dataType: "json",
         success: function (e) {
