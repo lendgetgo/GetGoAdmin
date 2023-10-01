@@ -6,6 +6,11 @@
     <link href="../bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" />
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
+    <style>
+        .datepicker-dropdown {
+            z-index: 9999 !important;
+        }
+    </style>
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
@@ -723,11 +728,6 @@
 
                     <div class="row">
                         <div class="col-xs-12">
-                            <%--<div class="box">--%>
-                            <div class="box-header">
-                                <h3 class="box-title">Loans</h3>
-                            </div>
-                            <!-- /.box-header -->
                              <div class="box-body">
                                 <table id="tblBorrowersLoanHeader" class="table table-bordered table-striped" style="width: 100% !important">
                                     <thead>
@@ -759,26 +759,80 @@
                                             <th>Collected By</th>
                                             <th>Collection Date</th>
                                             <th>Paid Amount</th>
+                                            <th>Status</th>
                                             <th>Edit</th>
                                             <th>Delete</th>
                                         </tr>
                                     </thead>
-                                    <tfoot>
-                                        <tr>
-                                            <th>USERID</th>
-                                            <th>Name</th>
-                                            <th>Loan #</th>
-                                            <th>Method</th>
-                                            <th>Collected By</th>
-                                            <th>Collection Date</th>
-                                            <th>Paid Amount</th>
-                                            <th>Edit</th>
-                                            <th>Delete</th>
-                                        </tr>
-                                    </tfoot>
                                 </table>
                             </div>
                             <%--</div>--%>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="RepaymentContent" tabindex="-1" role="dialog" aria-labelledby="RepaymentContent" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="width: 90% !important">
+
+            <div class="modal-content">
+
+                <div class="modal-header" style="border-bottom: 1px solid #39a2df; margin: 9px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h5 class="modal-title">Repayment</h5>
+                </div>
+
+                <div class="modal-body" id="RepaymentBodyContent">
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                             <div class="box-body">
+                                 <form class="form-horizontal">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="txtLoanId" class="col-sm-3 control-label">Loan #</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="txtLoanId" placeholder="0">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtProduct" class="col-sm-3 control-label">Loan Product</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="txtProduct" placeholder="Loan Product">
+                                        Note: Input reason for loan
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="inputID" class="col-sm-3 control-label">Loan Release Date</label>
+
+                                    <div class="col-sm-9">
+                                        <div class="input-group date">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <input type="text" class="form-control pull-right" id="datepicker">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="txtLoanAmount" class="col-sm-3 control-label">Loan Amount</label>
+
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control" id="txtLoanAmount" placeholder="0">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -791,5 +845,6 @@
     <script src="../scripts/notification.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
     <script src="../scripts/borrowers.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
     <script src="../scripts/dropdown.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
+    <script src="../bower_components/datatables.net/js/dataTables.editor.min.js"></script>
 </asp:Content>
 

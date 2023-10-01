@@ -6,6 +6,7 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Vonage;
 using Vonage.Request;
 
@@ -15,13 +16,28 @@ public partial class Login : System.Web.UI.Page
     protected void Page_Load(object sender, EventArgs e)
     {
         User_Access = new Maintenance();
+
+        if (!this.Page.IsPostBack)
+        { 
+            Session["UserID"] = "";
+            Session["UserName"] = "";
+        }
+    }
+
+    public class serializeData
+    {
+        public string strUser { get; set; }
     }
 
     [WebMethod]
     public static string GetUserAccess(string EMAIL_ADDRESS, string PASSWORD)
     {
-        
-        return User_Access.GetUserAccess(EMAIL_ADDRESS, PASSWORD);
+        var data = User_Access.GetUserAccess(EMAIL_ADDRESS, PASSWORD);
+        var serialData = ((JArray)JsonConvert.DeserializeObject(data)).Values<JObject>().ToList<JObject>();
+        //var strUser = serialData.ToList<JObject>();
+        var getstrUser = serialData[0]["FIRST_NAME"].ToString() + ' ' + serialData[0]["LAST_NAME"].ToString();
+        HttpContext.Current.Session["UserName"] = getstrUser;
+        return data;
     }
 
     [WebMethod]

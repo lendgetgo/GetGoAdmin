@@ -71,6 +71,12 @@ public partial class _Default : System.Web.UI.Page
     {
         return Borrower.GetBorrowerLoanDetails(_LOAN_ID);
     }
+    
+    [WebMethod]
+    public static string GetBorrowerLoanPlanDetails(string _LOAN_ID)
+    {
+        return Borrower.GetBorrowerLoanPlanDetails(_LOAN_ID);
+    }
 
     [WebMethod]
     public static string GetUserDetail(string EMAIL_ADDRESS)

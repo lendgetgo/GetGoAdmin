@@ -198,6 +198,29 @@ public class Maintenance
         return JsonConvert.SerializeObject(dt);
     }
 
+    public string GetUserDetailForApproval(string _USER_ID)
+    {
+        DataTable dt = new DataTable();
+        try
+        {
+            using (var con = new SqlConnection(strConn))
+            {
+                using (var cmd = new SqlCommand("USP_GET_BORROWER_DETAILS", con) { CommandType = CommandType.StoredProcedure })
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@USER_ID", _USER_ID);
+                    using (var da = new SqlDataAdapter(cmd))
+                        da.Fill(dt);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+
     public string GetBorrowerLoanDetails(string _LOAN_ID)
     {
         DataTable dt = new DataTable();
@@ -206,6 +229,29 @@ public class Maintenance
             using (var con = new SqlConnection(strConn))
             {
                 using (var cmd = new SqlCommand("USP_GET_BORROWER_LOAN_DETAILS", con) { CommandType = CommandType.StoredProcedure })
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddWithValue("@LOAN_ID", _LOAN_ID);
+                    using (var da = new SqlDataAdapter(cmd))
+                        da.Fill(dt);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+    
+    public string GetBorrowerLoanPlanDetails(string _LOAN_ID)
+    {
+        DataTable dt = new DataTable();
+        try
+        {
+            using (var con = new SqlConnection(strConn))
+            {
+                using (var cmd = new SqlCommand("USP_GET_BORROWER_LOAN_PLAN_DETAILS", con) { CommandType = CommandType.StoredProcedure })
                 {
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue("@LOAN_ID", _LOAN_ID);
@@ -229,6 +275,82 @@ public class Maintenance
         using (var con = new SqlConnection(strConn))
         {
             using (var cmd = new SqlCommand("USP_GET_USER_LIST", con) { CommandType = CommandType.StoredProcedure })
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+    
+    public string GetUserListForApproval()
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("USP_GET_USER_MASTER_FOR_APPROVAL", con) { CommandType = CommandType.StoredProcedure })
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+    
+    public string GetUserLoanForApproval()
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("USP_GET_USER_MASTER_LOAN_FOR_APPROVAL", con) { CommandType = CommandType.StoredProcedure })
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+    
+    public string GetUserWithdrawalForApproval()
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("USP_GET_USER_MASTER_WITHDRAWAL_FOR_APPROVAL", con) { CommandType = CommandType.StoredProcedure })
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+    
+    public string GetUserAttachment(string _USER_ID)
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("USP_GET_USER_MASTER_ATTACHMENT", con) { CommandType = CommandType.StoredProcedure })
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@USER_ID", _USER_ID);
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+    
+    public string CountForApproval()
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("USP_COUNT_FOR_APPROVAL", con) { CommandType = CommandType.StoredProcedure })
             {
                 cmd.CommandType = CommandType.StoredProcedure;
                 using (var da = new SqlDataAdapter(cmd))
@@ -431,6 +553,30 @@ public class Maintenance
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@USER_ID", USER_ID);
                     command.Parameters.AddWithValue("@PASSWORD", PASSWORD);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+
+    public void UpdateCreditLimitForApproval(string USER_ID, string AMOUNT)
+    {
+        try
+        {
+            using (var connection = Maintenance.Create())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    connection.Open();
+                    command.CommandText = "USP_UPDATE_CREDIT_LIMIT_FOR_APPROVAL";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@USER_ID", USER_ID);
+                    command.Parameters.AddWithValue("@AMOUNT", AMOUNT);
                     command.ExecuteNonQuery();
                 }
             }

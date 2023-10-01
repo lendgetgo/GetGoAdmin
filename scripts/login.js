@@ -2,6 +2,7 @@
 var strUserID;
 
 $(document).ready(function () {
+    initializePasswordValidation();
     $('#ForgotPassContent').hide();
     $('#btnNext').hide();
 
@@ -19,11 +20,11 @@ $(document).ready(function () {
             strUserID = data[0]['USER_ID'];
             strCode = output;
             console.log(contactNo, output);
-            //SendSMS(contactNo, output, function () {
+            SendSMS(contactNo, output, function () {
                 $('#txtContactNo').text('We send the authetication CODE on 09_ _ _ _ _' + data[0]['CONTACT_NO'].substr(7, 5) + ' then Click Next!');
                 $('#btnNext').show();
                 $('#btnSubmit').remove();
-            //});
+            });
         });
     });
    
@@ -183,6 +184,37 @@ function UpdatePassword(strUserID, strPassword, callback) {
         },
         error: function (errormessage) {
             alert(errormessage.responseText);
+        }
+    });
+}
+
+function initializePasswordValidation() {
+    $('#_changePassword').on('input', function () {
+        const passwordValue = $('#_changePassword').val();
+
+        // Check if the password meets the criteria
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+        const isValidPassword = passwordRegex.test(passwordValue);
+
+        if (!isValidPassword) {
+            $('#lblchangePassword').text('Password must contain 1 capital letter, 1 lowercase letter, 1 number, and be at least 8 characters long.');
+        }
+        else {
+            $('#lblchangePassword').text('');
+        }
+    });
+
+    $('#_confirmPassword').on('input', function () {
+        const passwordValue = $('#_confirmPassword').val();
+
+        // Check if the password meets the criteria
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+        const isValidPassword = passwordRegex.test(passwordValue);
+
+        if (!isValidPassword) {
+            $('#lblconfirmPassword').text('Password must contain 1 capital letter, 1 lowercase letter, 1 number, and be at least 8 characters long.');
+        } else {
+            $('#lblconfirmPassword').text('');
         }
     });
 }

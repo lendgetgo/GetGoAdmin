@@ -7,7 +7,7 @@
         }).appendTo($("#txtLoanAmount"));
         for (var i in e) {
             $('<option/>', {
-                value: e[i]['ID'],
+                value: e[i]['LOAN_PLAN_ID'],
                 text: e[i]['AMOUNT']
             }).appendTo($("#txtLoanAmount"));
         }
@@ -23,7 +23,7 @@
             }).appendTo($("#slctInstallmentType"));
             for (var i in e) {
                 $('<option/>', {
-                    value: e[i]['ID'],
+                    value: e[i]['INSTALLMENT_ID'],
                     text: e[i]['INSTALLMENT_PLAN']
                 }).appendTo($("#slctInstallmentType"));
             }

@@ -1,14 +1,27 @@
 ﻿var currentLocation1 = window.location.href;
 
 $(document).ready(function () {
-
+    $('#datepicker').datepicker({
+        autoclose: true
+    })
     if (currentLocation1.includes('Borrowers.aspx')) {
         LoadBorrowerListDatatable();
     }
 
-    $('#datepicker').datepicker({
-        autoclose: true
-    })
+    $('#datepicker').on('change', function () {
+        $('#datepicker').css('z-index', 9999);
+        var now = new Date();   //Current Date
+        var past = new Date($('#datepicker').val());  //Date of Birth
+        if (past > now) {
+            alert('Entered Date is Greater than Current Date');
+            return false;
+        }
+        var nowYear = now.getFullYear();  //Get current year
+        var pastYear = past.getFullYear();//Get Date of Birth year
+
+        var age = nowYear - pastYear;  //calculate the difference
+        $('#txtAge').val(age);
+    });
 
     $('#btnSubmit').on('click', function () {
         var FIRST_NAME = $('#txtFirstName').val();
@@ -364,15 +377,16 @@ function LoadBorrowerListDatatable() {
                                 { "data": "AMOUNT" },
                                 { "data": "AMOUNT_PAID" },
                                 { "data": "BALANCE" }, 
-                                //{ "data": "STATUS" }, 
                                 {
                                     "data": "STATUS",
                                     render: function (data, type, row) {
-                                        return '<button type="button" class="btn btn-block btn-success btn-xs btn-status">' + data + '</button>';
+                                        if (data == 'ONGOING') {
+                                            return '<button type="button" class="btn btn-block btn-primary btn-xs btn-status">' + data + '</button>';
+                                        }
+                                        if (data == 'FULLY PAID') {
+                                            return '<button type="button" class="btn btn-block btn-success btn-xs btn-status">' + data + '</button>';
+                                        }
                                     }
-                                    //"className": "dt-center editor-status",
-                                    //"defaultContent": '<button type="button" class="btn btn-block btn-success btn-xs">' + data[0] + '</button>',
-                                    //"orderable": false
                                 },
                                 {
                                     "data": null,
@@ -414,9 +428,51 @@ function LoadBorrowerListDatatable() {
                                         }
                                     ],
                                     columnDefs: [{ "targets": 0, visible: false }],
-                                    searchable: false,
-                                    pagination: false
+                                    searching: false,
+                                    info: false,
+                                    ordering: false,
+                                    paging: false
                                 });
+                            });
+
+                            GetBorrowerLoanPlanDetails(LOAN_ID, function (e) {
+                                if ($("#tblBorrowersLoanDetails").hasClass("dataTable")) {
+                                    $("#tblBorrowersLoanDetails").DataTable().destroy();
+                                }
+                                $('#tblBorrowersLoanDetails').DataTable({
+                                    data: e,
+                                    columns: [
+                                        { "data": "LOAN_DETAILS_ID" },
+                                        { "data": "COMPLETE_NAME" },
+                                        { "data": "LOAN_ID" },
+                                        { "data": "METHOD" },
+                                        { "data": "COLLECTED_BY" },
+                                        { "data": "COLLECTED_DATE" },
+                                        { "data": "AMOUNT_PAID" },
+                                        { "data": "STATUS" },
+                                        {
+                                            "data": null,
+                                            "className": "dt-center editor-edit",
+                                            "defaultContent": '<i class="glyphicon glyphicon-edit" style="cursor: pointer"/>',
+                                            "orderable": false
+                                        },
+                                        {
+                                            "data": null,
+                                            "className": "dt-center editor-delete",
+                                            "defaultContent": '<i class="glyphicon glyphicon-trash" style="cursor: pointer"/>',
+                                            "orderable": false
+                                        }
+                                    ],
+                                    columnDefs: [{ "targets": 0, visible: false }]
+                                });
+                            });
+
+                            $('#tblBorrowersLoanDetails').on('click', 'td.editor-edit', function (e) {
+                                var tblBorrowers_delete = $('#tblBorrowersLoanDetails').DataTable();
+                                var data = tblBorrowers_delete.row($(this).closest('tr')).data();
+                                var USER_ID_delete = data[Object.keys(data)[0]];
+                                $('#RepaymentContent').modal('show');
+                                $('#BorrrowerLoanModalDetails').modal('toggle');
                             });
                         });
                     });
@@ -574,6 +630,25 @@ function GetBorrowerDetails(_USERID, callback) {
 function GetBorrowerLoanDetails(_LOANID, callback) {
     $.ajax({
         url: "Borrowers.aspx/GetBorrowerLoanDetails",
+        type: "POST",
+        data: JSON.stringify({ _LOAN_ID: _LOANID }),
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (e) {
+            var d = JSON.parse(e.d)
+            if (callback !== undefined) {
+                callback(d);
+            }
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}
+
+function GetBorrowerLoanPlanDetails(_LOANID, callback) {
+    $.ajax({
+        url: "Borrowers.aspx/GetBorrowerLoanPlanDetails",
         type: "POST",
         data: JSON.stringify({ _LOAN_ID: _LOANID }),
         contentType: "application/json;charset=utf-8",

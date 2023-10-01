@@ -147,9 +147,10 @@
                 Password</h1>
 
             <input type="password" id="_changePassword" class="form-control input-lg txt" placeholder="Enter New Password" />
+            <label id="lblchangePassword" style="color:red;"></label>
             <br />
             <input type="password" id="_confirmPassword" class="form-control input-lg txt" placeholder="Confirm New Password" />
-            <br />
+            <label id="lblconfirmPassword" style="color:red;"></label>
             <center>
 
                 <button type="submit" id="btnConfirm" class="btn btn-primary btn-block btn-lg" style="width: 300px;">Submit</button>
