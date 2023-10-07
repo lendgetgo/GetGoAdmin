@@ -41,4 +41,24 @@ public class Upload_Maintenance
             return ex.Message;
         }
     }
+    public List<dynamic> QueryGetOrPopulateText(string commandText, object parameters = null)
+    {
+        try
+        {
+            using (SqlConnection conn = new SqlConnection(conString))
+            {
+                conn.Open();
+                var result = conn.Query(commandText, parameters);
+                return result.ToList();
+            }
+        }
+        catch (SqlException ex)
+        {
+            throw ex;
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
 }

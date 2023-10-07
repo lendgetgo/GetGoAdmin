@@ -321,7 +321,9 @@ function LoadBorrowerListDatatable() {
                     data: JSON.stringify({ request: _LOAN }),
                     success: function () {
                         $('#AddLoanModal').modal('toggle');
+                   
                         notification('success', 'Save successfully!');
+                        Attachment();
                         //$('#content').load(' #content > *');
                     }
                 });
@@ -684,9 +686,11 @@ function GetInstallmentTypeList(callback) {
         }
     });
 }
+const filesArray = [];
 
 const Attachment = () => {
     var files = $('.custom-file-input');
+
     files.each(function (index, fileInput) {
         var formData = new FormData();
         formData.append("file", fileInput.files[0]);
@@ -697,7 +701,7 @@ const Attachment = () => {
 
         url: "Borrowers.aspx/GetLoanID",
         data: JSON.stringify({
-            items: loanData
+            userid: $('#USERID').val() 
         })
     }).then(e => {
         let result = JSON.parse(e.d);
