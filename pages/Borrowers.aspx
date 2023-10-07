@@ -154,7 +154,7 @@
                                             <div class="form-group">
                                                 <label for="InputFile_BorrowerPhoto" class="col-sm-3 control-label">Borrower Photo</label>
                                                 <div class="col-sm-9">
-                                                    <input type="file" id="InputFile_BorrowerPhoto">
+                                                     <input type="file" class="custom-file-input" data-classification="BORROWER_PHOTO" id="borrower_photo">
 
                                                     <%--<p class="help-block">Example block-level help text here.</p>--%>
                                                 </div>
@@ -162,7 +162,7 @@
                                             <div class="form-group">
                                                 <label for="InputFileSignature" class="col-sm-3 control-label">Signature of Borrower</label>
                                                 <div class="col-sm-9">
-                                                    <input type="file" id="InputFileSignature">
+                                                     <input type="file" class="custom-file-input" data-classification="CO_SIGNATURE" id="co_signature">
 
                                                     <%--<p class="help-block">Example block-level help text here.</p>--%>
                                                 </div>
@@ -245,7 +245,7 @@
                                             <div class="form-group">
                                                 <label for="InputFileValidID" class="col-sm-3 control-label">Valid ID of Borrower</label>
                                                 <div class="col-sm-9">
-                                                    <input type="file" id="InputFileValidID">
+                                                     <input type="file" class="custom-file-input" data-classification="BORROWER_VALID_ID" id="borrower_valid_id">
 
                                                     <%--<p class="help-block">Example block-level help text here.</p>--%>
                                                 </div>
@@ -292,7 +292,7 @@
                                                 <div class="form-group">
                                                     <label for="InputFile_CoguarantorSignature" class="col-sm-3 control-label">Signature of Co-guarantor</label>
                                                     <div class="col-sm-9">
-                                                        <input type="file" id="InputFile_CoguarantorSignature">
+                                                      <input type="file" class="custom-file-input" data-classification="CO_GUARANTOR_SIGNATURE" id="co_guarantor_signature">
                                                         Note: Three signature in one photo
                                         <%--<p class="help-block">Example block-level help text here.</p>--%>
                                                     </div>
@@ -331,7 +331,7 @@
                                                 <div class="form-group">
                                                     <label for="InputFile_CoguarantorValidID" class="col-sm-3 control-label">Valid ID of Co-guarantor</label>
                                                     <div class="col-sm-9">
-                                                        <input type="file" id="InputFile_CoguarantorValidID">
+                                                     <input type="file" class="custom-file-input" data-classification="CO_GUARANTOR_VALID_ID" id="co_guarantor_valid_id">
                                                         Note: Co-guarantor included in the photo (selfie)
                                         <%--<p class="help-block">Example block-level help text here.</p>--%>
                                                     </div>
@@ -406,7 +406,7 @@
                                                 <div class="form-group">
                                                     <label for="InputFile_ProofofCollateral" class="col-sm-3 control-label">Attach Proof of Collateral</label>
                                                     <div class="col-sm-9">
-                                                        <input type="file" id="InputFile_ProofofCollateral">
+                                                       <input type="file" class="custom-file-input" data-classification="COLLATERAL_PHOTO" id="collateral_photo">
                                                         Note: Borrower included in the photo
                                         <%--<p class="help-block">Example block-level help text here.</p>--%>
                                                     </div>
@@ -414,7 +414,7 @@
                                                 <div class="form-group">
                                                     <label for="InputFile_ProofofReceipt" class="col-sm-3 control-label">Attach Proof of Receipt</label>
                                                     <div class="col-sm-9">
-                                                        <input type="file" id="InputFile_ProofofReceipt">
+                                                          <input type="file" class="custom-file-input" data-classification="PROOF_RECEIPT" id="proof_receipt">
 
                                                         <%--<p class="help-block">Example block-level help text here.</p>--%>
                                                     </div>

@@ -540,6 +540,7 @@ function LoadBorrowerListDatatable() {
             success: function () {
                 $('#AddLoanModal').modal('hide');
                 notification('success', 'Save successfully!');
+               
                 //$('#content').load(' #content > *');
             }
         });
@@ -683,3 +684,71 @@ function GetInstallmentTypeList(callback) {
         }
     });
 }
+
+const Attachment = () => {
+    var files = $('.custom-file-input');
+    files.each(function (index, fileInput) {
+        var formData = new FormData();
+        formData.append("file", fileInput.files[0]);
+        formData.append("classification", fileInput.getAttribute("data-classification")); // Append the correct classification
+        filesArray.push(formData);
+    });
+    GetData({
+
+        url: "Borrowers.aspx/GetLoanID",
+        data: JSON.stringify({
+            items: loanData
+        })
+    }).then(e => {
+        let result = JSON.parse(e.d);
+        /*       alert('uploadarray goes');*/
+
+        LoadingInfo.text('Verifying attached file');
+
+        upload(filesArray, result[0].LOAN_ID);
+    }
+    );
+
+    upload(filesArray, result[0].LOAN_ID);
+}
+const upload = (filesArray, loanID) => {
+
+    //for (const value of files.values()) {
+    //    console.log(value);
+    //}
+    // Create a new FormData object to store all files
+    const allFilesFormData = new FormData();
+
+    // Append each FormData object to the new FormData
+    filesArray.forEach(formData => {
+        for (const [key, value] of formData.entries()) {
+            allFilesFormData.append(key, value);
+        }
+    });
+    //for (const value of allFilesFormData.values()) {
+    //    console.log(value);
+    //}
+    LoadingInfo.text('Processing your loan');
+    /*alert("Uploading now to file server ");*/
+    $.ajax({
+        type: 'post',
+        url: '../pages/Handlers/FileUpload.ashx?USERID=' + $('#USERID').val() + '&LOANID=' + loanID,
+        data: allFilesFormData,
+        cache: false,
+        processData: false,
+        contentType: false,
+        success: function (e) {
+                   alert('success');
+        },
+        error: function (xhr, status, error) {
+            if (xhr.status === 413) {
+                alert('Request Entity Too Large: The file you are trying to upload is too large.');
+            } else {
+                alert('An error occurred during the request. Status: ' + xhr.status + ' - ' + xhr.statusText);
+            }
+            $('#ERROR').text('Error: ' + error);
+            loaderContainer.hide();
+        }
+
+    })
+    }
