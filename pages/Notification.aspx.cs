@@ -15,12 +15,12 @@ public partial class Notification : System.Web.UI.Page
         User = new Maintenance();
     }
 
-    [WebMethod]
-    public static string GetUserDetailForApproval(string _USER_ID)
-    {
-        var data = User.GetUserDetailForApproval(_USER_ID);
-        return data;
-    }
+    //[WebMethod]
+    //public static string GetUSelectedserDetail(string _USER_ID)
+    //{
+    //    var data = User.GetUSelectedserDetail(_USER_ID);
+    //    return data;
+    //}
 
     [WebMethod]
     public static string GetUserListForApproval()

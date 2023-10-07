@@ -198,7 +198,7 @@ public class Maintenance
         return JsonConvert.SerializeObject(dt);
     }
 
-    public string GetUserDetailForApproval(string _USER_ID)
+    public string GetUSelectedserDetail(string _USER_ID)
     {
         DataTable dt = new DataTable();
         try

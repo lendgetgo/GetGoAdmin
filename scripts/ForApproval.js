@@ -24,6 +24,38 @@ $(document).ready(function () {
                     { "data": "STATUS_DATE" }
                 ]
             });
+
+            $('#tblLoan').on('click', 'td.editor-view', function (e) {
+                var tblBorrowers_delete = $('#tblLoan').DataTable();
+                var data = tblBorrowers_delete.row($(this).closest('tr')).data();
+                var USER_ID_loan = data[Object.keys(data)[1]];
+                //console.log(USER_ID_view);
+                $('#LoanModal').modal('show');
+
+                $.ajax({
+                    url: "SharedService.asmx/GetUSelectedserDetail",
+                    type: "POST",
+                    data: JSON.stringify({ _USER_ID: USER_ID_loan }),
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (e) {
+                        var d = JSON.parse(e.d)
+
+                        $('#lblName_Loan').text(d[0]['FIRST_NAME'] + ' ' + d[0]['LAST_NAME']);
+                        $('#lblAge_Loan').text(d[0]['AGE'] + ' ');
+                        $('#lblSex_Loan').text(d[0]['SEX']);
+                        $('#lblBusinessName_Loan').text(d[0]['BUSSINESS_NAME']);
+                        $('#lblStreet_Loan').text(d[0]['STREET_NO'] + ' ' + d[0]['BARANGAY']);
+                        $('#lblCity_Loan').text(d[0]['CITY']);
+                        $('#lblProvince_Loan').text(d[0]['PROVINCE']);
+                        $('#lblZipcode_Loan').text(d[0]['ZIPCODE']);
+                        $('#lblLandline_Loan').text('N/A');
+                        $('#lblEmail_Loan').text(d[0]['EMAIL_ADDRESS']);
+                        $('#lblContactNo_Loan').text(d[0]['CONTACTNO']);
+
+                    }
+                });
+            });
         });
 
         $('#LoanContent').show();
@@ -66,6 +98,8 @@ $(document).ready(function () {
                     { "data": "CREATED_DATE" }
                 ]
             });
+
+           
         });
 
         $('#AccountContent').hide();
@@ -112,7 +146,7 @@ $(document).ready(function () {
             $('#UserModal').modal('show');
 
             $.ajax({
-                url: "Notification.aspx/GetUserDetailForApproval",
+                url: "SharedService.asmx/GetUSelectedserDetail",
                 type: "POST",
                 data: JSON.stringify({ _USER_ID: USER_ID_view }),
                 contentType: "application/json;charset=utf-8",
