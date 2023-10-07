@@ -61,7 +61,7 @@ public partial class Login : System.Web.UI.Page
         var response = VonageClient.SmsClient.SendAnSms(new Vonage.Messaging.SendSmsRequest()
         {
             To = ContactNo,
-            From = "TEST",
+            From = "GetGo",
             Text = AutheticationCode
         });
     }
