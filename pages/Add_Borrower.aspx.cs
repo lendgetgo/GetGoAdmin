@@ -16,10 +16,10 @@ public partial class Add_Borrower : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string AddBorrower(Tables.USER_MASTER request)
+    public static string AddBorrower(Tables.USER_MASTER request, string LOAN_ID)
     {
         //request.USER_ID = user;
-        var data = Borrower.AddBorrower(request);
+        var data = Borrower.AddBorrower(request, LOAN_ID);
         return JsonConvert.SerializeObject(data);
     }
 }

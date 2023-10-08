@@ -394,14 +394,16 @@ public class Maintenance
     }
 
 
-    public List<Tables.USER_MASTER> AddBorrower(Tables.USER_MASTER request)
+    public List<Tables.USER_MASTER> AddBorrower(Tables.USER_MASTER request, object returnParameter)
     {
         List<Tables.USER_MASTER> list = new List<Tables.USER_MASTER>();
         try
         {
+            string returnValue;
             using (var connection = Maintenance.Create())
             {
-                using (var command = connection.CreateCommand())
+                //using (var command = connection.CreateCommand())
+                using (SqlCommand command = connection.CreateCommand())
                 {
                     connection.Open();
                     command.CommandText = "USP_INSERT_BORROWER_DETAILS";
@@ -436,6 +438,7 @@ public class Maintenance
                     command.Parameters.AddWithValue("@CREATED_BY", request.CREATED_BY);
                     command.Parameters.AddWithValue("@UPDATED_BY", request.UPDATED_BY);
                     command.ExecuteNonQuery();
+                    returnValue = (string)returnParameter.ToString();
                 }
             }
         }
@@ -577,6 +580,30 @@ public class Maintenance
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@USER_ID", USER_ID);
                     command.Parameters.AddWithValue("@AMOUNT", AMOUNT);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+    
+    public void UpdateBorrowerLoanStatus(string LOAN_ID, string STATUS)
+    {
+        try
+        {
+            using (var connection = Maintenance.Create())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    connection.Open();
+                    command.CommandText = "USP_UPDATE_BORROWER_LOAN_STATUS";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@LOAN_ID", LOAN_ID);
+                    command.Parameters.AddWithValue("@STATUS", STATUS);
                     command.ExecuteNonQuery();
                 }
             }

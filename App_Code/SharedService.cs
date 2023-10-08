@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
+using Vonage;
+using Vonage.Request;
 
 /// <summary>
 /// Summary description for SharedService
@@ -31,6 +33,20 @@ public class SharedService : System.Web.Services.WebService {
         maint = new Maintenance();
         var data = maint.GetUSelectedserDetail(_USER_ID);
         return data;
+    }
+
+    [WebMethod]
+    public void SendSMS(string ContactNo, string AutheticationCode)
+    {
+        var credentials = Credentials.FromApiKeyAndSecret("9657c1eb", "OesGLMO1YuMy2Mip");
+
+        var VonageClient = new VonageClient(credentials);
+        var response = VonageClient.SmsClient.SendAnSms(new Vonage.Messaging.SendSmsRequest()
+        {
+            To = ContactNo,
+            From = "GetGo",
+            Text = AutheticationCode
+        });
     }
 
 }

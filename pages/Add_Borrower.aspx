@@ -96,7 +96,7 @@
                                 <div class="form-group">
                                     <label for="InputFileSignature" class="col-sm-3 control-label">Signature of Borrower</label>
                                     <div class="col-sm-9">
-                                        <input type="file" id="InputFileSignature">
+                                      <input type="file" class="custom-file-input" data-classification="CO_SIGNATURE" id="co_signature">
 
                                         <%--<p class="help-block">Example block-level help text here.</p>--%>
                                     </div>

@@ -55,6 +55,12 @@ public partial class Notification : System.Web.UI.Page
     {
         User.UpdateCreditLimitForApproval(_USER_ID, _AMOUNT);
     }
+    
+    [WebMethod]
+    public static void UpdateBorrowerLoanStatus(string _LOAN_ID, string _STATUS)
+    {
+        User.UpdateBorrowerLoanStatus(_LOAN_ID, _STATUS);
+    }
 
     [WebMethod]
     public static string CountForApproval()

@@ -52,17 +52,17 @@ public partial class Login : System.Web.UI.Page
         User_Access.UpdatePassword(_USER_ID, _PASSWORD);
     }
 
-    [WebMethod]
-    public static void SendSMS(string ContactNo, string AutheticationCode)
-    {
-        var credentials = Credentials.FromApiKeyAndSecret("9657c1eb", "OesGLMO1YuMy2Mip");
+    //[WebMethod]
+    //public static void SendSMS(string ContactNo, string AutheticationCode)
+    //{
+    //    var credentials = Credentials.FromApiKeyAndSecret("9657c1eb", "OesGLMO1YuMy2Mip");
 
-        var VonageClient = new VonageClient(credentials);
-        var response = VonageClient.SmsClient.SendAnSms(new Vonage.Messaging.SendSmsRequest()
-        {
-            To = ContactNo,
-            From = "GetGo",
-            Text = AutheticationCode
-        });
-    }
+    //    var VonageClient = new VonageClient(credentials);
+    //    var response = VonageClient.SmsClient.SendAnSms(new Vonage.Messaging.SendSmsRequest()
+    //    {
+    //        To = ContactNo,
+    //        From = "GetGo",
+    //        Text = AutheticationCode
+    //    });
+    //}
 }

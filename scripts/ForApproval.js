@@ -7,6 +7,9 @@ $(document).ready(function () {
         $('#btnWithdrawal').removeClass('btn btn-success').addClass('btn btn-primary');
         $('#btnRepayments').removeClass('btn btn-success').addClass('btn btn-primary');
 
+        var USER_ID_loan;
+        var _STATUS;
+        var _CONTACTNO;
         GetUserLoanForApproval(function (e) {
             if ($("#tblLoan").hasClass("dataTable")) {
                 $("#tblLoan").DataTable().destroy();
@@ -28,8 +31,8 @@ $(document).ready(function () {
             $('#tblLoan').on('click', 'td.editor-view', function (e) {
                 var tblBorrowers_delete = $('#tblLoan').DataTable();
                 var data = tblBorrowers_delete.row($(this).closest('tr')).data();
-                var USER_ID_loan = data[Object.keys(data)[1]];
-                //console.log(USER_ID_view);
+                USER_ID_loan = data[Object.keys(data)[0]];
+                console.log(USER_ID_loan);
                 $('#LoanModal').modal('show');
 
                 $.ajax({
@@ -40,7 +43,7 @@ $(document).ready(function () {
                     dataType: "json",
                     success: function (e) {
                         var d = JSON.parse(e.d)
-
+                        _CONTACTNO = d[0]['CONTACTNO'];
                         $('#lblName_Loan').text(d[0]['FIRST_NAME'] + ' ' + d[0]['LAST_NAME']);
                         $('#lblAge_Loan').text(d[0]['AGE'] + ' ');
                         $('#lblSex_Loan').text(d[0]['SEX']);
@@ -62,6 +65,16 @@ $(document).ready(function () {
         $('#AccountContent').hide();
         $('#RepaymentsContent').hide();
         $('#WithdrawalContent').hide();
+        $('#btnApproveUser_Loan').on('click', function () {
+            _STATUS = 'APPROVED';
+            $('#LoanModal').modal('toggle');
+            UpdateBorrowerLoanStatus(USER_ID_loan, _STATUS, function () { });
+                var tblBorrowers_delete = $('#tblLoan').DataTable();
+                tblBorrowers_delete.row($(this).closest('tr')).remove().draw();
+            var output = 'Your Loan ' + USER_ID_loan + ' was successfully Approved!';
+            SendSMS(_CONTACTNO, output, function () {});
+            notification("success", "Successfully Approved!");
+        });
     });
 
     $('#btnAccount').on('click', function () {
@@ -296,6 +309,40 @@ function UpdateCreditLimitForApproval(_USERID, _AMOUNT, callback) {
         contentType: "application/json;charset=utf-8",
         dataType: "json",
         success: function (e) {
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}
+
+function UpdateBorrowerLoanStatus(_LOAN_ID, _STATUS, callback) {
+    $.ajax({
+        url: "Notification.aspx/UpdateBorrowerLoanStatus",
+        type: "POST",
+        data: JSON.stringify({ _LOAN_ID: _LOAN_ID, _STATUS: _STATUS }),
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (e) {
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}
+
+function SendSMS(_contactNo, _AuthenticationCode, callback) {
+    $.ajax({
+        url: "SharedService.asmx/SendSMS",
+        type: "POST",
+        data: JSON.stringify({ ContactNo: _contactNo, AutheticationCode: _AuthenticationCode }),
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (e) {
+            var d = JSON.parse(e.d)
+            if (callback !== undefined) {
+                callback(d);
+            }
         },
         error: function (errormessage) {
             alert(errormessage.responseText);

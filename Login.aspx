@@ -4,8 +4,8 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="../bower_components/toastr/toastr.min.css" rel="stylesheet" />
+    <link href="bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="bower_components/toastr/toastr.min.css" rel="stylesheet" />
     <style>
         body {
             display: flex;
@@ -160,8 +160,8 @@
         </div>
     </div>
 </body>
-<script src="../bower_components/jquery/dist/jquery.min.js"></script>
-<script src="../bower_components/toastr/toastr.min.js"></script>
-<script src="../scripts/notification.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
-<script src="../scripts/login.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="bower_components/toastr/toastr.min.js"></script>
+<script src="scripts/notification.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
+<script src="scripts/login.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
 </html>

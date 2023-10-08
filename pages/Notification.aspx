@@ -268,6 +268,7 @@
                                         <i class="ace-icon fa fa-check bigger-110"></i>&nbsp; Decline Loan Application
                                     </button>
                                 </div>
+                                <br />
                             </div>
                         </div>
                     </section>

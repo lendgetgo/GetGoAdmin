@@ -91,6 +91,7 @@ $(document).ready(function () {
                 data: JSON.stringify({ request: _request }),
                 success: function (e) {
                     notification('success', 'Save successfully!');
+                    Attachment();
                     $('html, body').animate({ scrollTop: '0px' }, 0);
                     $('#content').load(' #content > *');
                 }
@@ -323,7 +324,7 @@ function LoadBorrowerListDatatable() {
                         $('#AddLoanModal').modal('toggle');
                    
                         notification('success', 'Save successfully!');
-                        Attachment();
+                     
                         //$('#content').load(' #content > *');
                     }
                 });

@@ -152,7 +152,7 @@ function createAuthenticationNumber() {
 
 function SendSMS(_contactNo, _AuthenticationCode, callback) {
     $.ajax({
-        url: "Login.aspx/SendSMS",
+        url: "SharedService.asmx/SendSMS",
         type: "POST",
         data: JSON.stringify({ ContactNo: _contactNo, AutheticationCode: _AuthenticationCode }),
         contentType: "application/json;charset=utf-8",
