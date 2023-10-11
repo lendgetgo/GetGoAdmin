@@ -59,6 +59,9 @@ if (currentLocation1.includes('Add_Account.aspx')) {
             dataType: 'json',
             data: JSON.stringify({ request: _request }),
             success: function (e) {
+                var d = JSON.parse(e.d)
+                console.log(d);
+                AddAttachment(d);
                 notification('success', 'Save successfully!');
                 $('html, body').animate({ scrollTop: '0px' }, 0);
                 $('#content').load(' #content > *');
@@ -117,4 +120,80 @@ function GetUsers(callback) {
             alert(errormessage.responseText);
         }
     });
+}
+
+function AddAttachment(_User_ID) {
+    alert(_User_ID);
+    var strUSERID;
+    const filesArray = [];
+
+    const Attachment = () => {
+        var files = $('.custom-file-input');
+
+        files.each(function (index, fileInput) {
+            var formData = new FormData();
+            formData.append("file", fileInput.files[0]);
+            formData.append("classification", fileInput.getAttribute("data-classification")); // Append the correct classification
+            filesArray.push(formData);
+        });
+        GetData({
+
+            url: "Add_Account.aspx/GetLoanID",
+            data: JSON.stringify({
+                userid: _User_ID
+                //userid: $('#USERID').val()
+            })
+        }).then(e => {
+            let result = JSON.parse(e.d);
+            /*       alert('uploadarray goes');*/
+
+            LoadingInfo.text('Verifying attached file');
+            strUSERID = result[0].USER_ID;
+            upload(filesArray, result[0].USER_ID);
+        }
+        );
+
+        upload(filesArray, result[0].USER_ID);
+    }
+    const upload = (filesArray, loanID) => {
+
+        //for (const value of files.values()) {
+        //    console.log(value);
+        //}
+        // Create a new FormData object to store all files
+        const allFilesFormData = new FormData();
+
+        // Append each FormData object to the new FormData
+        filesArray.forEach(formData => {
+            for (const [key, value] of formData.entries()) {
+                allFilesFormData.append(key, value);
+            }
+        });
+        //for (const value of allFilesFormData.values()) {
+        //    console.log(value);
+        //}
+        LoadingInfo.text('Processing your account');
+        /*alert("Uploading now to file server ");*/
+        $.ajax({
+            type: 'post',
+            url: '../pages/Handlers/FileUpload.ashx?USERID=' + _User_ID + '&LOANID=' + strUSERID,
+            data: allFilesFormData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function (e) {
+                alert('success');
+            },
+            error: function (xhr, status, error) {
+                if (xhr.status === 413) {
+                    alert('Request Entity Too Large: The file you are trying to upload is too large.');
+                } else {
+                    alert('An error occurred during the request. Status: ' + xhr.status + ' - ' + xhr.statusText);
+                }
+                $('#ERROR').text('Error: ' + error);
+                loaderContainer.hide();
+            }
+
+        })
+    }
 }

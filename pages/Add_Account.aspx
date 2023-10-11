@@ -11,6 +11,13 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Required Fields</h3>
                 </div>
+<%--                <div class="box-header">
+                    <!-- Profile Image -->
+                    <div class="box-body box-profile">
+                        <img class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" alt="User profile picture">
+                    </div>
+                    
+                </div>--%>
                 <div class="box-body" >
                     <div class="row">
                         <form class="form-horizontal">
@@ -19,7 +26,8 @@
                                     <label for="slctAccess" class="col-sm-3 control-label">User Access</label>
                                     <div class="col-sm-9">
                                         <select class="form-control" id="slctAccess">
-                                            <option value="Admin">Admin</option>
+                                            <option value="Admin">Administrator</option>
+                                            <option value="Approver">Approver</option>
                                         </select>
                                     </div>
                                 </div>
@@ -163,6 +171,12 @@
 
                                     <div class="col-sm-9">
                                         <input type="text" class="form-control" id="txtStNo" placeholder="Street Name, Bldg. House No.">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="slctAccess" class="col-sm-3 control-label">Profile Picture</label>
+                                    <div class="col-sm-9">
+                                        <input type="file" class="custom-file-input" data-classification="PROFILE_PHOTO" id="InputFile_ProfilePhoto">
                                     </div>
                                 </div>
                             </div>

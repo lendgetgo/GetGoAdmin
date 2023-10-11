@@ -449,10 +449,10 @@ public class Maintenance
         }
         return list;
     }
-
-    public List<Tables.TBL_M_USER> AddUser(Tables.TBL_M_USER request)
+    int indentity = 0;
+    public int AddUser(Tables.TBL_M_USER request)
     {
-        List<Tables.TBL_M_USER> list = new List<Tables.TBL_M_USER>();
+        //List<int> list = new List<int>();
         try
         {
             using (var connection = Maintenance.Create())
@@ -483,7 +483,15 @@ public class Maintenance
                     command.Parameters.AddWithValue("@ZIPCODE", request.ZIPCODE);
                     command.Parameters.AddWithValue("@PROFILE_PIC", "TEST");
                     command.ExecuteNonQuery();
+
+                    command.CommandType = CommandType.Text;
+                    command.Parameters.Clear();
+                    command.CommandText = "SELECT @@IDENTITY";
+                    indentity = Convert.ToInt32(command.ExecuteScalar());
+
+                    connection.Close();
                 }
+                connection.Close();
             }
         }
         catch (Exception ex)
@@ -491,7 +499,7 @@ public class Maintenance
 
             throw ex;
         }
-        return list;
+        return indentity;
     }
 
     public void UpdateBorrowerDetails(Tables.USER_MASTER items)

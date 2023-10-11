@@ -22,4 +22,17 @@ public partial class Add_Account : System.Web.UI.Page
         var data = User_Maint.AddUser(request);
         return JsonConvert.SerializeObject(data);
     }
+
+    [WebMethod]
+    public static string GetLoanID(string userid)
+    {
+        var maint = new Upload_Maintenance();
+        var query = @"SELECT TOP 1 USER_ID FROM TBL_T_USER WHERE ID=@ID";
+        var paramaters = new
+        {
+            ID = userid
+        };
+        var data = JsonConvert.SerializeObject(maint.QueryGetOrPopulateText(query, paramaters));
+        return data;
+    }
 }

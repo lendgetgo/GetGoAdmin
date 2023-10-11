@@ -109,17 +109,6 @@ public partial class _Default : System.Web.UI.Page
         var data = DropDown_maint.GetLoanTenure(PLAN_ID);
         return data;
     }
-    [WebMethod]
-    public static string GetLoanID(string userid)
-    {
-        var maint = new Upload_Maintenance();
-        var query = @"SELECT TOP 1 LOAN_ID FROM TBL_T_USER_LOAN WHERE USER_ID=@USERID ORDER BY LOAN_ID DESC";
-        var paramaters = new
-        {
-            USERID=userid
-        };
-        var data = JsonConvert.SerializeObject( maint.QueryGetOrPopulateText( query,paramaters));
-        return data;
-    }
+    
 
 }

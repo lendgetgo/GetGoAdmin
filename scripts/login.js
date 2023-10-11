@@ -17,14 +17,16 @@ $(document).ready(function () {
         GetContactNo(_txtForgotEmail, function (data) {
             let output = createAuthenticationNumber();
             let contactNo = data[0]['CONTACT_NO'];
+            let emailaddress = data[0]['EMAIL_ADDRESS'];
             strUserID = data[0]['USER_ID'];
             strCode = output;
             console.log(contactNo, output);
-            SendSMS(contactNo, output, function () {
+            //SendSMS(contactNo, output, function () {
+            GetUserID(output, emailaddress, function () { });
                 $('#txtContactNo').text('We send the authetication CODE on 09_ _ _ _ _' + data[0]['CONTACT_NO'].substr(7, 5) + ' then Click Next!');
                 $('#btnNext').show();
                 $('#btnSubmit').remove();
-            });
+            //});
         });
     });
    
@@ -152,9 +154,28 @@ function createAuthenticationNumber() {
 
 function SendSMS(_contactNo, _AuthenticationCode, callback) {
     $.ajax({
-        url: "SharedService.asmx/SendSMS",
+        url: "Login.aspx/SendSMS",
         type: "POST",
         data: JSON.stringify({ ContactNo: _contactNo, AutheticationCode: _AuthenticationCode }),
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (e) {
+            var d = JSON.parse(e.d)
+            if (callback !== undefined) {
+                callback(d);
+            }
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}
+
+function GetUserID(_query, _input, callback) {
+    $.ajax({
+        url: "Login.aspx/GetUserID",
+        type: "POST",
+        data: JSON.stringify({ Vcode: _query, input: _input }),
         contentType: "application/json;charset=utf-8",
         dataType: "json",
         success: function (e) {
