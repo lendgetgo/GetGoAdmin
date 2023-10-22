@@ -11,14 +11,14 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">Required Fields</h3>
                 </div>
-<%--                <div class="box-header">
+                <%--                <div class="box-header">
                     <!-- Profile Image -->
                     <div class="box-body box-profile">
                         <img class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" alt="User profile picture">
                     </div>
                     
                 </div>--%>
-                <div class="box-body" >
+                <div class="box-body">
                     <div class="row">
                         <form class="form-horizontal">
                             <div class="col-md-6">
@@ -189,8 +189,8 @@
         <div class="col-xs-12">
 
             <div class="box-footer">
-                <button type="submit" class="btn btn-default">Cancel</button>
-                <button type="submit" id="btnSubmit" class="btn btn-info pull-right">Submit</button>
+                <button type="button" class="btn btn-default">Cancel</button>
+                <button type="button" id="btnSubmit" class="btn btn-info pull-right">Submit</button>
             </div>
 
         </div>
@@ -201,6 +201,131 @@
     <script src="../bower_components/toastr/toastr.min.js"></script>
     <script src="../scripts/userAccount.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
     <script src="../scripts/notification.js"></script>
+    <script type="text/javascript">
+        var files = $('.custom-file-input');
+        $(() => {
+
+        });
+
+        $('#btnSubmit').on('click', function () {
+            var USER_ACCESS = $('#slctAccess').val();
+            var USER_NAME = $('#txtUserName').val();
+            var FIRST_NAME = $('#txtFirstName').val();
+            var MIDDLE_NAME = $('#txtMiddleName').val();
+            var LAST_NAME = $('#txtLastName').val();
+            var EXTENSION_NAME = $('#txtExtensionName').val();
+            var EMAIL_ADDRESS = $('#txtEmail').val();
+            var REGION = $('#txtRegion').val();
+            var PROVINCE = $('#txtProvince').val();
+            var CITY = $('#txtCity').val();
+            var PASSWORD = $('#txtPassword').val();
+            var AGE = $('#txtAge').val();
+            var DATE_OF_BIRTH = $('#datepicker').val();
+            var SEX = $('#slctSex').val();
+            var CONTACTNO = $('#txtContactNo').val();
+            var BARANGAY = $('#txtBarangay').val();
+            var ZIPCODE = $('#txtZipCode').val();
+            var STREET_NO = $('#txtStNo').val();
+            var CREATED_BY = '12345';
+            /*        var UPDATED_BY = 'ABCDE';*/
+            var _request = {
+                USER_ACCESS: USER_ACCESS,
+                USERNAME: USER_NAME,
+                FIRST_NAME: FIRST_NAME,
+                MIDDLE_NAME: MIDDLE_NAME,
+                LAST_NAME: LAST_NAME,
+                EXTENSION_NAME: EXTENSION_NAME,
+                EMAIL_ADDRESS: EMAIL_ADDRESS,
+                CONTACT_NO: CONTACTNO,
+                REGION: REGION,
+                PROVINCE: PROVINCE,
+                CITY: CITY,
+                PASSWORD: PASSWORD,
+                AGE: AGE,
+                DATE_OF_BIRTH: DATE_OF_BIRTH,
+                SEX: SEX,
+                BARANGAY: BARANGAY,
+                ZIPCODE: ZIPCODE,
+                STREET_NO: STREET_NO,
+                CREATED_BY: CREATED_BY,
+            };
+            $.ajax({
+
+                url: 'Add_Account.aspx/AddUserAccount2',
+                type: 'POST',
+                contentType: 'application/json;charset=utf-8',
+                dataType: 'json',
+                data: JSON.stringify({ request: _request }),
+                success: function (e) {
+                    var d = JSON.parse(e.d)
+                    SaveAttachment(d[0].USER_ID);
+                    notification('success', 'Save successfully!');
+                    //$('html, body').animate({ scrollTop: '0px' }, 0);
+                    //$('#content').load(' #content > *');
+                },
+                error: function (e) {
+                    console.log(e);
+                }
+            });
+        })
+        const filesArray = [];
+
+        const SaveAttachment = (userid) => {
+            files.each(function (index, fileInput) {
+                var formData = new FormData();
+                formData.append("file", fileInput.files[0]);
+                formData.append("classification", fileInput.getAttribute("data-classification")); // Append the correct classification
+                filesArray.push(formData);
+            });
+
+            upload(filesArray,userid);
+        }
+        const upload = (filesArray, userid) => {
+
+            //for (const value of files.values()) {
+            //    console.log(value);
+            //}
+            // Create a new FormData object to store all files
+            const allFilesFormData = new FormData();
+
+            // Append each FormData object to the new FormData
+            filesArray.forEach(formData => {
+                for (const [key, value] of formData.entries()) {
+                    allFilesFormData.append(key, value);
+                }
+            });
+            for (const value of allFilesFormData.values()) {
+                console.log(value);
+            }
+            alert("Uploading now to file server ");
+            $.ajax({
+                type: 'post',
+                url: 'Upload.ashx?USERID=' + userid,
+                data: allFilesFormData,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function (e) {
+                    console.log(e);
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status === 413) {
+                        alert('Request Entity Too Large: The file you are trying to upload is too large.');
+                    } else {
+                        alert('An error occurred during the request. Status: ' + xhr.status + ' - ' + xhr.statusText);
+                    }
+                    console.log(xhr, status, error);
+          
+        
+                }
+
+            })
+
+
+        }
+
+    </script>
 </asp:Content>
 
 

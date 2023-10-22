@@ -65,7 +65,7 @@
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header">
-                                    <img src="../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
+                                    <img id="imgProfile" src="../dist/img/user2-160x160.jpg" class="img-circle" alt="User Image">
 
                                     <p>
                                         <lable id="txtName" runat="server"></lable>
@@ -94,7 +94,7 @@
                                         <a href="./Profile.aspx" class="btn btn-default btn-flat">Profile</a>
                                     </div>
                                     <div class="pull-right">
-                                        <a href="/login.aspx" class="btn btn-default btn-flat" id="btnSignOut" onclick="btnSignOut_Click" runat="server">Sign out</a>
+                                        <a href="./login.aspx" class="btn btn-default btn-flat" id="btnSignOut" onclick="btnSignOut_Click" runat="server">Sign out</a>
                                     </div>
                                 </li>
                             </ul>
@@ -259,7 +259,7 @@
     <script src="../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
     <script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="../plugins/timepicker/bootstrap-timepicker.min.js"></script>
-    <script src="../scripts/userAccount.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
+    <%--<script src="../scripts/userAccount.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>--%>
     <%--<script src="../dist/js/pages/dashboard.js"></script>--%>
     <%--    <script src="../dist/js/demo.js"></script>--%>
 </body>

@@ -6,6 +6,11 @@ using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using Newtonsoft.Json;
+using Vonage;
+using Vonage.Request;
+using System.Dynamic;
+using System.Net;
+using System.Net.Mail;
 
 public partial class Notification : System.Web.UI.Page
 {
@@ -67,5 +72,53 @@ public partial class Notification : System.Web.UI.Page
     {
         var data = User.CountForApproval();
         return data;
+    }
+
+    [WebMethod]
+    public static void SendSMS(string ContactNo, string AutheticationCode)
+    {
+        var credentials = Credentials.FromApiKeyAndSecret("9657c1eb", "OesGLMO1YuMy2Mip");
+
+        var VonageClient = new VonageClient(credentials);
+        var response = VonageClient.SmsClient.SendAnSms(new Vonage.Messaging.SendSmsRequest()
+        {
+            To = ContactNo,
+            From = "GetGo",
+            Text = AutheticationCode
+        });
+    }
+
+    [WebMethod]
+    public static void GetUserID(string Vcode, string input)
+    {
+        dynamic response = new ExpandoObject(); // Use dynamic type
+
+        //Email configuration
+        string senderEmail = "reijideveloper@gmail.com";
+        string senderPassword = "kiwwngslnfrrgfsc";
+        string recipientEmail = input;
+        string subject = "[GetGO] Please verify your device";
+        string body = "GetGO Verification: " + Vcode;
+
+        // Create a new SmtpClient instance
+        SmtpClient smtpClient = new SmtpClient("smtp.gmail.com", 587);
+        smtpClient.EnableSsl = true;
+        smtpClient.Credentials = new NetworkCredential(senderEmail, senderPassword);
+
+        try
+        {
+            // Create a new MailMessage instance
+            MailMessage mailMessage = new MailMessage(senderEmail, recipientEmail, subject, body);
+
+            // Send the email
+            smtpClient.Send(mailMessage);
+            var result = Vcode + "|" + input;
+            response.details = result; // Assign Vcode to the response
+        }
+        catch (Exception ex)
+        {
+            response.error = ex.Message;
+        }
+
     }
 }

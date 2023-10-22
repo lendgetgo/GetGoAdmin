@@ -501,6 +501,82 @@ public class Maintenance
         }
         return indentity;
     }
+    #region HonyoPyonot
+    public DataTable QueryGetOrPopulate2(string query, SqlParameter[] parameters)
+    {
+        using (var conn = Maintenance.Create())
+        {
+            DataTable dataTable = new DataTable();
+            SqlTransaction transaction = null;
+
+            try
+            {
+                conn.Open();
+                transaction = conn.BeginTransaction();
+                using (SqlCommand cmd = new SqlCommand(query, conn, transaction))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddRange(parameters);
+
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(cmd))
+                    {
+                        adapter.Fill(dataTable);
+                    }
+                }
+                transaction.Commit();
+            }
+            catch (SqlException ex)
+            {
+                if (transaction != null) transaction.Rollback();
+               
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                if (transaction != null) transaction.Rollback();
+            
+                throw ex;
+            }
+
+            return dataTable;
+        }
+    }
+    public string QueryInsertOrUpdateAdoNet(string query, SqlParameter[] parameters)
+    {
+        using (var conn = Maintenance.Create())
+        {
+            SqlTransaction trans = null;
+            try
+            {
+                conn.Open();
+                trans = conn.BeginTransaction();
+
+                using (SqlCommand cmd = new SqlCommand(query, conn, trans))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    cmd.Parameters.AddRange(parameters);
+
+                    cmd.ExecuteNonQuery();
+                }
+
+                trans.Commit();
+                return "Success";
+            }
+            catch (SqlException ex)
+            {
+                if (trans != null) trans.Rollback();
+       
+                return ex.Message;
+            }
+            catch (Exception ex)
+            {
+                if (trans != null) trans.Rollback();
+ 
+                return ex.Message;
+            }
+        }
+    }
+    #endregion
 
     public void UpdateBorrowerDetails(Tables.USER_MASTER items)
     {

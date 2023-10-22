@@ -70,9 +70,9 @@
 <body>
     <div class="login-container">
         <div class="login-logo">
-            <img src="resources/images/logo.png" style="width: 450px" alt="Logo">
+            <img src="resources/images/logo.png" style="width: 450px" alt="Logo"/>
             <div style="width: 350px; background-color: #fff; display: flex; flex-direction: row; align-items: center; border-radius: 25px; padding-right: 20px;">
-                <img src="resources/images/5.png" style="width: 100px">
+                <img src="resources/images/5.png" style="width: 100px"/>
                 <div style="display: flex; flex-direction: column; text-align: end">
                     <h3><b style="color:green">Get</b><b style="color:red">Go</b></h3>
                     <p>

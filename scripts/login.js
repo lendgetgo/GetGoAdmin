@@ -12,6 +12,21 @@ $(document).ready(function () {
         reset();
     });
 
+    $(document).keypress(function (e) {
+        if (e.which == 13) {
+            var _emailAddress = $('#_emailAddress').val();
+            var _password = $('#_password').val();
+            if ((_emailAddress == "") || (_password == "")) {
+                notification("error", "Please input your Email/Password!");
+            }
+            else {
+                GetUserAccess(_emailAddress, _password, function (e) {
+                    window.location.replace("pages/Home.aspx");
+                });
+            }
+        }
+    });
+
     $('#btnSubmit').on('click', function () {
         var _txtForgotEmail = $('#_emailForgotPass').val();
         GetContactNo(_txtForgotEmail, function (data) {
@@ -21,12 +36,12 @@ $(document).ready(function () {
             strUserID = data[0]['USER_ID'];
             strCode = output;
             console.log(contactNo, output);
-            //SendSMS(contactNo, output, function () {
+            SendSMS(contactNo, output, function () {
             GetUserID(output, emailaddress, function () { });
                 $('#txtContactNo').text('We send the authetication CODE on 09_ _ _ _ _' + data[0]['CONTACT_NO'].substr(7, 5) + ' then Click Next!');
                 $('#btnNext').show();
                 $('#btnSubmit').remove();
-            //});
+            });
         });
     });
    

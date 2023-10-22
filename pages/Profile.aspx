@@ -13,7 +13,7 @@
                 <div class="box-header">
                     <!-- Profile Image -->
                     <div class="box-body box-profile">
-                        <img class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" alt="User profile picture">
+                        <img id="imgProfile" class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" alt="User profile picture">
                     </div>
                 </div>
                 <div class="box-body">
