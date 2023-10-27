@@ -22,4 +22,10 @@ public partial class Add_Borrower : System.Web.UI.Page
         var data = Borrower.AddBorrower(request, LOAN_ID);
         return JsonConvert.SerializeObject(data);
     }
+
+    [WebMethod]
+    public static string GetUserDetail(string EMAIL_ADDRESS)
+    {
+        return Borrower.GetUserDetail(EMAIL_ADDRESS);
+    }
 }

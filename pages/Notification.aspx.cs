@@ -42,6 +42,13 @@ public partial class Notification : System.Web.UI.Page
     }
     
     [WebMethod]
+    public static string GetUserLoanDetailsForApproval(int _LOAN_ID)
+    {
+        var data = User.GetUserLoanDetailsForApproval(_LOAN_ID);
+        return data;
+    }
+    
+    [WebMethod]
     public static string GetUserWithdrawalForApproval()
     {
         var data = User.GetUserWithdrawalForApproval();
@@ -65,6 +72,12 @@ public partial class Notification : System.Web.UI.Page
     public static void UpdateBorrowerLoanStatus(string _LOAN_ID, string _STATUS)
     {
         User.UpdateBorrowerLoanStatus(_LOAN_ID, _STATUS);
+    }
+    
+    [WebMethod]
+    public static void UpdateBorrowerWithdrawalStatus(int _WITHDRAWAL_ID)
+    {
+        User.UpdateBorrowerWithdrawalStatus(_WITHDRAWAL_ID);
     }
 
     [WebMethod]

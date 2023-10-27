@@ -56,7 +56,7 @@ $(document).ready(function () {
         var UPDATED_BY = 'ABCDE';
         var _request = {};
 
-        GetUserDetail(EMAIL_ADDRESS, function () {
+        GetUserDetail_Addborrower(EMAIL_ADDRESS, function () {
             _request.FIRST_NAME = FIRST_NAME;
             _request.MIDDLE_NAME = MIDDLE_NAME;
             _request.LAST_NAME = LAST_NAME;
@@ -91,7 +91,7 @@ $(document).ready(function () {
                 data: JSON.stringify({ request: _request }),
                 success: function (e) {
                     notification('success', 'Save successfully!');
-                    Attachment();
+                    //Attachment();
                     $('html, body').animate({ scrollTop: '0px' }, 0);
                     $('#content').load(' #content > *');
                 }
@@ -242,6 +242,7 @@ function LoadBorrowerListDatatable() {
 
             $('#borrowerModal').modal('show');
             $('#USERID').val(USER_ID_edit);
+            
             GetBorrowerDetails(USER_ID_edit, function (d) {
                 $('#txtFirstName').val(d[0]['FIRST_NAME']);
                 $('#txtMiddleName').val(d[0]['MIDDLE_NAME']);
@@ -350,6 +351,7 @@ function LoadBorrowerListDatatable() {
                 dataType: "json",
                 success: function (e) {
                     var d = JSON.parse(e.d)
+                    
                     GetBorrowerDetails(BORROWER_USER_ID, function (b) {
                         $('#lblName').text(BORROWER_NAME);
                         $('#lblAge').text(AGE);
@@ -574,6 +576,30 @@ function GetUserDetail(emailAddress, callback) {
     });
 }
 
+function GetUserDetail_Addborrower(emailAddress, callback) {
+    $.ajax({
+        url: "Add_Borrower.aspx/GetUserDetail",
+        type: "POST",
+        data: JSON.stringify({ EMAIL_ADDRESS: emailAddress }),
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (e) {
+            var d = JSON.parse(e.d)
+            if (callback !== undefined) {
+                if (d.length == 0) {
+                    callback(d);
+                }
+                else {
+                    notification("warning", "Email Already exist!");
+                }
+            }
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}
+
 function LoadBorrowerList(callback) {
     $.ajax({
         url: "Borrowers.aspx/GetBorrowerList",
@@ -582,7 +608,8 @@ function LoadBorrowerList(callback) {
         contentType: "application/json;charset=utf-8",
         dataType: "json",
         success: function (e) {
-            var d = JSON.parse(e.d)
+            var d = JSON.parse(e.d);
+            console.log(d);
             if (callback !== undefined) {
                 callback(d);
             }

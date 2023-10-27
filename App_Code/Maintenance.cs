@@ -314,6 +314,23 @@ public class Maintenance
         return JsonConvert.SerializeObject(dt);
     }
     
+    public string GetUserLoanDetailsForApproval(int _LOAN_ID)
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("USP_GET_USER_MASTER_LOAN_DETAILS", con) { CommandType = CommandType.StoredProcedure })
+            {
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@LOAN_ID", _LOAN_ID);
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+            con.Dispose();
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+    
     public string GetUserWithdrawalForApproval()
     {
         DataTable dt = new DataTable();
@@ -688,6 +705,29 @@ public class Maintenance
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@LOAN_ID", LOAN_ID);
                     command.Parameters.AddWithValue("@STATUS", STATUS);
+                    command.ExecuteNonQuery();
+                }
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+    }
+    
+    public void UpdateBorrowerWithdrawalStatus(int WITHDRAWAL_ID)
+    {
+        try
+        {
+            using (var connection = Maintenance.Create())
+            {
+                using (var command = connection.CreateCommand())
+                {
+                    connection.Open();
+                    command.CommandText = "USP_UPDATE_BORROWER_WITHDRAWAL_STATUS";
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.AddWithValue("@WITHDRAWAL_ID", WITHDRAWAL_ID);
                     command.ExecuteNonQuery();
                 }
             }

@@ -55,8 +55,8 @@
                     </table>
                 </div>
 
-                <div class="box-body" id="RepaymentsContent" hidden="hidden">
-                    <table id="tblRepayments" class="table table-bordered table-striped">
+                <div class="box-body" id="WithdrawalContent" hidden="hidden">
+                    <table id="tblWithdrawal" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Action</th>
@@ -67,8 +67,8 @@
                     </table>
                 </div>
 
-                <div class="box-body" id="WithdrawalContent" hidden="hidden">
-                    <table id="tblWithdrawal" class="table table-bordered table-striped">
+                <div class="box-body" id="RepaymentsContent" hidden="hidden">
+                    <table id="tblRepayments" class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Action</th>
@@ -416,23 +416,168 @@
                             </div>
                             <!-- /.col -->
                             <div class="col-xs-12" style="display: flex; flex-direction: column">
-                                <%--<div>
-                                    <label>Input Max Credit Limit(if above 15k): </label>
-                                    <select id="txtCreditLimit_W">
-                                        <option value="3000">3000</option>
-                                        <option value="6000">6000</option>
-                                        <option value="9000">9000</option>
-                                        <option value="12000">12000</option>
-                                        <option value="15000">15000</option>
-                                    </select>
-                                </div>--%>
                                 <div style="position: absolute; right: 10px;">
-                                    <button type="button" id="btnApproveUser_W" class="btn btn-success">
-                                        <i class="ace-icon fa fa-check bigger-110"></i>&nbsp; Approve
+                                    <button type="button" id="btnNotifyBorrower" class="btn btn-success">
+                                        <i class="ace-icon fa fa-check bigger-110"></i>&nbsp; Notify Borrower
                                     </button>
-                                    <button type="button" id="btnDeclineUser_W" class="btn btn-danger">
-                                        <i class="ace-icon fa fa-check bigger-110"></i>&nbsp; Decline
+                                    <button type="button" id="btnInProcess" class="btn btn-danger">
+                                        <i class="ace-icon fa fa-check bigger-110"></i>&nbsp; In-Process
                                     </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="box-header">
+                                <h3 class="box-title">Valid ID</h3>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-body">
+                                    <img src="../../GetGo/UploadedFiles/6386976.png" alt="..." class="margin" id="imgFrontFace_W">
+                                    <img src="#" alt="..." class="margin" id="imgBackFace_W">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xs-6">
+                            <div class="box-header">
+                                <h3 class="box-title">Signature</h3>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-body">
+                                    <img src="#" alt="..." class="margin" id="imgSignature_W">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="RepaymentModal" tabindex="-1" role="dialog" aria-labelledby="RepaymentModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document" style="width: 90% !important">
+
+            <div class="modal-content">
+
+                <div class="modal-header" style="border-bottom: 1px solid #39a2df; margin: 9px">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h5 class="modal-title">Repayment - For Approval</h5>
+                </div>
+
+                <div class="modal-body">
+                    <%--<div class="content-wrapper">--%>
+                    <section class="invoice">
+
+
+                        <div class="row invoice-info">
+                            <div class="col-sm-2 invoice-col">
+                                <div class="box-body box-profile">
+                                    <img class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" alt="User profile picture">
+                                </div>
+                            </div>
+                            <div class="col-sm-3 invoice-col">
+                                <address>
+                                    <label id="lblName_R"></label>
+                                    <br>
+                                    <span id="lblBusinessName_R"></span>
+                                    <br>
+                                    <span id="lblSex_R"></span>, <span id="lblAge_R"></span>years old<br>
+                                    <%-- Phone: (804) 123-5432<br>
+                                        Email: info@almasaeedstudio.com--%>
+                                </address>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-4 invoice-col">
+                                <address>
+                                    <span id="lblStreet_R"></span>
+                                    <br>
+                                    <span id="lblCity_R"></span>
+                                    <br>
+                                    <span id="lblProvince_R"></span>
+                                    <br>
+                                    <span id="lblZipcode_R"></span>
+                                    <br>
+                                </address>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-3 invoice-col">
+                                <span id="lblLandline_R"></span>
+                                <br>
+                                <span id="lblEmail_R"></span>
+                                <br>
+                                <span id="lblContactNo_R"></span>
+                                <br>
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-xs-12" style="display: flex; flex-direction: column">
+                                <div style="position: absolute; right: 10px;">
+                                    <button type="button" id="btnConfirmPayment" class="btn btn-success">
+                                        <i class="ace-icon fa fa-check bigger-110"></i>&nbsp; Confirm Payment
+                                    </button>
+                                    <button type="button" id="btnInProcess_R" class="btn btn-danger">
+                                        <i class="ace-icon fa fa-check bigger-110"></i>&nbsp; In-Process
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                     <section class="invoice">
+                        <div class="row invoice-info">
+                            <div class="col-sm-2 invoice-col">
+                                Loan Amount:
+                                <br />
+                                Installment Plan:
+                                <br />
+                                Months to Pay:
+                                <br />
+                                Branch Name:
+                                <br />
+                                Monthly Payment:
+                            </div>
+
+                            <div class="col-sm-4 invoice-col">
+                                <span id="lblLoan_Amount_W"></span>
+                                <br />
+                                <span id="lblInstallment_Plan_W"></span>
+                                <br />
+                                <span id="lblMonthsTo_Pay_W"></span>
+                                <br />
+                                <span id="lblBranch_Name_W"></span>
+                                <br />
+                                <span id="lblMonthly_Payment_W"></span>
+                            </div>
+
+
+                            <div class="row invoice-info">
+                                <div class="col-sm-2 invoice-col">
+                                    Nature of Work:
+                                <br />
+                                    Monthly Gross Income:
+                                <br />
+                                    Character Reference:
+                                <br />
+                                    Co-guarantor:
+                                <br />
+                                    Phone of Co-guarantor:
+                                </div>
+
+                                <div class="col-sm-4 invoice-col">
+                                    <span id="lblNature_of_Work_W"></span>
+                                    <br />
+                                    <span id="lblMonthly_Gross_Income_W"></span>
+                                    <br />
+                                    <span id="lblCharacter_Reference_W"></span>
+                                    <br />
+                                    <span id="lblCo-guarantor_W"></span>
+                                    <br />
+                                    <span id="lblPhone_of_Co-guarantor_W"></span>
                                 </div>
                             </div>
                         </div>

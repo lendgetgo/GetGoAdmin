@@ -33,20 +33,20 @@ $(document).ready(function () {
             $('#tblLoan').on('click', 'td.editor-view', function (e) {
                 var tblBorrowers_delete = $('#tblLoan').DataTable();
                 var data = tblBorrowers_delete.row($(this).closest('tr')).data();
-                USER_ID_loan = data[Object.keys(data)[1]];
-                USER_ID = data[Object.keys(data)[0]];
-                console.log(data);
+                USER_ID_loan = data[Object.keys(data)[0]];
+                USER_ID = data[Object.keys(data)[1]];
+
                 $('#LoanModal').modal('show');
 
                 $.ajax({
                     url: "SharedService.asmx/GetUSelectedserDetail",
                     type: "POST",
-                    data: JSON.stringify({ _USER_ID: USER_ID_loan }),
+                    data: JSON.stringify({ _USER_ID: USER_ID }),
                     contentType: "application/json;charset=utf-8",
                     dataType: "json",
                     success: function (e) {
                         var d = JSON.parse(e.d)
-                        console.log(d);
+                        //console.log(d);
                         _CONTACTNO = d[0]['CONTACTNO'];
                         $('#lblName_Loan').text(d[0]['FIRST_NAME'] + ' ' + d[0]['LAST_NAME']);
                         $('#lblAge_Loan').text(d[0]['AGE'] + ' ');
@@ -60,6 +60,29 @@ $(document).ready(function () {
                         $('#lblEmail_Loan').text(d[0]['EMAIL_ADDRESS']);
                         $('#lblContactNo_Loan').text(d[0]['CONTACTNO']);
                         _emailaddress = d[0]['EMAIL_ADDRESS'];
+
+                        $.ajax({
+                            url: "Notification.aspx/GetUserLoanDetailsForApproval",
+                            type: "POST",
+                            data: JSON.stringify({ _LOAN_ID: USER_ID_loan }),
+                            contentType: "application/json;charset=utf-8",
+                            dataType: "json",
+                            success: function (e) {
+                                var d = JSON.parse(e.d)
+                                console.log(d);
+                                $('#lblLoan_Amount').text(d[0]['AMOUNT']);
+                                $('#lblInstallment_Plan').text(d[0]['INSTALLMENT_PLAN']);
+                                $('#lblMonthsTo_Pay').text(d[0]['MONTHSTOPAY']);
+                                $('#lblBranch_Name').text(d[0]['BRANCH']);
+                                $('#lblMonthly_Payment').text(d[0]['MONTHLYPAYMENT']);
+                                $('#lblNature_of_Work').text(d[0]['NATURE_OF_WORK']);
+                                $('#lblMonthly_Gross_Income').text(d[0]['MONTHLY_GROSS']);
+                                $('#lblCharacter_Reference').text(d[0]['CHARACTER_REFERENCE']);
+                                $('#lblCo-guarantor').text(d[0]['CO_GUARANTOR_NAME']);
+                                $('#lblPhone_of_Co-guarantor').text(d[0]['CO_GUARANTOR_NUMBER']);
+                            }
+                        });
+                        
                     }
                 });
             });
@@ -72,10 +95,10 @@ $(document).ready(function () {
         $('#btnApproveUser_Loan').on('click', function () {
             _STATUS = 'APPROVED';
             $('#LoanModal').modal('toggle');
-            UpdateBorrowerLoanStatus(USER_ID, _STATUS, function () { });
+            UpdateBorrowerLoanStatus(USER_ID_loan, _STATUS, function () { });
             var tblBorrowers_delete = $('#tblLoan').DataTable();
             tblBorrowers_delete.row($(this).closest('tr')).remove().draw();
-            var output = 'Your Loan ' + USER_ID + ' was successfully Approved!';
+            var output = 'Your Loan ' + USER_ID_loan + ' was successfully Approved!';
             SendSMS(_CONTACTNO, output, function () {
                 GetUserID(output, _emailaddress, function () { });
             });
@@ -101,6 +124,10 @@ $(document).ready(function () {
         $('#btnWithdrawal').removeClass('btn btn-primary').addClass('btn btn-success');
         $('#btnRepayments').removeClass('btn btn-success').addClass('btn btn-primary');
 
+        var USER_ID_loan_W;
+        var _CONTACTNO_W;
+        var _emailaddress_w;
+
         GetUserWithdrawalForApproval(function (e) {
             if ($("#tblRepayments").hasClass("dataTable")) {
                 $("#tblRepayments").DataTable().destroy();
@@ -110,7 +137,7 @@ $(document).ready(function () {
                 columns: [
                     {
                         "data": null,
-                        "className": "dt-center editor-view",
+                        "className": "dt-center editor-view-w",
                         "defaultContent": '<i class="glyphicon glyphicon-open" style="cursor: pointer"/> view',
                         "orderable": false
                     },
@@ -119,13 +146,81 @@ $(document).ready(function () {
                 ]
             });
 
-           
+            $('#tblRepayments').on('click', 'td.editor-view-w', function (e) {
+                var tblBorrowers_delete = $('#tblRepayments').DataTable();
+                var data = tblBorrowers_delete.row($(this).closest('tr')).data();
+                USER_ID_loan_W = data[Object.keys(data)[0]];
+                var USER_ID_W = data[Object.keys(data)[1]];
+                console.log(USER_ID_loan_W);
+                $('#WithdrawalModal').modal('show');
+
+                $.ajax({
+                    url: "SharedService.asmx/GetUSelectedserDetail",
+                    type: "POST",
+                    data: JSON.stringify({ _USER_ID: USER_ID_W }),
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (e) {
+                        var d = JSON.parse(e.d)
+                        _CONTACTNO_W = d[0]['CONTACTNO'];
+                        $('#lblName_W').text(d[0]['FIRST_NAME'] + ' ' + d[0]['LAST_NAME']);
+                        $('#lblAge_W').text(d[0]['AGE'] + ' ');
+                        $('#lblSex_W').text(d[0]['SEX']);
+                        $('#lblBusinessName_W').text(d[0]['BUSSINESS_NAME']);
+                        $('#lblStreet_W').text(d[0]['STREET_NO'] + ' ' + d[0]['BARANGAY']);
+                        $('#lblCity_W').text(d[0]['CITY']);
+                        $('#lblProvince_W').text(d[0]['PROVINCE']);
+                        $('#lblZipcode_W').text(d[0]['ZIPCODE']);
+                        $('#lblLandline_W').text('N/A');
+                        $('#lblEmail_W').text(d[0]['EMAIL_ADDRESS']);
+                        $('#lblContactNo_W').text(d[0]['CONTACTNO']);
+                        _emailaddress_w = d[0]['EMAIL_ADDRESS'];
+
+                        $.ajax({
+                            url: "Notification.aspx/GetUserLoanDetailsForApproval",
+                            type: "POST",
+                            data: JSON.stringify({ _LOAN_ID: USER_ID_loan_W }),
+                            contentType: "application/json;charset=utf-8",
+                            dataType: "json",
+                            success: function (e) {
+                                var d = JSON.parse(e.d)
+                                console.log(d);
+                                $('#lblLoan_Amount_W').text(d[0]['AMOUNT']);
+                                $('#lblInstallment_Plan_W').text(d[0]['INSTALLMENT_PLAN']);
+                                $('#lblMonthsTo_Pay_W').text(d[0]['MONTHSTOPAY']);
+                                $('#lblBranch_Name_W').text(d[0]['BRANCH']);
+                                $('#lblMonthly_Payment_W').text(d[0]['MONTHLYPAYMENT']);
+                                $('#lblNature_of_Work_W').text(d[0]['NATURE_OF_WORK']);
+                                $('#lblMonthly_Gross_Income_W').text(d[0]['MONTHLY_GROSS']);
+                                $('#lblCharacter_Reference_W').text(d[0]['CHARACTER_REFERENCE']);
+                                $('#lblCo-guarantor_W').text(d[0]['CO_GUARANTOR_NAME']);
+                                $('#lblPhone_of_Co-guarantor_W').text(d[0]['CO_GUARANTOR_NUMBER']);
+                                
+                            }
+                        });
+                    }
+                });
+            });
         });
 
         $('#AccountContent').hide();
         $('#LoanContent').hide();
         $('#RepaymentsContent').show();
         $('#WithdrawalContent').hide();
+        $('#btnNotifyBorrower').click(function () {
+            $('#WithdrawalModal').modal('toggle');
+            UpdateBorrowerWithdrawalStatus(USER_ID_loan_W, function () {
+                var tblBorrowers_W = $('#tblRepayments').DataTable();
+                tblBorrowers_W.row($(this).closest('tr')).remove().draw();
+            });
+            var output = 'Your Withdrawal Request was successfully Approved!';
+            //SendSMS(_CONTACTNO_W, output, function () {
+            console.log(_emailaddress_w);
+                GetUserID(output, _emailaddress_w, function () { });
+            //});
+            notification("success", "Successfully Approved!");
+            _emailaddress_w = '';
+        });
     });
 
     $('#btnRepayments').on('click', function () {
@@ -137,6 +232,8 @@ $(document).ready(function () {
         $('#LoanContent').hide();
         $('#RepaymentsContent').hide();
         $('#WithdrawalContent').show();
+
+
     });
 
     GetUserListForApproval(function (e) {
@@ -328,6 +425,21 @@ function UpdateBorrowerLoanStatus(_LOAN_ID, _STATUS, callback) {
         url: "Notification.aspx/UpdateBorrowerLoanStatus",
         type: "POST",
         data: JSON.stringify({ _LOAN_ID: _LOAN_ID, _STATUS: _STATUS }),
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (e) {
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}
+
+function UpdateBorrowerWithdrawalStatus(_WITHDRAWAL_ID, callback) {
+    $.ajax({
+        url: "Notification.aspx/UpdateBorrowerWithdrawalStatus",
+        type: "POST",
+        data: JSON.stringify({ _WITHDRAWAL_ID: _WITHDRAWAL_ID }),
         contentType: "application/json;charset=utf-8",
         dataType: "json",
         success: function (e) {
