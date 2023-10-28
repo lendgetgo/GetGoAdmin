@@ -176,7 +176,7 @@
                                 <div class="form-group">
                                     <label for="slctAccess" class="col-sm-3 control-label">Profile Picture</label>
                                     <div class="col-sm-9">
-                                        <input type="file" class="custom-file-input" data-classification="PROFILE_PHOTO" id="InputFile_ProfilePhoto">
+                                        <input type="file" class="custom-file-input" data-classification="PROFILE" id="InputFile_ProfilePhoto">
                                     </div>
                                 </div>
                             </div>
@@ -258,7 +258,11 @@
                 data: JSON.stringify({ request: _request }),
                 success: function (e) {
                     var d = JSON.parse(e.d)
+                    console.log(d);
                     SaveAttachment(d[0].USER_ID);
+
+
+                   
                     notification('success', 'Save successfully!');
                     //$('html, body').animate({ scrollTop: '0px' }, 0);
                     //$('#content').load(' #content > *');
@@ -307,6 +311,7 @@
                 contentType: false,
                 success: function (e) {
                     console.log(e);
+                    alert(e);
 
                 },
                 error: function (xhr, status, error) {

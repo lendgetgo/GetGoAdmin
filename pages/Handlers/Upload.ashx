@@ -68,14 +68,14 @@ public class Upload : IHttpHandler
         {
             var maint = new Upload_Maintenance();
 
-            var commandText = @"INSERT INTO TBL_T_USER_LOAN_ATTACHMENT
-                                (LOAN_ID,DESCRIPTION,TYPE,CREATED_DATE)
-                          VALUES(@LOANID,@DESCRIPTION,@TYPE,GETDATE())";
+            var commandText = @"INSERT INTO TBL_M_USER_MASTER_ATTACHMENT
+                                (USER_ID,DESCRIPTION,IMAGE_TYPE,CREATED_DATE)
+                          VALUES(@USERID,@DESCRIPTION,@TYPE,GETDATE())";
             var parameters = new
             {
-                LOANID = fd.UserId,
+                USERID = fd.UserId,
                 DESCRIPTION = fd.FileName,
-                TYPE = fd.Classification
+                IMAGE_TYPE = fd.Classification
 
             };
             maint.QueryInsertOrUpdateText(commandText, parameters);
