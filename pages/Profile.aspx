@@ -13,7 +13,8 @@
                 <div class="box-header">
                     <!-- Profile Image -->
                     <div class="box-body box-profile">
-                        <img id="imgProfile" class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" alt="User profile picture">
+                           <span id="spantxtName" runat="server" class="hidden-xs"></span>
+                        <img class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" id="image_upload_preview" alt="User profile picture">
                     </div>
                 </div>
                 <div class="box-body">
@@ -368,5 +369,53 @@
     </div>
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../scripts/borrowers.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
+
+    <script>
+        var USERID;
+        var baseUrl = "http://192.168.1.12/Images/";
+        var ProfileImage = $('#image_upload_preview');
+        $(() => {
+      
+            GetData({
+                url: "Profile.aspx/GetSessionValue"
+            }).then(e => {
+                let data = JSON.parse(e.d);
+                console.log(data);
+                ProfileImage.attr('src', baseUrl + data[0].PROFILE_PIC);
+/*                ProfileImage.attr('src', baseUrl + "APP231007001/collateral.jpeg");*/
+
+            });
+
+        });
+
+
+
+        const GetData = (config) => {
+            config.type = config.type || "POST";
+            config.data = config.data || "";
+            return $.ajax({
+                type: config.type,
+                url: config.url,
+                data: config.data,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: data => { },
+                error: function (xhr, status, error) {
+                    if (xhr.status === 413) {
+                        alert('Request Entity Too Large: The file you are trying to upload is too large.');
+                    } else {
+                        alert('An error occurred during the request. Status: ' + xhr.status + ' - ' + xhr.statusText);
+                    }
+                    $('#ERROR').text('Error: ' + error);
+           
+                }
+
+
+            });
+
+        };
+
+        
+    </script>
 </asp:Content>
 
