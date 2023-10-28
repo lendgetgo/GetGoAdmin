@@ -8,6 +8,10 @@
         .box-header button {
             width: 200px;
         }
+        .meow {
+            width:100px;
+            height:100px;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
@@ -102,7 +106,7 @@
                         <div class="row invoice-info">
                             <div class="col-sm-2 invoice-col">
                                 <div class="box-body box-profile">
-                                    <img class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" alt="User profile picture">
+                                    <img class="profile-user-img img-responsive img-circle " src="../dist/img/user4-128x128.jpg" id="profilePic" alt="User profile picture">
                                 </div>
                             </div>
                             <div class="col-sm-3 invoice-col">
@@ -129,6 +133,7 @@
                                     <br>
                                 </address>
                             </div>
+                          
                             <!-- /.col -->
                             <div class="col-sm-3 invoice-col">
                                 <span id="lblLandline"></span>
@@ -169,8 +174,8 @@
                             </div>
                             <div class="timeline-item">
                                 <div class="timeline-body">
-                                    <img src="../../GetGo/UploadedFiles/6386976.png" alt="..." class="margin" id="imgFrontFace">
-                                    <img src="#" alt="..." class="margin" id="imgBackFace">
+                                    <img src="#" alt="..." class="margin meow" id="imgFrontFace">
+                                    <img src="#" alt="..." class="margin meow" id="imgBackFace">
                                 </div>
                             </div>
                         </div>
@@ -181,7 +186,7 @@
                             </div>
                             <div class="timeline-item">
                                 <div class="timeline-body">
-                                    <img src="#" alt="..." class="margin" id="imgSignature">
+                                    <img src="#" alt="..." class="margin meow" id="imgSignature">
                                 </div>
                             </div>
                         </div>

@@ -1,5 +1,5 @@
 ﻿var currentLocation1 = window.location.href;
-
+var baseUrl = "http://192.168.1.12/Images/";
 $(document).ready(function () {
     $('#btnLoan').on('click', function () {
         $('#btnLoan').removeClass('btn btn-primary').addClass('btn btn-success');
@@ -253,7 +253,7 @@ $(document).ready(function () {
                 { "data": "CREATED_DATE" }
             ]
         });
-
+ // meow
         var USER_ID_view;
         $('#tblUsers').on('click', 'td.editor-view', function (e) {
             var tblBorrowers_delete = $('#tblUsers').DataTable();
@@ -282,18 +282,49 @@ $(document).ready(function () {
                     $('#lblLandline').text('N/A');
                     $('#lblEmail').text(d[0]['EMAIL_ADDRESS']);
                     $('#lblContactNo').text(d[0]['CONTACTNO']);
+
+                   
+                    $.ajax({
+                        url: "Notification.aspx/GetNewAccountImages",
+                        type: "POST",
+                        data: JSON.stringify({ userid: USER_ID_view }),
+                        contentType: "application/json;charset=utf-8",
+                        dataType: "json",
+                        success: function (e) {
+                 
+
+                            var d = JSON.parse(e.d)
+         
+                            var defaultImage = "../dist/img/avatar.png";
+
+                            // Set profile picture with default image if the source is null or empty
+                            $('#profilePic').attr('src', d[0].PROFILE ? baseUrl + d[0].PROFILE : defaultImage);
+
+                            // Set front face image with default image if the source is null or empty
+                            $('#imgFrontFace').attr('src', d[0].FRONTFACE ? baseUrl + d[0].FRONTFACE : defaultImage);
+
+                            // Set back face image with default image if the source is null or empty
+                            $('#imgBackFace').attr('src', d[0].BACKFACE ? baseUrl + d[0].BACKFACE : defaultImage);
+
+                            // Set signature image with default image if the source is null or empty
+                            $('#imgSignature').attr('src', d[0].SIGNATURE_ ? baseUrl + d[0].SIGNATURE_ : defaultImage);
+
+                            console.log(d);
+                        }
+                    });
                     //});
                 }
+                
             });
 
-            GetUserAttachment(USER_ID_view, function (d) {
-                var imgsource = "..\..\GetGo\UploadedFiles";
-                var imgType = d[0]["IMAGE_TYPE"];
-                if (imgType == 'FRONTFACE') {
-                    $("#imgFrontFace").attr("src", imgsource + "'\'" + d[0]["DESCRIPTION"]);
-                }
-                console.log(imgsource);
-            });
+            //GetUserAttachment(USER_ID_view, function (d) {
+            //    var imgsource = "..\..\GetGo\UploadedFiles";
+            //    var imgType = d[0]["IMAGE_TYPE"];
+            //    if (imgType == 'FRONTFACE') {
+            //        $("#imgFrontFace").attr("src", imgsource + "'\'" + d[0]["DESCRIPTION"]);
+            //    }
+            //    console.log(imgsource);
+            //});
 
             $('#btnApproveUser').on('click', function () {
                 var _AMOUNT = $('#txtCreditLimit').val();
