@@ -3,6 +3,11 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
     <link href="../bower_components/toastr/toastr.min.css" rel="stylesheet" />
+    <style>
+        .datepicker {
+             z-index:9999 !important;
+        }
+    </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <div class="row" id="content">
@@ -113,7 +118,7 @@
                                     <label for="txtAge" class="col-sm-3 control-label">Age</label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtAge" placeholder="Age">
+                                        <input type="text" class="form-control" id="txtAge" placeholder="Age" disabled="disabled">
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -148,7 +153,8 @@
                                 <div class="form-group">
                                     <label for="txtContactNo" class="col-sm-3 control-label">Contact Number</label>
 
-                                    <div class="col-sm-9">
+                                    <div class="col-sm-9" style="display:flex;">
+                                        <input type="text" class="form-control" id="txt63" value="63" disabled="disabled" style="width: 45px !important">
                                         <input type="text" class="form-control" id="txtContactNo" placeholder="Contact Number">
                                     </div>
                                 </div>
@@ -222,7 +228,7 @@
             var AGE = $('#txtAge').val();
             var DATE_OF_BIRTH = $('#datepicker').val();
             var SEX = $('#slctSex').val();
-            var CONTACTNO = $('#txtContactNo').val();
+            var CONTACTNO = $('#txt63').val() + '' + $('#txtContactNo').val();
             var BARANGAY = $('#txtBarangay').val();
             var ZIPCODE = $('#txtZipCode').val();
             var STREET_NO = $('#txtStNo').val();

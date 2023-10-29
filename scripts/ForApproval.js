@@ -1,5 +1,6 @@
 ﻿var currentLocation1 = window.location.href;
-var baseUrl = "http://192.168.1.12/Getgo/Images/";
+var baseUrl = "http://" + _ipaddress + "/Getgo/Images/";
+//var baseUrl = "http://192.168.1.4/Getgo/Images/";
 $(document).ready(function () {
     $('#btnLoan').on('click', function () {
         $('#btnLoan').removeClass('btn btn-primary').addClass('btn btn-success');
@@ -296,7 +297,7 @@ $(document).ready(function () {
                             var d = JSON.parse(e.d)
          
                             var defaultImage = "../dist/img/avatar.png";
-
+                         
                             // Set profile picture with default image if the source is null or empty
                             $('#profilePic').attr('src', d[0].PROFILE_IMAGE ? baseUrl + d[0].PROFILE_IMAGE : defaultImage);
 

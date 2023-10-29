@@ -8,6 +8,14 @@ $(document).ready(function () {
         LoadBorrowerListDatatable();
     }
 
+    $('#txtLandlinePhone').on('input', function () {
+        this.value = this.value.replace(/\D/g, '');
+        if ($('#txtLandlinePhone').val().length > 10) {
+            alert('invalid number');
+            $('#txtLandlinePhone').val('');
+        }
+    });
+
     $('#datepicker').on('change', function () {
         $('#datepicker').css('z-index', 9999);
         var now = new Date();   //Current Date
@@ -23,91 +31,14 @@ $(document).ready(function () {
         $('#txtAge').val(age);
     });
 
-    $('#btnSubmit').on('click', function () {
-        var FIRST_NAME = $('#txtFirstName').val();
-        var MIDDLE_NAME = $('#txtMiddleName').val();
-        var LAST_NAME = $('#txtLastName').val();
-        var EXTENSION_NAME = $('#txtExtensionName').val();
-        var EMAIL_ADDRESS = $('#txtEmail').val();
-        var CONTACTNO = $('#txtLandlinePhone').val();
-        var REGION = $('#txtRegion').val();
-        var PROVINCE = $('#txtProvince').val();
-        var CITY = $('#txtCity').val();
-        var AGE = $('#txtAge').val();
-        var DATE_OF_BIRTH = $('#datepicker').val();
-        var SEX = $('#slctSex').val();
-        var MARITAL_STATUS = $('#txtMaritalStatus').val();
-        var SPOUSE_NAME = $('#txtSpouseName').val();
-        var BARANGAY = $('#txtBarangay').val();
-        var ZIPCODE = $('#txtZipCode').val();
-        var STREET_NO = $('#txtStNo').val();
-        var BUSSINESS_NAME = $('#txtBusinessName').val();
-        var MONTHLY_GROSS = $('#txtMonthlyGrossIncome').val();
-        var CO_GUARANTOR_NAME = $('#txtCoguarantorName').val();
-        var NATURE_OF_WORK = $('#slctNatureOfWork').val(); 
-        var CHARACTER_REFERENCE = $('#txtCharacterReference').val();
-        var CO_GUARANTOR_NUMBER = $('#txtCoguarantorPhoneNumber').val();
-        //var USER_ID = $('#slctType').val();
-        //var USER_ID = $('#txtNatureofCollateral').val();
-        //var USER_ID = $('#txtDescription').val();
-        //var USER_ID = $('#txtStatus').val();
-        //var USER_ID = $('#txtValue').val();
-        var CREATED_BY = '12345';
-        var UPDATED_BY = 'ABCDE';
-        var _request = {};
-
-        GetUserDetail_Addborrower(EMAIL_ADDRESS, function () {
-            _request.FIRST_NAME = FIRST_NAME;
-            _request.MIDDLE_NAME = MIDDLE_NAME;
-            _request.LAST_NAME = LAST_NAME;
-            _request.EXTENSION_NAME = EXTENSION_NAME;
-            _request.EMAIL_ADDRESS = EMAIL_ADDRESS;
-            _request.CONTACTNO = CONTACTNO;
-            _request.REGION = REGION;
-            _request.PROVINCE = PROVINCE;
-            _request.CITY = CITY;
-            _request.AGE = AGE;
-            _request.DATE_OF_BIRTH = DATE_OF_BIRTH;
-            _request.SEX = SEX;
-            _request.MARITAL_STATUS = MARITAL_STATUS;
-            _request.SPOUSE_NAME = SPOUSE_NAME;
-            _request.BARANGAY = BARANGAY;
-            _request.ZIPCODE = ZIPCODE;
-            _request.STREET_NO = STREET_NO;
-            _request.BUSSINESS_NAME = BUSSINESS_NAME;
-            _request.MONTHLY_GROSS = MONTHLY_GROSS;
-            _request.CO_GUARANTOR_NAME = CO_GUARANTOR_NAME;
-            _request.NATURE_OF_WORK = NATURE_OF_WORK;
-            _request.CHARACTER_REFERENCE = CHARACTER_REFERENCE;
-            _request.CO_GUARANTOR_NUMBER = CO_GUARANTOR_NUMBER;
-            _request.CREATED_BY = CREATED_BY;
-            _request.UPDATED_BY = UPDATED_BY;
-
-            $.ajax({
-                url: 'Add_Borrower.aspx/AddBorrower',
-                type: 'POST',
-                contentType: 'application/json;charset=utf-8',
-                dataType: 'json',
-                data: JSON.stringify({ request: _request }),
-                success: function (e) {
-                    notification('success', 'Save successfully!');
-                    //Attachment();
-                    $('html, body').animate({ scrollTop: '0px' }, 0);
-                    $('#content').load(' #content > *');
-                }
-            });
-        });
-    })
-
-    $('#btnUpdate').on('click', function () {
-        if (confirm("Are you sure you want to update this data?")) {
-            var USER_ID = $('#USERID').val();
+    if (currentLocation1.includes('Add_Borrower.aspx')) {
+        $('#btnSubmit').on('click', function () {
             var FIRST_NAME = $('#txtFirstName').val();
             var MIDDLE_NAME = $('#txtMiddleName').val();
             var LAST_NAME = $('#txtLastName').val();
             var EXTENSION_NAME = $('#txtExtensionName').val();
             var EMAIL_ADDRESS = $('#txtEmail').val();
-            var CONTACTNO = $('#txtLandlinePhone').val();
+            var CONTACTNO = $('#txt63').val() + '' + $('#txtLandlinePhone').val();
             var REGION = $('#txtRegion').val();
             var PROVINCE = $('#txtProvince').val();
             var CITY = $('#txtCity').val();
@@ -132,50 +63,195 @@ $(document).ready(function () {
             //var USER_ID = $('#txtValue').val();
             var CREATED_BY = '12345';
             var UPDATED_BY = 'ABCDE';
-            var _request = {};
+            
 
-            _request.USER_ID = USER_ID;
-            _request.FIRST_NAME = FIRST_NAME;
-            _request.MIDDLE_NAME = MIDDLE_NAME;
-            _request.LAST_NAME = LAST_NAME;
-            _request.EXTENSION_NAME = EXTENSION_NAME;
-            _request.EMAIL_ADDRESS = EMAIL_ADDRESS;
-            _request.CONTACTNO = CONTACTNO;
-            _request.REGION = REGION;
-            _request.PROVINCE = PROVINCE;
-            _request.CITY = CITY;
-            _request.AGE = AGE;
-            _request.DATE_OF_BIRTH = DATE_OF_BIRTH;
-            _request.SEX = SEX;
-            _request.MARITAL_STATUS = MARITAL_STATUS;
-            _request.SPOUSE_NAME = SPOUSE_NAME;
-            _request.BARANGAY = BARANGAY;
-            _request.ZIPCODE = ZIPCODE;
-            _request.STREET_NO = STREET_NO;
-            _request.BUSSINESS_NAME = BUSSINESS_NAME;
-            _request.MONTHLY_GROSS = MONTHLY_GROSS;
-            _request.CO_GUARANTOR_NAME = CO_GUARANTOR_NAME;
-            _request.NATURE_OF_WORK = NATURE_OF_WORK;
-            _request.CHARACTER_REFERENCE = CHARACTER_REFERENCE;
-            _request.CO_GUARANTOR_NUMBER = CO_GUARANTOR_NUMBER;
-            _request.CREATED_BY = CREATED_BY;
-            _request.UPDATED_BY = UPDATED_BY;
+            GetUserDetail_Addborrower(EMAIL_ADDRESS, function () {
+                var _request = {
+                    FIRST_NAME : FIRST_NAME,
+                    MIDDLE_NAME : MIDDLE_NAME,
+                    LAST_NAME : LAST_NAME,
+                    EXTENSION_NAME : EXTENSION_NAME,
+                    EMAIL_ADDRESS : EMAIL_ADDRESS,
+                    CONTACTNO : CONTACTNO,
+                    REGION : REGION,
+                    PROVINCE : PROVINCE,
+                    CITY : CITY,
+                    AGE : AGE,
+                    DATE_OF_BIRTH : DATE_OF_BIRTH,
+                    SEX : SEX,
+                    MARITAL_STATUS : MARITAL_STATUS,
+                    SPOUSE_NAME : SPOUSE_NAME,
+                    BARANGAY : BARANGAY,
+                    ZIPCODE : ZIPCODE,
+                    STREET_NO : STREET_NO,
+                    BUSSINESS_NAME : BUSSINESS_NAME,
+                    MONTHLY_GROSS : MONTHLY_GROSS,
+                    CO_GUARANTOR_NAME : CO_GUARANTOR_NAME,
+                    NATURE_OF_WORK : NATURE_OF_WORK,
+                    CHARACTER_REFERENCE : CHARACTER_REFERENCE,
+                    CO_GUARANTOR_NUMBER : CO_GUARANTOR_NUMBER,
+                    CREATED_BY : CREATED_BY,
+                    UPDATED_BY : UPDATED_BY
+                };
 
-            $.ajax({
-                url: 'Borrowers.aspx/UpdateBorrowerDetails',
-                type: 'POST',
-                contentType: 'application/json;charset=utf-8',
-                dataType: 'json',
-                data: JSON.stringify({ request: _request }),
-                success: function (e) {
-                    notification('success', 'Updated successfully!');
-                    $('html, body').animate({ scrollTop: '0px' }, 0);
-                    $('#borrowerModal').modal('toggle');
-                    LoadBorrowerListDatatable();
+                $.ajax({
+                    url: 'Add_Borrower.aspx/AddBorrower2',
+                    type: 'POST',
+                    contentType: 'application/json;charset=utf-8',
+                    dataType: 'json',
+                    data: JSON.stringify({ request: _request }),
+                    success: function (e) {
+                        var d = JSON.parse(e.d)
+                        SaveAttachment(d[0].USER_ID);
+                        notification('success', 'Save successfully!');
+                        //Attachment();
+                        $('html, body').animate({ scrollTop: '0px' }, 0);
+                        $('#content').load(' #content > *');
+                    }
+                });
+            });
+        })
+
+        $('#btnUpdate').on('click', function () {
+            if (confirm("Are you sure you want to update this data?")) {
+                var USER_ID = $('#USERID').val();
+                var FIRST_NAME = $('#txtFirstName').val();
+                var MIDDLE_NAME = $('#txtMiddleName').val();
+                var LAST_NAME = $('#txtLastName').val();
+                var EXTENSION_NAME = $('#txtExtensionName').val();
+                var EMAIL_ADDRESS = $('#txtEmail').val();
+                var CONTACTNO = $('#txt63').val() + '' + $('#txtLandlinePhone').val();
+                var REGION = $('#txtRegion').val();
+                var PROVINCE = $('#txtProvince').val();
+                var CITY = $('#txtCity').val();
+                var AGE = $('#txtAge').val();
+                var DATE_OF_BIRTH = $('#datepicker').val();
+                var SEX = $('#slctSex').val();
+                var MARITAL_STATUS = $('#txtMaritalStatus').val();
+                var SPOUSE_NAME = $('#txtSpouseName').val();
+                var BARANGAY = $('#txtBarangay').val();
+                var ZIPCODE = $('#txtZipCode').val();
+                var STREET_NO = $('#txtStNo').val();
+                var BUSSINESS_NAME = $('#txtBusinessName').val();
+                var MONTHLY_GROSS = $('#txtMonthlyGrossIncome').val();
+                var CO_GUARANTOR_NAME = $('#txtCoguarantorName').val();
+                var NATURE_OF_WORK = $('#slctNatureOfWork').val();
+                var CHARACTER_REFERENCE = $('#txtCharacterReference').val();
+                var CO_GUARANTOR_NUMBER = $('#txtCoguarantorPhoneNumber').val();
+                //var USER_ID = $('#slctType').val();
+                //var USER_ID = $('#txtNatureofCollateral').val();
+                //var USER_ID = $('#txtDescription').val();
+                //var USER_ID = $('#txtStatus').val();
+                //var USER_ID = $('#txtValue').val();
+                var CREATED_BY = '12345';
+                var UPDATED_BY = 'ABCDE';
+                var _request = {};
+
+                _request.USER_ID = USER_ID;
+                _request.FIRST_NAME = FIRST_NAME;
+                _request.MIDDLE_NAME = MIDDLE_NAME;
+                _request.LAST_NAME = LAST_NAME;
+                _request.EXTENSION_NAME = EXTENSION_NAME;
+                _request.EMAIL_ADDRESS = EMAIL_ADDRESS;
+                _request.CONTACTNO = CONTACTNO;
+                _request.REGION = REGION;
+                _request.PROVINCE = PROVINCE;
+                _request.CITY = CITY;
+                _request.AGE = AGE;
+                _request.DATE_OF_BIRTH = DATE_OF_BIRTH;
+                _request.SEX = SEX;
+                _request.MARITAL_STATUS = MARITAL_STATUS;
+                _request.SPOUSE_NAME = SPOUSE_NAME;
+                _request.BARANGAY = BARANGAY;
+                _request.ZIPCODE = ZIPCODE;
+                _request.STREET_NO = STREET_NO;
+                _request.BUSSINESS_NAME = BUSSINESS_NAME;
+                _request.MONTHLY_GROSS = MONTHLY_GROSS;
+                _request.CO_GUARANTOR_NAME = CO_GUARANTOR_NAME;
+                _request.NATURE_OF_WORK = NATURE_OF_WORK;
+                _request.CHARACTER_REFERENCE = CHARACTER_REFERENCE;
+                _request.CO_GUARANTOR_NUMBER = CO_GUARANTOR_NUMBER;
+                _request.CREATED_BY = CREATED_BY;
+                _request.UPDATED_BY = UPDATED_BY;
+
+                $.ajax({
+                    url: 'Borrowers.aspx/UpdateBorrowerDetails',
+                    type: 'POST',
+                    contentType: 'application/json;charset=utf-8',
+                    dataType: 'json',
+                    data: JSON.stringify({ request: _request }),
+                    success: function (e) {
+                        notification('success', 'Updated successfully!');
+                        $('html, body').animate({ scrollTop: '0px' }, 0);
+                        $('#borrowerModal').modal('toggle');
+                        LoadBorrowerListDatatable();
+                    }
+                });
+            }
+        })
+
+        var files = $('.custom-file-input');
+        $(() => {
+
+        });
+        const filesArray = [];
+
+        const SaveAttachment = (userid) => {
+            files.each(function (index, fileInput) {
+                var formData = new FormData();
+                formData.append("file", fileInput.files[0]);
+                formData.append("classification", fileInput.getAttribute("data-classification")); // Append the correct classification
+                filesArray.push(formData);
+            });
+
+            upload(filesArray, userid);
+        }
+        const upload = (filesArray, userid) => {
+
+            //for (const value of files.values()) {
+            //    console.log(value);
+            //}
+            // Create a new FormData object to store all files
+            const allFilesFormData = new FormData();
+
+            // Append each FormData object to the new FormData
+            filesArray.forEach(formData => {
+                for (const [key, value] of formData.entries()) {
+                    allFilesFormData.append(key, value);
                 }
             });
+            for (const value of allFilesFormData.values()) {
+                console.log(value);
+            }
+            alert("Uploading now to file server ");
+            $.ajax({
+                type: 'post',
+                url: 'Upload.ashx?USERID=' + userid,
+                data: allFilesFormData,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function (e) {
+                    console.log(e);
+                    alert(e);
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status === 413) {
+                        alert('Request Entity Too Large: The file you are trying to upload is too large.');
+                    } else {
+                        alert('An error occurred during the request. Status: ' + xhr.status + ' - ' + xhr.statusText);
+                    }
+                    console.log(xhr, status, error);
+
+
+                }
+
+            })
+
+
         }
-    })
+    }
 });
 
 function LoadBorrowerListDatatable() {

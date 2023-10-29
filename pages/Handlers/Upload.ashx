@@ -3,6 +3,8 @@
 using System;
 using System.IO;
 using System.Web;
+using System.Configuration;
+using System.Data.SqlClient;
 
 public class Upload : IHttpHandler
 {
@@ -25,7 +27,8 @@ public class Upload : IHttpHandler
                     HttpPostedFile postedFile = context.Request.Files[i];
                     string fileName = postedFile.FileName;
                     string fileExtension = Path.GetExtension(fileName);
-                    string filePath = HttpContext.Current.Server.MapPath(Path.Combine("~/UploadedFiles", userId));
+                    //string filePath = HttpContext.Current.Server.MapPath(Path.Combine("~/UploadedFiles", userId));
+                    string filePath = Path.Combine(ConfigurationManager.AppSettings["logfilesPath"], userId);
                     string classification = classifications[i];
                     if (!Directory.Exists(filePath))
                     {
@@ -42,7 +45,10 @@ public class Upload : IHttpHandler
                         fd.FileType = fileExtension;
                         fd.FilePath = Path.Combine(filePath, file); // Store the full file path
                         fd.Classification = classification;
+                        //if (fd.Classification == "")
+                        //{
                         SaveFiles(fd);
+                        //}
                     }
                 }
 
@@ -53,7 +59,7 @@ public class Upload : IHttpHandler
         catch (Exception ex)
 
         {
-          
+
 
             context.Response.StatusCode = 500; // Set an appropriate HTTP error code
             context.Response.Write("Error: " + ex.Message);
@@ -79,6 +85,26 @@ public class Upload : IHttpHandler
 
             };
             maint.QueryInsertOrUpdateText(commandText, parameters);
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
+    public void SaveFiles2(FileDetails fd)
+    {
+        try
+        {
+            var maint = new Maintenance();
+            var parameters = new SqlParameter[]
+            {
+             new SqlParameter("@USER_ID", fd.UserId),
+             new SqlParameter("@DESCRIPTION",fd.FileName),
+             new SqlParameter("@IMAGE_TYPE",  fd.Classification),
+            };
+
+            maint.QueryInsertOrUpdateAdoNet("APP_ATTACHMENT_POST", parameters);
         }
         catch (Exception ex)
         {

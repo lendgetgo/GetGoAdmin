@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/GetGo_MasterPage.master" AutoEventWireup="true" CodeFile="Profile.aspx.cs" Inherits="_Default" %>
+﻿    <%@ Page Title="" Language="C#" MasterPageFile="~/GetGo_MasterPage.master" AutoEventWireup="true" CodeFile="Profile.aspx.cs" Inherits="_Default" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
@@ -371,8 +371,10 @@
     <script src="../scripts/borrowers.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
 
     <script>
+        var _ipaddress = "<%= this.ipAddress %>";
         var USERID;
-        var baseUrl = "http://192.168.1.12/Images/";
+        var baseUrl = "http://" + _ipaddress + "/Getgo/Images/";
+        console.log(baseUrl);
         var ProfileImage = $('#image_upload_preview');
         $(() => {
       

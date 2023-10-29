@@ -22,7 +22,17 @@ $(document).ready(function () {
         var age = nowYear - pastYear;  //calculate the difference
         $('#txtAge').val(age);
     });
+
+    $('#txtContactNo').on('input', function () {
+        this.value = this.value.replace(/\D/g, '');
+        if ($('#txtContactNo').val().length > 10) {
+            alert('invalid number');
+            $('#txtContactNo').val('');
+        }
+    });
+
 });
+
 
 //if (currentLocation1.includes('Add_Account.aspx')) {
 //    $('#btnSubmit').on('click', function () {

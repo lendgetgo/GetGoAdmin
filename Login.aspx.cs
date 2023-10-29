@@ -37,12 +37,15 @@ public partial class Login : System.Web.UI.Page
     public static string GetUserAccess(string EMAIL_ADDRESS, string PASSWORD)
     {
         var data = User_Access.GetUserAccess(EMAIL_ADDRESS, PASSWORD);
-        var serialData = ((JArray)JsonConvert.DeserializeObject(data)).Values<JObject>().ToList<JObject>();
-        //var strUser = serialData.ToList<JObject>();
-        var getstrUser = serialData[0]["FIRST_NAME"].ToString() + ' ' + serialData[0]["LAST_NAME"].ToString();
-        var user_id = serialData[0]["USER_ID"].ToString();
-        HttpContext.Current.Session["UserName"] = getstrUser;
-        HttpContext.Current.Session["UserId"] = user_id;
+        var str = data.Trim('[',']');
+        if (str.Length > 0)
+        {
+            var serialData = ((JArray)JsonConvert.DeserializeObject(data)).Values<JObject>().ToList<JObject>();
+            var getstrUser = serialData[0]["FIRST_NAME"].ToString() + ' ' + serialData[0]["LAST_NAME"].ToString();
+            var user_id = serialData[0]["USER_ID"].ToString();
+            HttpContext.Current.Session["UserName"] = getstrUser;
+            HttpContext.Current.Session["UserId"] = user_id;
+        }
         return data;
     }
     [WebMethod]

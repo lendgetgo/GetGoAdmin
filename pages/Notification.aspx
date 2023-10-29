@@ -619,8 +619,11 @@
     </div>
 
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="../scripts/ForApproval.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
     <script src="../bower_components/toastr/toastr.min.js"></script>
     <script src="../scripts/notification.js"></script>
+    <script>
+        var _ipaddress = "<%= this.ipAddress %>";
+    </script>
+    <script src="../scripts/ForApproval.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
 </asp:Content>
 

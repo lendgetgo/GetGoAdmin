@@ -4,6 +4,7 @@ using System;
 using System.IO;
 using System.Web;
 using System.Data.SqlClient;
+    using System.Configuration;
 
 public class Upload : IHttpHandler
 {
@@ -25,7 +26,8 @@ public class Upload : IHttpHandler
                     HttpPostedFile postedFile = context.Request.Files[i];
                     string fileName = postedFile.FileName;
                     string fileExtension = Path.GetExtension(fileName);
-                    string filePath = HttpContext.Current.Server.MapPath(Path.Combine("~/UploadedFiles", userId));
+                    //string filePath = HttpContext.Current.Server.MapPath(Path.Combine("~/UploadedFiles", userId));
+                    string filePath = Path.Combine(ConfigurationManager.AppSettings["logfilesPath"], userId);
                     string classification = classifications[i];
                     if (!Directory.Exists(filePath))
                     {

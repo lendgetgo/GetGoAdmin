@@ -18,8 +18,7 @@ public class SharedService : System.Web.Services.WebService {
     public static Maintenance maint;
     public SharedService () {
 
-        //Uncomment the following line if using designed components 
-        //InitializeComponent(); 
+        
     }
 
     [WebMethod]

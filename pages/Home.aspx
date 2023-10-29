@@ -7,5 +7,8 @@
         Good Day
         <br />Admin!
         </h1>
+    <script>
+        var _ipaddress = "<%= this.ipAddress %>";
+    </script>
 </asp:Content>
 

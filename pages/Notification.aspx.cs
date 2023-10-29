@@ -12,13 +12,18 @@ using System.Dynamic;
 using System.Net;
 using System.Net.Mail;
 using System.Data.SqlClient;
+using System.Net.Sockets;
 
 public partial class Notification : System.Web.UI.Page
 {
     private static Maintenance User;
+    public string ipAddress;
     protected void Page_Load(object sender, EventArgs e)
     {
         User = new Maintenance();
+        ipAddress = "";
+        IPHostEntry ipHostInfo = Dns.GetHostEntry(Dns.GetHostName());
+        ipAddress = Convert.ToString(ipHostInfo.AddressList.FirstOrDefault(address => address.AddressFamily == AddressFamily.InterNetwork));
     }
 
     //[WebMethod]
