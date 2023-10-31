@@ -3,6 +3,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="../bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="../bower_components/toastr/toastr.min.css" rel="stylesheet" />
     <style>
         .datepicker {
             z-index: 9999 !important;

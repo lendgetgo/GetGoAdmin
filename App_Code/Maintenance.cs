@@ -704,6 +704,7 @@ public class Maintenance
                 cmd.Parameters.AddWithValue("@STREET_NO", request.STREET_NO);
                 cmd.Parameters.AddWithValue("@ZIPCODE", request.ZIPCODE);
                 cmd.Parameters.AddWithValue("@PROFILE_PIC", request.USER_ID);
+                HttpContext.Current.Session["UserName"] = request.FIRST_NAME + ' ' + request.LAST_NAME;
                 using (var da = new SqlDataAdapter(cmd))
                     da.Fill(dt);
             }
