@@ -129,6 +129,21 @@ public class Maintenance
         return JsonConvert.SerializeObject(dt);
     }
 
+    public string DeleteUser(string _USER_ID)
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("UPDATE [db_Getgo].[dbo].[TBL_M_USER] SET ACTIVEFLAG = 0 WHERE USER_ID = @USER_ID", con) {  })
+            {
+                cmd.Parameters.AddWithValue("@USER_ID", _USER_ID);
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+
     public string GetBorrowerDetails(string _USER_ID)
     {
         DataTable dt = new DataTable();
@@ -642,6 +657,58 @@ public class Maintenance
         {
             throw ex;
         }
+    }
+    public string UpdateUserAccount(Tables.TBL_M_USER request)
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("UPDATE [db_Getgo].[dbo].[TBL_M_USER] SET " +
+                "USER_ACCESS=@USER_ACCESS, " +
+                "FIRST_NAME=@FIRST_NAME, " +
+                "MIDDLE_NAME=@MIDDLE_NAME,  " +
+                "LAST_NAME=@LAST_NAME," +
+                "EXTENSION_NAME=@EXTENSION_NAME," +
+                "AGE=@AGE," +
+                "DATE_OF_BIRTH=@DATE_OF_BIRTH," +
+                "SEX=@SEX," +
+                "USERNAME=@USERNAME," +
+                "PASSWORD=@PASSWORD," +
+                "EMAIL_ADDRESS=@EMAIL_ADDRESS," +
+                "CONTACT_NO=@CONTACTNO," +
+                "REGION=@REGION," +
+                "PROVINCE=@PROVINCE," +
+                "CITY=@CITY," +
+                "BARANGAY=@BARANGAY," +
+                "STREET_NO=@STREET_NO," +
+                "ZIPCODE=@ZIPCODE," +
+                "PROFILE_PIC=@PROFILE_PIC WHERE USER_ID = @USER_ID", con) { })
+            {
+                cmd.Parameters.AddWithValue("@USER_ID", request.USER_ID);
+                cmd.Parameters.AddWithValue("@USER_ACCESS", request.USER_ACCESS);
+                cmd.Parameters.AddWithValue("@FIRST_NAME", request.FIRST_NAME);
+                cmd.Parameters.AddWithValue("@MIDDLE_NAME", request.MIDDLE_NAME);
+                cmd.Parameters.AddWithValue("@LAST_NAME", request.LAST_NAME);
+                cmd.Parameters.AddWithValue("@EXTENSION_NAME", request.EXTENSION_NAME);
+                cmd.Parameters.AddWithValue("@AGE", request.AGE);
+                cmd.Parameters.AddWithValue("@DATE_OF_BIRTH", request.DATE_OF_BIRTH);
+                cmd.Parameters.AddWithValue("@SEX", request.SEX);
+                cmd.Parameters.AddWithValue("@USERNAME", request.USERNAME);
+                cmd.Parameters.AddWithValue("@PASSWORD", request.PASSWORD);
+                cmd.Parameters.AddWithValue("@EMAIL_ADDRESS", request.EMAIL_ADDRESS);
+                cmd.Parameters.AddWithValue("@CONTACTNO", request.CONTACT_NO);
+                cmd.Parameters.AddWithValue("@REGION", request.REGION);
+                cmd.Parameters.AddWithValue("@PROVINCE", request.PROVINCE);
+                cmd.Parameters.AddWithValue("@CITY", request.CITY);
+                cmd.Parameters.AddWithValue("@BARANGAY", request.BARANGAY);
+                cmd.Parameters.AddWithValue("@STREET_NO", request.STREET_NO);
+                cmd.Parameters.AddWithValue("@ZIPCODE", request.ZIPCODE);
+                cmd.Parameters.AddWithValue("@PROFILE_PIC", request.USER_ID);
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
     }
 
     public void UpdatePassword(string USER_ID, string PASSWORD)

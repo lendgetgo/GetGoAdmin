@@ -92,26 +92,6 @@ public class Upload : IHttpHandler
         }
     }
 
-    public void SaveFiles2(FileDetails fd)
-    {
-        try
-        {
-            var maint = new Maintenance();
-            var parameters = new SqlParameter[]
-            {
-             new SqlParameter("@USER_ID", fd.UserId),
-             new SqlParameter("@DESCRIPTION",fd.FileName),
-             new SqlParameter("@IMAGE_TYPE",  fd.Classification),
-            };
-
-            maint.QueryInsertOrUpdateAdoNet("APP_ATTACHMENT_POST", parameters);
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-    }
-
     public bool IsReusable
     {
         get

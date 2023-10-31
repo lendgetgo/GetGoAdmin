@@ -123,7 +123,7 @@
                             <li><a href="./Add_Borrower.aspx"><i class="fa fa-circle-o"></i>Add Borrower</a></li>
                         </ul>
                     </li>
-                    <li class="treeview">
+                    <%--<li class="treeview">
                         <a href="#">
                             <i>
                                 <img src="..\resources\side_menu\loans.png" class="img_side_menu" /></i>
@@ -133,12 +133,12 @@
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <%--<li><a href="./Add_Loan.aspx"><i class="fa fa-circle-o"></i>Add Loans</a></li>--%>
+                            <%--<li><a href="./Add_Loan.aspx"><i class="fa fa-circle-o"></i>Add Loans</a></li>
                             <li><a href="./View_Loan.aspx"><i class="fa fa-circle-o"></i>View All Loans</a></li>
                             <li><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i>Past Maturity Date</a></li>
                             <li><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i>3 Months Late Loans</a></li>
                         </ul>
-                    </li>
+                    </li>--%>
                     <li class="treeview">
                         <a href="#">
                             <i>

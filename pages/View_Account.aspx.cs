@@ -21,4 +21,19 @@ public partial class View_Account : System.Web.UI.Page
         var data = Users.GetUserList();
         return data;
     }
+
+
+    [WebMethod]
+    public static string DeleteUser(string _USER_ID)
+    {
+        var data = Users.DeleteUser(_USER_ID);
+        return data;
+    }
+
+    [WebMethod]
+    public static string UpdateUserAccount(Tables.TBL_M_USER request)
+    {
+        var data = Users.UpdateUserAccount(request);
+        return data;
+    }
 }

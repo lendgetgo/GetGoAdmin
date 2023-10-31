@@ -106,7 +106,7 @@ $(document).ready(function () {
                         notification('success', 'Save successfully!');
                         //Attachment();
                         $('html, body').animate({ scrollTop: '0px' }, 0);
-                        $('#content').load(' #content > *');
+                        //$('#content').load(' #content > *');
                     }
                 });
             });
@@ -467,6 +467,9 @@ function LoadBorrowerListDatatable() {
                                         if (data == 'FULLY PAID') {
                                             return '<button type="button" class="btn btn-block btn-success btn-xs btn-status">' + data + '</button>';
                                         }
+                                        if (data == 'APPROVED') {
+                                            return '<button type="button" class="btn btn-block btn-info btn-xs btn-info">' + data + '</button>';
+                                        }
                                     }
                                 },
                                 {
@@ -724,6 +727,7 @@ function GetBorrowerDetails(_USERID, callback) {
         dataType: "json",
         success: function (e) {
             var d = JSON.parse(e.d)
+            console.log(d);
             if (callback !== undefined) {
                 callback(d);
             }
@@ -743,6 +747,7 @@ function GetBorrowerLoanDetails(_LOANID, callback) {
         dataType: "json",
         success: function (e) {
             var d = JSON.parse(e.d)
+            console.log(d);
             if (callback !== undefined) {
                 callback(d);
             }

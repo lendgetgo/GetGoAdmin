@@ -4,7 +4,7 @@ using System;
 using System.IO;
 using System.Web;
 using System.Data.SqlClient;
-    using System.Configuration;
+using System.Configuration;
 
 public class Upload : IHttpHandler
 {
@@ -16,6 +16,7 @@ public class Upload : IHttpHandler
             if (context.Request.Files.Count > 0)
             {
                 string userId = System.Convert.ToString(context.Request.QueryString["USERID"]);
+                string LoanId = System.Convert.ToString(context.Request.QueryString["LOANID"]);
                 string classificationString = context.Request.Form["classification"]; // Get the classification string
 
                 // Split the classification string into an array of individual classifications
@@ -60,31 +61,80 @@ public class Upload : IHttpHandler
         }
     }
 
+    //public void SaveFiles(FileDetails fd)
+    //{
+    //    try
+    //    {
+    //        var maint = new Maintenance();
+    //        var parameters = new SqlParameter[]
+    //        {
+    //         new SqlParameter("@USER_ID", fd.UserId),
+    //         new SqlParameter("@DESCRIPTION",fd.FileName),
+    //         new SqlParameter("@IMAGE_TYPE",  fd.Classification),
+    //        };
+    //        //var parameters = new
+    //        //{
+    //        //    USER_ID = fd.UserId,
+    //        //    DESCRIPTION = fd.FileName,
+    //        //    IMAGE_TYPE = fd.Classification
+
+    //        //};
+    //        maint.QueryInsertOrUpdateAdoNet("APP_ATTACHMENT_POST", parameters);
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        throw ex;
+    //    }
+    //}
+
     public void SaveFiles(FileDetails fd)
     {
         try
         {
-            var maint = new Maintenance();
-            var parameters = new SqlParameter[]
-            {
-             new SqlParameter("@USER_ID", fd.UserId),
-             new SqlParameter("@DESCRIPTION",fd.FileName),
-             new SqlParameter("@IMAGE_TYPE",  fd.Classification),
-            };
-            //var parameters = new
-            //{
-            //    USER_ID = fd.UserId,
-            //    DESCRIPTION = fd.FileName,
-            //    IMAGE_TYPE = fd.Classification
+            var maint = new Upload_Maintenance();
 
-            //};
-            maint.QueryInsertOrUpdateAdoNet("APP_ATTACHMENT_POST", parameters);
+            var commandText = @"INSERT INTO TBL_T_USER_LOAN_ATTACHMENT
+                                (LOAN_ID,DESCRIPTION,TYPE,CREATED_DATE)
+                          VALUES(@USERID,@DESCRIPTION,@TYPE,GETDATE())";
+            var parameters = new
+            {
+                USERID = fd.UserId,
+                DESCRIPTION = fd.FileName,
+                IMAGE_TYPE = fd.Classification
+
+            };
+            maint.QueryInsertOrUpdateText(commandText, parameters);
         }
         catch (Exception ex)
         {
             throw ex;
         }
     }
+
+    public void SaveFiles2(FileDetails fd)
+    {
+        try
+        {
+            var maint = new Upload_Maintenance();
+
+            var commandText = @"INSERT INTO TBL_M_USER_MASTER_ATTACHMENT
+                                (USER_ID,DESCRIPTION,IMAGE_TYPE,CREATED_DATE)
+                          VALUES(@USERID,@DESCRIPTION,@TYPE,GETDATE())";
+            var parameters = new
+            {
+                USERID = fd.UserId,
+                DESCRIPTION = fd.FileName,
+                IMAGE_TYPE = fd.Classification
+
+            };
+            maint.QueryInsertOrUpdateText(commandText, parameters);
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
 
     public bool IsReusable
     {
