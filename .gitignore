@@ -2,4 +2,8 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/UploadedFiles/WEB231028003
+/.vs/GetGoWeb/FileContentIndex
+/.vs/GetGoWeb/v17
+/.vs/GetGo2/v17
+/UploadedFiles/WEB231022001
+/.gitignore
