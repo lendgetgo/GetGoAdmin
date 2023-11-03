@@ -712,6 +712,47 @@ public class Maintenance
         return JsonConvert.SerializeObject(dt);
     }
 
+    public string repayment(int LOAN_ID, string userid)
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand(" UPDATE [db_Getgo].[dbo].[TBL_T_BORROWER_LOAN_PLAN_DETAILS] SET COLLECTED_BY = @USER_ID" +
+                ", COLLECTED_DATE = GETDATE()" +
+                ", AMOUNT_PAID = (SELECT AMOUNT FROM [db_Getgo].[dbo].[TBL_T_BORROWER_LOAN_PLAN_DETAILS] WHERE LOAN_DETAILS_ID = @LOAN_ID)" +
+                ", IS_COMPLETE = 1 WHERE LOAN_DETAILS_ID = @LOAN_ID", con) { })
+            {
+                cmd.Parameters.AddWithValue("@LOAN_ID", LOAN_ID);
+                cmd.Parameters.AddWithValue("@USER_ID", userid);
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+
+    public string fullrepayment(int LOAN_ID, string LOAN_DETAILS_ID)
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand(" DECLARE @LOANCOUNT INT " +
+                 " SET @LOANCOUNT = (SELECT COUNT(LOAN_ID) FROM [db_Getgo].[dbo].[TBL_T_BORROWER_LOAN_PLAN_DETAILS] WHERE IS_COMPLETE = 0 AND LOAN_ID = @LOAN_ID)" +
+                 " IF (@LOANCOUNT = 0)" +
+                 " BEGIN" +
+                 "   UPDATE [db_Getgo].[dbo].[TBL_T_USER_LOAN] SET [STATUS] = 'FULLY PAID' WHERE [LOAN_ID] = @LOAN_ID" +
+                 " END", con)
+            { })
+            {
+                cmd.Parameters.AddWithValue("@LOAN_ID", LOAN_ID);
+                cmd.Parameters.AddWithValue("@LOAN_DETAILS_ID", LOAN_DETAILS_ID);
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+
     public void UpdatePassword(string USER_ID, string PASSWORD)
     {
         try

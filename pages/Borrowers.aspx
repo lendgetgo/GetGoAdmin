@@ -567,7 +567,7 @@
                                                     <label for="txtInterestRate" class="col-sm-3 control-label">Interest Rate</label>
 
                                                     <div class="col-sm-9">
-                                                        <input type="number" class="form-control" id="txtInterestRate" placeholder="0" disabled="disabled">
+                                                        <input type="number" class="form-control" id="txtInterestRate" placeholder="0">
                                                     </div>
                                                 </div>
                                             </div>
@@ -682,7 +682,7 @@
                                             <th>Balance</th>
                                             <th>Last Repayment</th>
                                             <th>Status</th>
-                                            <th>Edit</th>
+                                            <%--<th>Edit</th>--%>
                                         </tr>
                                     </thead>
                                     <tfoot>
@@ -698,7 +698,7 @@
                                             <th>Balance</th>
                                             <th>Last Repayment</th>
                                             <th>Status</th>
-                                            <th>Edit</th>
+                                            <%--<th>Edit</th>--%>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -755,13 +755,11 @@
                                             <th>USERID</th>
                                             <th>Name</th>
                                             <th>Loan #</th>
-                                            <th>Method</th>
                                             <th>Collected By</th>
                                             <th>Collection Date</th>
                                             <th>Paid Amount</th>
                                             <th>Status</th>
-                                            <th>Edit</th>
-                                            <th>Delete</th>
+                                            <th>Repayment</th>
                                         </tr>
                                     </thead>
                                 </table>

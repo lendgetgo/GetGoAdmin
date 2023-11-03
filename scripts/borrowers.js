@@ -472,12 +472,12 @@ function LoadBorrowerListDatatable() {
                                         }
                                     }
                                 },
-                                {
-                                    "data": null,
-                                    "className": "dt-center editor-edit",
-                                    "defaultContent": '<i class="glyphicon glyphicon-edit" style="cursor: pointer"/>',
-                                    "orderable": false
-                                },
+                                //{
+                                //    "data": null,
+                                //    "className": "dt-center editor-edit",
+                                //    "defaultContent": '<i class="glyphicon glyphicon-edit" style="cursor: pointer"/>',
+                                //    "orderable": false
+                                //},
                             ],
                             columnDefs: [{ "targets": 0, visible: false }]
                         });
@@ -504,12 +504,7 @@ function LoadBorrowerListDatatable() {
                                         { "data": "AMOUNT" },
                                         { "data": "AMOUNT_PAID" },
                                         { "data": "BALANCE" },
-                                        {
-                                            "data": "STATUS",
-                                            render: function (data, type, row) {
-                                                return '<button type="button" class="btn btn-block btn-success btn-xs btn-status">' + data + '</button>';
-                                            }
-                                        }
+                                        { "data": "STATUS" }
                                     ],
                                     columnDefs: [{ "targets": 0, visible: false }],
                                     searching: false,
@@ -529,34 +524,71 @@ function LoadBorrowerListDatatable() {
                                         { "data": "LOAN_DETAILS_ID" },
                                         { "data": "COMPLETE_NAME" },
                                         { "data": "LOAN_ID" },
-                                        { "data": "METHOD" },
+                                        //{ "data": "METHOD" },
                                         { "data": "COLLECTED_BY" },
                                         { "data": "COLLECTED_DATE" },
                                         { "data": "AMOUNT_PAID" },
                                         { "data": "STATUS" },
                                         {
-                                            "data": null,
-                                            "className": "dt-center editor-edit",
-                                            "defaultContent": '<i class="glyphicon glyphicon-edit" style="cursor: pointer"/>',
-                                            "orderable": false
+                                            "data": "STATUS",
+                                            render: function (data, type, row) {
+                                                if (data == 'PAID') {
+                                                    return "COMPLETED";
+                                                }
+                                                else {
+                                                    return '<button type="button" class="btn btn-block btn-success btn-xs btn-pay"> PAY? </button>';
+                                                }
+                                            }
                                         },
-                                        {
-                                            "data": null,
-                                            "className": "dt-center editor-delete",
-                                            "defaultContent": '<i class="glyphicon glyphicon-trash" style="cursor: pointer"/>',
-                                            "orderable": false
-                                        }
                                     ],
                                     columnDefs: [{ "targets": 0, visible: false }]
                                 });
                             });
 
-                            $('#tblBorrowersLoanDetails').on('click', 'td.editor-edit', function (e) {
+                            $('#tblBorrowersLoanDetails').on('click', 'button.btn-pay', function (e) {
                                 var tblBorrowers_delete = $('#tblBorrowersLoanDetails').DataTable();
                                 var data = tblBorrowers_delete.row($(this).closest('tr')).data();
-                                var USER_ID_delete = data[Object.keys(data)[0]];
-                                $('#RepaymentContent').modal('show');
-                                $('#BorrrowerLoanModalDetails').modal('toggle');
+                                var LOAN_ID_PAYMENT = data[Object.keys(data)[0]];
+                                var LOAN_ID = data[Object.keys(data)[1]];
+                                console.log(LOAN_ID_PAYMENT);
+
+                                $.ajax({
+
+                                    url: 'Borrowers.aspx/repayment',
+                                    type: 'POST',
+                                    contentType: 'application/json;charset=utf-8',
+                                    dataType: 'json',
+                                    data: JSON.stringify({ LOAN_ID: LOAN_ID_PAYMENT }),
+                                    success: function (e) {
+                                        var d = JSON.parse(e.d)
+                                        //SaveAttachment(d[0].USER_ID);
+                                        notification('success', 'Updated successfully!');
+
+                                        $.ajax({
+
+                                            url: 'Borrowers.aspx/fullrepayment',
+                                            type: 'POST',
+                                            contentType: 'application/json;charset=utf-8',
+                                            dataType: 'json',
+                                            data: JSON.stringify({ LOAN_ID: LOAN_ID, LOAN_DETAILS_ID: LOAN_ID_PAYMENT }),
+                                            success: function (e) {
+                                                var d = JSON.parse(e.d)
+                                                //SaveAttachment(d[0].USER_ID);
+                                                
+                                            },
+                                            error: function (e) {
+                                                console.log(e);
+                                            }
+                                        });
+                                    },
+                                    error: function (e) {
+                                        console.log(e);
+                                    }
+                                });
+
+                                
+                                /*$('#RepaymentContent').modal('show');*/
+                                //$('#BorrrowerLoanModalDetails').modal('toggle');
                             });
                         });
                     });

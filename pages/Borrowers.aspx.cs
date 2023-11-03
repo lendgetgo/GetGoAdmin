@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
@@ -9,14 +10,22 @@ using Newtonsoft.Json;
 
 public partial class _Default : System.Web.UI.Page
 {
+    public static string userid;
     private static Maintenance Borrower;
     private static Dropdown DropDown_maint;
     protected void Page_Load(object sender, EventArgs e)
     {
         Borrower = new Maintenance();
         DropDown_maint = new Dropdown();
+        if (Session["UserName"] == null)
+        {
+            Response.Redirect("Login.aspx");
+        }
+        else
+        {
+            userid = Session["UserId"].ToString();
+        }
     }
-
     [WebMethod]
     public static string GetBorrowerList()
     {
@@ -53,10 +62,33 @@ public partial class _Default : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string AddBorrowerLoan(Tables.TBL_T_USER_LOAN request)
+    public static string AddBorrowerLoan2(Tables.TBL_T_USER_LOAN request)
     {
         var data = Borrower.AddBorrowerLoan(request);
         return JsonConvert.SerializeObject(data);
+    }
+
+    [WebMethod]
+    public static string AddBorrowerLoan(Tables.TBL_T_USER_LOAN request)
+    {
+        string query = "USP_INSERT_BORROWER_LOAN";
+        var parameters = new SqlParameter[]
+        {
+
+        new SqlParameter("@USER_ID", request.USER_ID),
+        new SqlParameter("@PRODUCT", request.PRODUCT),
+        new SqlParameter("@RELEASED_DATE", request.RELEASED_DATE),
+        //new SqlParameter(e("@MATURITY_DATE", items.MATURITY_DATE);
+        new SqlParameter("@AMOUNT", request.AMOUNT),
+        new SqlParameter("@INSTALLMENT_ID", request.INSTALLMENT_ID),
+        new SqlParameter("@TENURE", request.TENURE),
+        new SqlParameter("@PROCESSING_FEE", request.PROCESSING_FEE),
+        new SqlParameter("@INTEREST_RATE", request.INTEREST_RATE),
+
+    };
+
+        var data = JsonConvert.SerializeObject(Borrower.QueryGetOrPopulate2(query, parameters));
+        return data;
     }
 
     [WebMethod]
@@ -109,6 +141,21 @@ public partial class _Default : System.Web.UI.Page
         var data = DropDown_maint.GetLoanTenure(PLAN_ID);
         return data;
     }
-    
 
+    ////   
+    /// repayment
+    /// 
+    [WebMethod]
+    public static string repayment(int LOAN_ID)
+    {
+        var data = Borrower.repayment(LOAN_ID, userid);
+        return data;
+    }
+
+    [WebMethod]
+    public static string fullrepayment(int LOAN_ID, string LOAN_DETAILS_ID)
+    {
+        var data = Borrower.fullrepayment(LOAN_ID, LOAN_DETAILS_ID);
+        return data;
+    }
 }
