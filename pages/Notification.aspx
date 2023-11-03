@@ -217,7 +217,7 @@
                         <div class="row invoice-info">
                             <div class="col-sm-2 invoice-col">
                                 <div class="box-body box-profile">
-                                    <img class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" alt="User profile picture">
+                                    <img class="profile-user-img img-responsive img-circle" src="#" alt="User profile picture" id="profilePic_loan">
                                 </div>
                             </div>
                             <div class="col-sm-3 invoice-col">
@@ -340,8 +340,8 @@
                             </div>
                             <div class="timeline-item">
                                 <div class="timeline-body">
-                                    <img src="../../GetGo/UploadedFiles/6386976.png" alt="..." class="margin" id="imgFrontFace_Loan">
-                                    <img src="#" alt="..." class="margin" id="imgBackFace_Loan">
+                                    <a href="#" id="lblFrontFace_Loan" target="_blank"><img src="#" alt="..." class="margin meow" id="imgFrontFace_Loan"></a>
+                                    <a href="#" id="lblBackFace_Loan" target="_blank"><img src="#" alt="..." class="margin meow" id="imgBackFace_Loan"></a>
                                 </div>
                             </div>
                         </div>
@@ -352,7 +352,7 @@
                             </div>
                             <div class="timeline-item">
                                 <div class="timeline-body">
-                                    <img src="#" alt="..." class="margin" id="imgSignature_Loan">
+                                    <a href="#" id="lblSignature_Loan" target="_blank"><img src="#" alt="..." class="margin meow" id="imgSignature_Loan"></a>
                                 </div>
                             </div>
                         </div>

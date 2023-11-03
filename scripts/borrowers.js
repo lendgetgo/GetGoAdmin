@@ -468,7 +468,7 @@ function LoadBorrowerListDatatable() {
                                             return '<button type="button" class="btn btn-block btn-success btn-xs btn-status">' + data + '</button>';
                                         }
                                         if (data == 'APPROVED') {
-                                            return '<button type="button" class="btn btn-block btn-info btn-xs btn-info">' + data + '</button>';
+                                            return '<button type="button" class="btn btn-block btn-info btn-xs btn-status">' + data + '</button>';
                                         }
                                     }
                                 },

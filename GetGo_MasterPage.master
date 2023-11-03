@@ -179,7 +179,7 @@
                             <li><a href="./Add_Account.aspx"><i class="fa fa-circle-o"></i>Add Accounts</a></li>
                         </ul>
                     </li>
-                    <li class="treeview">
+                    <%--<li class="treeview">
                         <a href="#">
                             <i>
                                 <img src="..\resources\side_menu\reports.png" class="img_side_menu" /></i>
@@ -193,7 +193,7 @@
                             <li><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i>Collections Report</a></li>
                             <li><a href="pages/charts/chartjs.html"><i class="fa fa-circle-o"></i>Cash flow</a></li>
                         </ul>
-                    </li>
+                    </li>--%>
                     <li class="treeview">
                         <a href="#">
                             <i>

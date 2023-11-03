@@ -83,6 +83,37 @@ $(document).ready(function () {
                                 $('#lblPhone_of_Co-guarantor').text(d[0]['CO_GUARANTOR_NUMBER']);
                             }
                         });
+
+                        $.ajax({
+                            url: "Notification.aspx/GetNewAccountImages",
+                            type: "POST",
+                            data: JSON.stringify({ userid: USER_ID }),
+                            contentType: "application/json;charset=utf-8",
+                            dataType: "json",
+                            success: function (e) {
+
+
+                                var d = JSON.parse(e.d)
+
+                                var defaultImage = "../dist/img/avatar.png";
+
+                                // Set profile picture with default image if the source is null or empty
+                                $('#profilePic_loan').attr('src', d[0].PROFILE_IMAGE ? baseUrl + d[0].PROFILE_IMAGE : defaultImage);
+
+                                // Set front face image with default image if the source is null or empty
+                                $('#imgFrontFace_Loan').attr('src', d[0].FRONTFACE ? baseUrl + d[0].FRONTFACE : defaultImage);
+                                $('#lblFrontFace_Loan').attr('href', d[0].FRONTFACE ? baseUrl + d[0].FRONTFACE : '');
+                                // Set back face image with default image if the source is null or empty
+                                $('#imgBackFace_Loan').attr('src', d[0].BACKFACE ? baseUrl + d[0].BACKFACE : defaultImage);
+                                $('#lblBackFace_Loan').attr('href', d[0].BACKFACE ? baseUrl + d[0].BACKFACE : defaultImage);
+
+                                // Set signature image with default image if the source is null or empty
+                                $('#imgSignature_Loan').attr('src', d[0].SIGNATURE_ ? baseUrl + d[0].SIGNATURE_ : defaultImage);
+                                $('#lblSignature_Loan').attr('href', d[0].SIGNATURE_ ? baseUrl + d[0].SIGNATURE_ : defaultImage);
+
+                                console.log(d);
+                            }
+                        });
                         
                     }
                 });
@@ -235,6 +266,7 @@ $(document).ready(function () {
         $('#WithdrawalContent').show();
 
 
+
     });
 
     GetUserListForApproval(function (e) {
@@ -303,12 +335,14 @@ $(document).ready(function () {
 
                             // Set front face image with default image if the source is null or empty
                             $('#imgFrontFace').attr('src', d[0].FRONTFACE ? baseUrl + d[0].FRONTFACE : defaultImage);
-
+                            $('#lblFrontFace').text(d[0].FRONTFACE ? baseUrl + d[0].FRONTFACE : '');
                             // Set back face image with default image if the source is null or empty
                             $('#imgBackFace').attr('src', d[0].BACKFACE ? baseUrl + d[0].BACKFACE : defaultImage);
+                            $('#lblBackFace').text(d[0].BACKFACE ? baseUrl + d[0].BACKFACE : defaultImage);
 
                             // Set signature image with default image if the source is null or empty
                             $('#imgSignature').attr('src', d[0].SIGNATURE_ ? baseUrl + d[0].SIGNATURE_ : defaultImage);
+                            $('#lblSignature').text( d[0].SIGNATURE_ ? baseUrl + d[0].SIGNATURE_ : defaultImage);
 
                             console.log(d);
                         }

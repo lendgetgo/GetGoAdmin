@@ -201,7 +201,7 @@
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../bower_components/toastr/toastr.min.js"></script>
     <script src="../scripts/notification.js"></script>
-    <script src="../scripts/borrowers.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
+    <script src="../scripts/userAccount.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
 
     <script>
         var _ipaddress = "<%= this.ipAddress %>";
