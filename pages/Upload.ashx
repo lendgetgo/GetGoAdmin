@@ -100,7 +100,7 @@ public class Upload : IHttpHandler
             {
                 USERID = fd.UserId,
                 DESCRIPTION = fd.FileName,
-                IMAGE_TYPE = fd.Classification
+                TYPE = fd.Classification
 
             };
             maint.QueryInsertOrUpdateText(commandText, parameters);
