@@ -81,7 +81,7 @@ public class Tables
         public int INSTALLMENT_ID { get; set; }
         public string TENURE { get; set; }
         public decimal PROCESSING_FEE { get; set; }
-        public int INTEREST_RATE { get; set; }
+        public decimal INTEREST_RATE { get; set; }
 
     }
 }

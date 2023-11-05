@@ -10,6 +10,12 @@
         .datepicker-dropdown {
             z-index: 9999 !important;
         }
+        input {
+            text-transform: capitalize;
+        }
+        .box-header.with-border {
+            background-color: ghostwhite;
+        }
     </style>
     <div class="row">
         <div class="col-xs-12">
@@ -134,27 +140,30 @@
                                                 <label for="txtRegion" class="col-sm-3 control-label">Region</label>
 
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="txtRegion" placeholder="Region">
+                                                    <%--<input type="text" class="form-control" id="txtRegion" placeholder="Region">--%>
+                                                    <select class="form-control" id="txtRegion"></select>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="txtProvince" class="col-sm-3 control-label">Province</label>
 
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="txtProvince" placeholder="Province">
+                                                    <%--<input type="text" class="form-control" id="txtProvince" placeholder="Province">--%>
+                                                    <select class="form-control" id="txtProvince"></select>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="txtLastName" class="col-sm-3 control-label">City</label>
 
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="txtCity" placeholder="City">
+                                                    <%--<input type="text" class="form-control" id="txtCity" placeholder="City">--%>
+                                                    <select class="form-control" id="txtCity"></select>
                                                 </div>
                                             </div>
                                             <div class="form-group">
                                                 <label for="InputFile_BorrowerPhoto" class="col-sm-3 control-label">Borrower Photo</label>
                                                 <div class="col-sm-9">
-                                                     <input type="file" class="custom-file-input" data-classification="BORROWER_PHOTO" id="borrower_photo">
+                                                    <input type="file" class="custom-file-input" data-classification="BORROWER_PHOTO" id="borrower_photo">
 
                                                     <%--<p class="help-block">Example block-level help text here.</p>--%>
                                                 </div>
@@ -162,7 +171,7 @@
                                             <div class="form-group">
                                                 <label for="InputFileSignature" class="col-sm-3 control-label">Signature of Borrower</label>
                                                 <div class="col-sm-9">
-                                                     <input type="file" class="custom-file-input" data-classification="CO_SIGNATURE" id="co_signature">
+                                                    <input type="file" class="custom-file-input" data-classification="CO_SIGNATURE" id="co_signature">
 
                                                     <%--<p class="help-block">Example block-level help text here.</p>--%>
                                                 </div>
@@ -245,7 +254,7 @@
                                             <div class="form-group">
                                                 <label for="InputFileValidID" class="col-sm-3 control-label">Valid ID of Borrower</label>
                                                 <div class="col-sm-9">
-                                                     <input type="file" class="custom-file-input" data-classification="BORROWER_VALID_ID" id="borrower_valid_id">
+                                                    <input type="file" class="custom-file-input" data-classification="BORROWER_VALID_ID" id="borrower_valid_id">
 
                                                     <%--<p class="help-block">Example block-level help text here.</p>--%>
                                                 </div>
@@ -292,7 +301,7 @@
                                                 <div class="form-group">
                                                     <label for="InputFile_CoguarantorSignature" class="col-sm-3 control-label">Signature of Co-guarantor</label>
                                                     <div class="col-sm-9">
-                                                      <input type="file" class="custom-file-input" data-classification="CO_GUARANTOR_SIGNATURE" id="co_guarantor_signature">
+                                                        <input type="file" class="custom-file-input" data-classification="CO_GUARANTOR_SIGNATURE" id="co_guarantor_signature">
                                                         Note: Three signature in one photo
                                         <%--<p class="help-block">Example block-level help text here.</p>--%>
                                                     </div>
@@ -331,7 +340,7 @@
                                                 <div class="form-group">
                                                     <label for="InputFile_CoguarantorValidID" class="col-sm-3 control-label">Valid ID of Co-guarantor</label>
                                                     <div class="col-sm-9">
-                                                     <input type="file" class="custom-file-input" data-classification="CO_GUARANTOR_VALID_ID" id="co_guarantor_valid_id">
+                                                        <input type="file" class="custom-file-input" data-classification="CO_GUARANTOR_VALID_ID" id="co_guarantor_valid_id">
                                                         Note: Co-guarantor included in the photo (selfie)
                                         <%--<p class="help-block">Example block-level help text here.</p>--%>
                                                     </div>
@@ -343,88 +352,7 @@
                             </div>
                         </div>
 
-                        <!-- COLLATERAL REGISTER -->
-                        <div class="col-xs-12">
-                            <div class="box">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">Collateral Register</h3>
-                                </div>
-                                <div class="box-body">
-                                    <div class="row">
-                                        <form class="form-horizontal">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="selectType" class="col-sm-3 control-label">Type</label>
-
-                                                    <div class="col-sm-9">
-                                                        <select class="form-control select2" id="slctType">
-                                                            <option selected="selected">Alabama</option>
-                                                            <option>Alaska</option>
-                                                            <option>California</option>
-                                                            <option>Delaware</option>
-                                                            <option>Tennessee</option>
-                                                            <option>Texas</option>
-                                                            <option>Washington</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="txtNatureofCollateral" class="col-sm-3 control-label">Nature of Collateral</label>
-
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control" id="txtNatureofCollateral" placeholder="Nature of Collateral">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="txtDescription" class="col-sm-3 control-label">Description</label>
-
-                                                    <div class="col-sm-9">
-                                                        <textarea class="form-control" rows="3" id="txtDescription" placeholder="Enter ..."></textarea>
-                                                        Note: Indicate other details abput the Collateral. (Ex. year model acquisition of car)
-                                                    </div>
-
-                                                </div>
-                                            </div>
-
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="txtStatus" class="col-sm-3 control-label">Status</label>
-
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control" id="txtStatus" placeholder="Status">
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="txtValue" class="col-sm-3 control-label">Value</label>
-
-                                                    <div class="col-sm-9">
-                                                        <input type="text" class="form-control" id="txtValue" placeholder="Value">
-                                                    </div>
-                                                </div>
-
-                                                <div class="form-group">
-                                                    <label for="InputFile_ProofofCollateral" class="col-sm-3 control-label">Attach Proof of Collateral</label>
-                                                    <div class="col-sm-9">
-                                                       <input type="file" class="custom-file-input" data-classification="COLLATERAL_PHOTO" id="collateral_photo">
-                                                        Note: Borrower included in the photo
-                                        <%--<p class="help-block">Example block-level help text here.</p>--%>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="InputFile_ProofofReceipt" class="col-sm-3 control-label">Attach Proof of Receipt</label>
-                                                    <div class="col-sm-9">
-                                                          <input type="file" class="custom-file-input" data-classification="PROOF_RECEIPT" id="proof_receipt">
-
-                                                        <%--<p class="help-block">Example block-level help text here.</p>--%>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -435,154 +363,6 @@
 
                     <button type="button" id="btnReset" class="btn btn-danger" style="left: -25px">
                         <i class="ace-icon fa fa-trash-o bigger-110"></i>&nbsp; Reset</button>
-
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="AddLoanModal" tabindex="-1" role="dialog" aria-labelledby="AddLoanModal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document" style="width: 90% !important">
-
-            <div class="modal-content">
-
-                <div class="modal-header" style="border-bottom: 1px solid #39a2df; margin: 9px">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h5 class="modal-title">Add Loan</h5>
-                </div>
-
-                <div class="modal-body" id="add_loan_modal_content">
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="box-header with-border">
-                                <h3 class="box-title">Required Fields</h3>
-                            </div>
-                            <div class="box-body">
-                                <div class="row">
-                                    <form class="form-horizontal">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="txtBorrowerName" class="col-sm-3 control-label">Borrower Name</label>
-
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="txtBorrowerName" disabled>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="txtProduct" class="col-sm-3 control-label">Loan Product</label>
-
-                                                <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="txtProduct" placeholder="Loan Product">
-                                                    Note: Input reason for loan
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="inputID" class="col-sm-3 control-label">Loan Release Date</label>
-
-                                                <div class="col-sm-9">
-                                                    <div class="input-group date">
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </div>
-                                                        <input type="text" class="form-control pull-right" id="datepicker1">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="txtLoanAmount" class="col-sm-3 control-label">Loan Amount</label>
-
-                                                <div class="col-sm-9">
-                                                    <select class="form-control select2" id="txtLoanAmount">
-                                                    </select>
-                                                    <%--<input type="number" class="form-control" id="txtLoanAmount" placeholder="0">--%>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- REPAYMENT -->
-                        <div class="col-xs-12">
-                            <div class="box">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">Repayment</h3>
-                                </div>
-                                <div class="box-body">
-                                    <div class="row">
-                                        <form class="form-horizontal">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="txtLoanId" class="col-sm-3 control-label">Installment Plan</label>
-
-                                                    <div class="col-sm-9">
-                                                        <select class="form-control select2" id="slctInstallmentType">
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="txtLoanTenure" class="col-sm-3 control-label">Loan Tenure</label>
-
-                                                    <div class="col-sm-9">
-                                                        <select class="form-control select2" id="txtLoanTenure">
-                                                        </select>
-                                                        <%--<input type="text" class="form-control" id="txtLoanTenure" placeholder="Loan Tenure">--%>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- FEES -->
-                        <div class="col-xs-12">
-                            <div class="box">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">Fees</h3>
-                                </div>
-                                <div class="box-body">
-                                    <div class="row">
-                                        <form class="form-horizontal">
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="txtProcessingFee" class="col-sm-3 control-label">Processing Fee (10%)</label>
-
-                                                    <div class="col-sm-9">
-                                                        <input type="number" class="form-control" id="txtProcessingFee" placeholder="0" disabled="disabled">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="form-group">
-                                                    <label for="txtInterestRate" class="col-sm-3 control-label">Interest Rate</label>
-
-                                                    <div class="col-sm-9">
-                                                        <input type="number" class="form-control" id="txtInterestRate" placeholder="0">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-
-
-                    <button type="button" id="btnAddLoan" class="btn btn-info" style="left: -38px">
-                        <i class="ace-icon fa fa-floppy-o bigger-110"></i>&nbsp; Submit</button>
 
                 </div>
 
@@ -610,7 +390,8 @@
                         <div class="row invoice-info">
                             <div class="col-sm-2 invoice-col">
                                 <div class="box-body box-profile">
-                                    <img class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" alt="User profile picture">
+                                    <img class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" alt="User profile picture" id="image_upload_preview">
+                                    <input type="hidden" runat="server" id="txtUserID"/>
                                 </div>
                             </div>
                             <div class="col-sm-3 invoice-col">
@@ -648,16 +429,205 @@
                             </div>
                             <!-- /.col -->
                             <div class="col-xs-12">
-                                <button type="button" id="btnAddloanModal" class="btn btn-success pull-right">
-                                    <i class="glyphicon glyphicon-plus-sign"></i>Add Loan
-                                </button>
+                                <button type="button" id="btnAddloanModal" class="btn btn-success pull-right">Add Loan</button>
                             </div>
                         </div>
                     </section>
 
-                    <%--</div>--%>
+                    <section class="invoice" id="addloan_content" style="display:none">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Required Fields</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <form class="form-horizontal">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="txtBorrowerName" class="col-sm-3 control-label">Borrower Name</label>
+
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="txtBorrowerName" disabled>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group" hidden="hidden">
+                                                    <label for="txtProduct" class="col-sm-3 control-label">Loan Product</label>
+
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="txtProduct" placeholder="Loan Product">
+                                                        Note: Input reason for loan
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="inputID" class="col-sm-3 control-label">Loan Release Date</label>
+
+                                                    <div class="col-sm-9">
+                                                        <div class="input-group date">
+                                                            <div class="input-group-addon">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                            <input type="text" class="form-control pull-right" id="datepicker1">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="txtLoanAmount" class="col-sm-3 control-label">Loan Amount</label>
+
+                                                    <div class="col-sm-9">
+                                                        <select class="form-control select2" id="txtLoanAmount">
+                                                        </select>
+                                                        <%--<input type="number" class="form-control" id="txtLoanAmount" placeholder="0">--%>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- REPAYMENT -->
+                            <div class="col-xs-12">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Repayment</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <form class="form-horizontal">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="txtLoanId" class="col-sm-3 control-label">Installment Plan</label>
+
+                                                    <div class="col-sm-9">
+                                                        <select class="form-control select2" id="slctInstallmentType">
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="txtLoanTenure" class="col-sm-3 control-label">Loan Tenure</label>
+
+                                                    <div class="col-sm-9">
+                                                        <select class="form-control select2" id="txtLoanTenure">
+                                                        </select>
+                                                        <%--<input type="text" class="form-control" id="txtLoanTenure" placeholder="Loan Tenure">--%>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- FEES -->
+                            <div class="col-xs-12">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Fees</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <form class="form-horizontal">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="txtProcessingFee" class="col-sm-3 control-label">Processing Fee (10%)</label>
+
+                                                    <div class="col-sm-9">
+                                                        <input type="number" class="form-control" id="txtProcessingFee" placeholder="0" disabled="disabled">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="txtInterestRate" class="col-sm-3 control-label">Interest Rate</label>
+
+                                                    <div class="col-sm-9">
+                                                        <input type="number" class="form-control" id="txtInterestRate" placeholder="0">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </div>
 
 
+                            <!-- COLLATERAL REGISTER -->
+                            <div class="col-xs-12">
+
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Collateral Register</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <form class="form-horizontal">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="txtNatureofCollateral" class="col-sm-3 control-label">Nature of Collateral</label>
+
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="txtNatureofCollateral" placeholder="Nature of Collateral">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="txtDescription" class="col-sm-3 control-label">Description</label>
+
+                                                    <div class="col-sm-9">
+                                                        <textarea class="form-control" rows="3" id="txtDescription" placeholder="Enter ..."></textarea>
+                                                        Note: Indicate other details abput the Collateral. (Ex. year model acquisition of car)
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="form-group" hidden="hidden">
+                                                    <label for="txtStatus" class="col-sm-3 control-label">Status</label>
+
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="txtStatus" placeholder="Status">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group" hidden="hidden">
+                                                    <label for="txtValue" class="col-sm-3 control-label">Value</label>
+
+                                                    <div class="col-sm-9">
+                                                        <input type="text" class="form-control" id="txtValue" placeholder="Value">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="InputFile_ProofofCollateral" class="col-sm-3 control-label">Attach Proof of Collateral</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="file" class="custom-file-input" data-classification="COLLATERAL_PHOTO" id="InputFile_ProofofCollateral">
+                                                        Note: Borrower included in the photo
+                                        <%--<p class="help-block">Example block-level help text here.</p>--%>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="InputFile_ProofofReceipt" class="col-sm-3 control-label">Attach Proof of Receipt</label>
+                                                    <div class="col-sm-9">
+                                                        <input type="file" class="custom-file-input" data-classification="PROOF_RECEIPT" id="InputFile_ProofofReceipt">
+
+                                                        <%--<p class="help-block">Example block-level help text here.</p>--%>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" id="btnAddLoan" class="btn btn-info" style="left: -38px">
+                                        <i class="ace-icon fa fa-floppy-o bigger-110"></i>&nbsp; Submit</button>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
 
 
                     <div class="row">
@@ -707,7 +677,6 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
@@ -728,11 +697,11 @@
 
                     <div class="row">
                         <div class="col-xs-12">
-                             <div class="box-body">
+                            <div class="box-body">
                                 <table id="tblBorrowersLoanHeader" class="table table-bordered table-striped" style="width: 100% !important">
                                     <thead>
                                         <tr>
-                                             <th>USERID</th>
+                                            <th>USERID</th>
                                             <th>Name</th>
                                             <th>Released</th>
                                             <th>Start Date</th>
@@ -773,7 +742,7 @@
         </div>
     </div>
 
-    <div class="modal fade" id="RepaymentContent" tabindex="-1" role="dialog" aria-labelledby="RepaymentContent" aria-hidden="true">
+    <%-- <div class="modal fade" id="RepaymentContent" tabindex="-1" role="dialog" aria-labelledby="RepaymentContent" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document" style="width: 90% !important">
 
             <div class="modal-content">
@@ -837,12 +806,53 @@
 
             </div>
         </div>
-    </div>
+    </div>--%>
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../bower_components/toastr/toastr.min.js"></script>
+    <script type="text/javascript">
+        var _ipaddress = "<%= this.ipAddress %>";
+        var baseUrl = "http://" + _ipaddress + "/Getgo/Images/";
+        var ProfileImage = $('#image_upload_preview');
+        //$(() => {
+
+        //    GetData({
+        //        url: "Borrowers.aspx/GetSessionValue"
+        //    }).then(e => {
+        //        let data = JSON.parse(e.d);
+        //        console.log(data);
+        //        ProfileImage.attr('src', baseUrl + data[0].PROFILE_PIC);
+        //    });
+        //});
+
+        //const GetData = (config) => {
+        //    config.type = config.type || "POST";
+        //    config.data = config.data || "";
+        //    return $.ajax({
+        //        type: config.type,
+        //        url: config.url,
+        //        data: config.data,
+        //        contentType: "application/json; charset=utf-8",
+        //        dataType: "json",
+        //        success: data => { },
+        //        error: function (xhr, status, error) {
+        //            if (xhr.status === 413) {
+        //                alert('Request Entity Too Large: The file you are trying to upload is too large.');
+        //            } else {
+        //                alert('An error occurred during the request. Status: ' + xhr.status + ' - ' + xhr.statusText);
+        //            }
+        //            $('#ERROR').text('Error: ' + error);
+
+        //        }
+
+
+        //    });
+
+        //};
+    </script>
     <script src="../scripts/notification.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
     <script src="../scripts/borrowers.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
     <script src="../scripts/dropdown.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
+    <script src="../scripts/Address.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
     <script src="../bower_components/datatables.net/js/dataTables.editor.min.js"></script>
 </asp:Content>
 

@@ -441,6 +441,41 @@ function LoadBorrowerListDatatable() {
                         $('#lblEmail').text(b[0]['EMAIL_ADDRESS']);
                         $('#lblContactNo').text(b[0]['CONTACTNO']);
 
+                        $(() => {
+
+                            GetData({
+                                url: "Borrowers.aspx/GetSessionValue"
+                            }).then(e => {
+                                let data = JSON.parse(e.d);
+                                console.log(data);
+                                ProfileImage.attr('src', baseUrl + data[0].PROFILE_PIC);
+                            });
+                        });
+
+                        const GetData = (config) => {
+                            config.type = config.type || "POST";
+                            config.data = config.data || "";
+                            return $.ajax({
+                                type: config.type,
+                                url: config.url,
+                                data: config.data,
+                                contentType: "application/json; charset=utf-8",
+                                dataType: "json",
+                                success: data => { },
+                                error: function (xhr, status, error) {
+                                    if (xhr.status === 413) {
+                                        alert('Request Entity Too Large: The file you are trying to upload is too large.');
+                                    } else {
+                                        alert('An error occurred during the request. Status: ' + xhr.status + ' - ' + xhr.statusText);
+                                    }
+                                    $('#ERROR').text('Error: ' + error);
+
+                                }
+
+
+                            });
+
+                        };
                         
                         if ($("#tblBorrowersLoan").hasClass("dataTable")) {
                             $("#tblBorrowersLoan").DataTable().destroy();
@@ -514,36 +549,7 @@ function LoadBorrowerListDatatable() {
                                 });
                             });
 
-                            GetBorrowerLoanPlanDetails(LOAN_ID, function (e) {
-                                if ($("#tblBorrowersLoanDetails").hasClass("dataTable")) {
-                                    $("#tblBorrowersLoanDetails").DataTable().destroy();
-                                }
-                                $('#tblBorrowersLoanDetails').DataTable({
-                                    data: e,
-                                    columns: [
-                                        { "data": "LOAN_DETAILS_ID" },
-                                        { "data": "COMPLETE_NAME" },
-                                        { "data": "LOAN_ID" },
-                                        //{ "data": "METHOD" },
-                                        { "data": "COLLECTED_BY" },
-                                        { "data": "COLLECTED_DATE" },
-                                        { "data": "AMOUNT_PAID" },
-                                        { "data": "STATUS" },
-                                        {
-                                            "data": "STATUS",
-                                            render: function (data, type, row) {
-                                                if (data == 'PAID') {
-                                                    return "COMPLETED";
-                                                }
-                                                else {
-                                                    return '<button type="button" class="btn btn-block btn-success btn-xs btn-pay"> PAY? </button>';
-                                                }
-                                            }
-                                        },
-                                    ],
-                                    columnDefs: [{ "targets": 0, visible: false }]
-                                });
-                            });
+                            GetBorrowerLoanPlanList(LOAN_ID);
 
                             $('#tblBorrowersLoanDetails').on('click', 'button.btn-pay', function (e) {
                                 var tblBorrowers_delete = $('#tblBorrowersLoanDetails').DataTable();
@@ -573,7 +579,51 @@ function LoadBorrowerListDatatable() {
                                             data: JSON.stringify({ LOAN_ID: LOAN_ID, LOAN_DETAILS_ID: LOAN_ID_PAYMENT }),
                                             success: function (e) {
                                                 var d = JSON.parse(e.d)
-                                                //SaveAttachment(d[0].USER_ID);
+                                                GetBorrowerLoanPlanList(LOAN_ID);
+                                                $.ajax({
+                                                    url: "Borrowers.aspx/GetBorrowerLoan",
+                                                    type: "POST",
+                                                    data: JSON.stringify({ _USER_ID: BORROWER_USER_ID }),
+                                                    contentType: "application/json;charset=utf-8",
+                                                    dataType: "json",
+                                                    success: function (e) {
+                                                        var d = JSON.parse(e.d)
+
+                                                        if ($("#tblBorrowersLoan").hasClass("dataTable")) {
+                                                            $("#tblBorrowersLoan").DataTable().destroy();
+                                                        }
+                                                        $('#tblBorrowersLoan').DataTable({
+                                                            data: d,
+                                                            columns: [
+                                                                { "data": "LOAN_ID" },
+                                                                { "data": "COMPLETE_NAME" },
+                                                                { "data": "RELEASED_DATE" },
+                                                                { "data": "START_DATE" },
+                                                                { "data": "INSTALLMENT_PLAN" },
+                                                                { "data": "PROCESSING_FEE" },
+                                                                { "data": "PENALTY" },
+                                                                { "data": "AMOUNT" },
+                                                                { "data": "AMOUNT_PAID" },
+                                                                { "data": "BALANCE" },
+                                                                {
+                                                                    "data": "STATUS",
+                                                                    render: function (data, type, row) {
+                                                                        if (data == 'ONGOING') {
+                                                                            return '<button type="button" class="btn btn-block btn-primary btn-xs btn-status">' + data + '</button>';
+                                                                        }
+                                                                        if (data == 'FULLY PAID') {
+                                                                            return '<button type="button" class="btn btn-block btn-success btn-xs btn-status">' + data + '</button>';
+                                                                        }
+                                                                        if (data == 'APPROVED') {
+                                                                            return '<button type="button" class="btn btn-block btn-info btn-xs btn-status">' + data + '</button>';
+                                                                        }
+                                                                    }
+                                                                },
+                                                            ],
+                                                            columnDefs: [{ "targets": 0, visible: false }]
+                                                        });
+                                                    }
+                                                });
                                                 
                                             },
                                             error: function (e) {
@@ -585,38 +635,23 @@ function LoadBorrowerListDatatable() {
                                         console.log(e);
                                     }
                                 });
-
-                                
-                                /*$('#RepaymentContent').modal('show');*/
-                                //$('#BorrrowerLoanModalDetails').modal('toggle');
                             });
                         });
                     });
 
                     $('#btnAddloanModal').on('click', function () {
-                        $('#BorrrowerLoanModal').modal('hide'); 
-                        $('#AddLoanModal').modal('show');
                         $('#datepicker1').datepicker({
                             autoclose: true
                         })
-                        //var tblBorrowers_Addloan = $('#tblBorrowers').DataTable();
-                        //var data = tblBorrowers_Addloan.row($(this).closest('tr')).data();
-                        //var USER_ID_edit = data[Object.keys(data)[0]];
-                        //var name = data[Object.keys(data)[1]];
                         $('#txtBorrowerName').val(BORROWER_NAME);
-                        //GetInstallmentTypeList(function (e) {
-                        //    $("#slctInstallmentType").html("");
-                        //    $('<option/>', {
-                        //        value: 'none',
-                        //        text: 'Please select'
-                        //    }).appendTo($("#slctInstallmentType"));
-                        //    for (var i in e) {
-                        //        $('<option/>', {
-                        //            value: e[i]['INSTALLMENT_ID'],
-                        //            text: e[i]['DESCRIPTION']
-                        //        }).appendTo($("#slctInstallmentType"));
-                        //    }
-                        //});
+                        if ($('#btnAddloanModal').text() == "Add Loan") {
+                            $('#btnAddloanModal').text("Back");
+                            $('#addloan_content').css("display", "block");
+                        }
+                        else {
+                            $('#btnAddloanModal').text("Add Loan");
+                            $('#addloan_content').css("display", "none");
+                        }
                     });
                 },
                 error: function (errormessage) {
@@ -658,7 +693,84 @@ function LoadBorrowerListDatatable() {
                 notification('success', 'Save successfully!');
                
                 //$('#content').load(' #content > *');
+                $.ajax({
+                    url: "Borrowers.aspx/GetBorrowerLoan",
+                    type: "POST",
+                    data: JSON.stringify({ _USER_ID: BORROWER_USER_ID }),
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (e) {
+                        var d = JSON.parse(e.d)
+
+                        if ($("#tblBorrowersLoan").hasClass("dataTable")) {
+                            $("#tblBorrowersLoan").DataTable().destroy();
+                        }
+                        $('#tblBorrowersLoan').DataTable({
+                            data: d,
+                            columns: [
+                                { "data": "LOAN_ID" },
+                                { "data": "COMPLETE_NAME" },
+                                { "data": "RELEASED_DATE" },
+                                { "data": "START_DATE" },
+                                { "data": "INSTALLMENT_PLAN" },
+                                { "data": "PROCESSING_FEE" },
+                                { "data": "PENALTY" },
+                                { "data": "AMOUNT" },
+                                { "data": "AMOUNT_PAID" },
+                                { "data": "BALANCE" },
+                                {
+                                    "data": "STATUS",
+                                    render: function (data, type, row) {
+                                        if (data == 'ONGOING') {
+                                            return '<button type="button" class="btn btn-block btn-primary btn-xs btn-status">' + data + '</button>';
+                                        }
+                                        if (data == 'FULLY PAID') {
+                                            return '<button type="button" class="btn btn-block btn-success btn-xs btn-status">' + data + '</button>';
+                                        }
+                                        if (data == 'APPROVED') {
+                                            return '<button type="button" class="btn btn-block btn-info btn-xs btn-status">' + data + '</button>';
+                                        }
+                                    }
+                                },
+                            ],
+                            columnDefs: [{ "targets": 0, visible: false }]
+                        });
+                    }
+                });
             }
+        });
+    });
+}
+
+function GetBorrowerLoanPlanList(LOAN_ID) {
+    GetBorrowerLoanPlanDetails(LOAN_ID, function (e) {
+        if ($("#tblBorrowersLoanDetails").hasClass("dataTable")) {
+            $("#tblBorrowersLoanDetails").DataTable().destroy();
+        }
+        $('#tblBorrowersLoanDetails').DataTable({
+            data: e,
+            columns: [
+                { "data": "LOAN_DETAILS_ID" },
+                { "data": "COMPLETE_NAME" },
+                { "data": "LOAN_ID" },
+                //{ "data": "METHOD" },
+                { "data": "COLLECTED_BY" },
+                { "data": "COLLECTED_DATE" },
+                { "data": "AMOUNT_PAID" },
+                { "data": "STATUS" },
+                {
+                    "data": "STATUS",
+                    render: function (data, type, row) {
+                        if (data == 'PAID') {
+                            return "COMPLETED";
+                        }
+                        else {
+                            return '<button type="button" class="btn btn-block btn-success btn-xs btn-pay"> PAY? </button>';
+                        }
+                    }
+                },
+            ],
+            columnDefs: [{ "targets": 0, visible: false }]
         });
     });
 }
@@ -759,7 +871,6 @@ function GetBorrowerDetails(_USERID, callback) {
         dataType: "json",
         success: function (e) {
             var d = JSON.parse(e.d)
-            console.log(d);
             if (callback !== undefined) {
                 callback(d);
             }

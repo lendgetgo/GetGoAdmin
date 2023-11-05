@@ -847,4 +847,54 @@ public class Maintenance
             throw;
         }
     }
+
+
+    ////
+    ///ADDRESS
+    ///
+
+    public string GetRegion()
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("SELECT [REGION_ID],[CODE],[REGION_DESCRIPTION],[REGION_CODE] FROM [db_Getgo].[dbo].[TBL_M_REGION]", con) { })
+            {
+                //cmd.Parameters.AddWithValue("@USER_ID", userid);
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+
+    public string GetProvince(string REGION_CODE)
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("SELECT [PROVINCE_ID],[CODE],[PROVINCE_DESCRIPTION],[REGION_CODE],[PROVINCE_CODE] FROM [db_Getgo].[dbo].[TBL_M_PROVINCE] WHERE [REGION_CODE] = @REGION_CODE", con) { })
+            {
+                cmd.Parameters.AddWithValue("@REGION_CODE", REGION_CODE);
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+
+    public string GetCity(string PROVINCE_CODE)
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("SELECT [CITY_ID],[CODE],[CITY_DESCRIPTION],[REGION_CODE],[PROVINCE_CODE],[CITY_CODE],[ZIPCODE] FROM [db_Getgo].[dbo].[TBL_M_CITY] WHERE [PROVINCE_CODE] = @PROVINCE_CODE", con) { })
+            {
+                cmd.Parameters.AddWithValue("@PROVINCE_CODE", PROVINCE_CODE);
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
 }

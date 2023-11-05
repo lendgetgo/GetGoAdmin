@@ -7,6 +7,9 @@
         .datepicker {
              z-index:9999 !important;
         }
+        input {
+            text-transform: capitalize;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">

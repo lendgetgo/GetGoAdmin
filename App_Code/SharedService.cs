@@ -48,4 +48,27 @@ public class SharedService : System.Web.Services.WebService {
         });
     }
 
+    [WebMethod]
+    public string GetRegion()
+    {
+        maint = new Maintenance();
+        var data = maint.GetRegion();
+        return data;
+    }
+
+    [WebMethod]
+    public string GetProvince(string REGION_CODE)
+    {
+        maint = new Maintenance();
+        var data = maint.GetProvince(REGION_CODE);
+        return data;
+    }
+
+    [WebMethod]
+    public string GetCity(string PROVINCE_CODE)
+    {
+        maint = new Maintenance();
+        var data = maint.GetCity(PROVINCE_CODE);
+        return data;
+    }
 }

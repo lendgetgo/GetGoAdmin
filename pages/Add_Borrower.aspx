@@ -7,6 +7,9 @@
         .datepicker {
              z-index:9999 !important;
         }
+        input {
+            text-transform: capitalize;
+        }
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
@@ -74,21 +77,24 @@
                                     <label for="txtRegion" class="col-sm-3 control-label">Region</label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtRegion" placeholder="Region">
+                                        <%--<input type="text" class="form-control" id="txtRegion" placeholder="Region">--%>
+                                        <select class="form-control" id="txtRegion"></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="txtProvince" class="col-sm-3 control-label">Province</label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtProvince" placeholder="Province">
+                                        <%--<input type="text" class="form-control" id="txtProvince" placeholder="Province">--%>
+                                        <select class="form-control" id="txtProvince"></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="txtLastName" class="col-sm-3 control-label">City</label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtCity" placeholder="City">
+                                        <%--<input type="text" class="form-control" id="txtCity" placeholder="City">--%>
+                                        <select class="form-control" id="txtCity"></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -252,7 +258,7 @@
                                         </select>--%>
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" hidden="hidden">
                                     <label for="txtCharacterReference" class="col-sm-3 control-label">Character Reference</label>
 
                                     <div class="col-sm-9">
@@ -281,89 +287,6 @@
             </div>
         </div>
 
-        <!-- COLLATERAL REGISTER -->
-        <div class="col-xs-12">
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Collateral Register</h3>
-                </div>
-                <div class="box-body">
-                    <div class="row">
-                        <form class="form-horizontal">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="selectType" class="col-sm-3 control-label">Type</label>
-
-                                    <div class="col-sm-9">
-                                        <select class="form-control select2" id="slctType">
-                                            <option selected="selected">Alabama</option>
-                                            <option>Alaska</option>
-                                            <option>California</option>
-                                            <option>Delaware</option>
-                                            <option>Tennessee</option>
-                                            <option>Texas</option>
-                                            <option>Washington</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="txtNatureofCollateral" class="col-sm-3 control-label">Nature of Collateral</label>
-
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtNatureofCollateral" placeholder="Nature of Collateral">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="txtDescription" class="col-sm-3 control-label">Description</label>
-
-                                    <div class="col-sm-9">
-                                        <textarea class="form-control" rows="3" id="txtDescription" placeholder="Enter ..."></textarea>
-                                        Note: Indicate other details abput the Collateral. (Ex. year model acquisition of car)
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label for="txtStatus" class="col-sm-3 control-label">Status</label>
-
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtStatus" placeholder="Status">
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="txtValue" class="col-sm-3 control-label">Value</label>
-
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtValue" placeholder="Value">
-                                    </div>
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="InputFile_ProofofCollateral" class="col-sm-3 control-label">Attach Proof of Collateral</label>
-                                    <div class="col-sm-9">
-                                        <input type="file" class="custom-file-input" data-classification="COLLATERAL_PHOTO" id="InputFile_ProofofCollateral">
-                                        Note: Borrower included in the photo
-                                        <%--<p class="help-block">Example block-level help text here.</p>--%>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="InputFile_ProofofReceipt" class="col-sm-3 control-label">Attach Proof of Receipt</label>
-                                    <div class="col-sm-9">
-                                        <input type="file" class="custom-file-input" data-classification="PROOF_RECEIPT" id="InputFile_ProofofReceipt">
-
-                                        <%--<p class="help-block">Example block-level help text here.</p>--%>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- ACTION -->
         <div class="col-xs-12">
 
@@ -379,5 +302,6 @@
     <script src="../bower_components/toastr/toastr.min.js"></script>
     <script src="../scripts/notification.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
     <script src="../scripts/borrowers.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
+    <script src="../scripts/Address.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
 </asp:Content>
 

@@ -8,12 +8,14 @@
         for (var i in e) {
             $('<option/>', {
                 value: e[i]['LOAN_PLAN_ID'],
-                text: e[i]['AMOUNT']
+                text: e[i]['AMOUNT'],
+                'data-interest': e[i]['INTEREST'],
+                'data-process': e[i]['PROCESS_FEE']
             }).appendTo($("#txtLoanAmount"));
         }
         $("#txtLoanAmount").on('change', function () {
-            $('#txtProcessingFee').val(e[0]['PROCESS_FEE']);
-            $('#txtInterestRate').val(e[0]['INTEREST']);
+            $('#txtProcessingFee').val($("#txtLoanAmount").find(':selected').data("process"));
+            $('#txtInterestRate').val($("#txtLoanAmount").find(':selected').data("interest"));
         });
         GetInstallmentPlan(function (e) {
             $("#slctInstallmentType").html("");
