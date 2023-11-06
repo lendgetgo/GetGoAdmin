@@ -712,17 +712,22 @@ public class Maintenance
         return JsonConvert.SerializeObject(dt);
     }
 
-    public string repayment(int LOAN_ID, string userid)
+    public string repayment(int LOAN_ID, string AmounttoPaid, string userid)
     {
         DataTable dt = new DataTable();
         using (var con = new SqlConnection(strConn))
         {
-            using (var cmd = new SqlCommand(" UPDATE [db_Getgo].[dbo].[TBL_T_BORROWER_LOAN_PLAN_DETAILS] SET COLLECTED_BY = @USER_ID" +
+            using (var cmd = new SqlCommand("DECLARE @loanAmount Decimal(18,2) SET @loanAmount = (SELECT AMOUNT FROM [db_Getgo].[dbo].[TBL_T_BORROWER_LOAN_PLAN_DETAILS] WHERE LOAN_DETAILS_ID = @LOAN_ID)" +
+                "DECLARE @AmountPaid Decimal(18,2) SET @AmountPaid = (SELECT AMOUNT_PAID FROM [db_Getgo].[dbo].[TBL_T_BORROWER_LOAN_PLAN_DETAILS] WHERE LOAN_DETAILS_ID = @LOAN_ID)" +
+                " UPDATE [db_Getgo].[dbo].[TBL_T_BORROWER_LOAN_PLAN_DETAILS] SET COLLECTED_BY = @USER_ID" +
                 ", COLLECTED_DATE = GETDATE()" +
-                ", AMOUNT_PAID = (SELECT AMOUNT FROM [db_Getgo].[dbo].[TBL_T_BORROWER_LOAN_PLAN_DETAILS] WHERE LOAN_DETAILS_ID = @LOAN_ID)" +
-                ", IS_COMPLETE = 1 WHERE LOAN_DETAILS_ID = @LOAN_ID", con) { })
+                ", AMOUNT_PAID = @AmounttoPaid + @AmountPaid" +
+                ", BALANCE = (CASE WHEN CAST(@AmounttoPaid AS DECIMAL(18,2)) >= @loanAmount THEN 0 ELSE @loanAmount-(@AmounttoPaid + @AmountPaid) END)" +
+                //", AMOUNT_PAID = (SELECT AMOUNT FROM [db_Getgo].[dbo].[TBL_T_BORROWER_LOAN_PLAN_DETAILS] WHERE LOAN_DETAILS_ID = @LOAN_ID)" +
+                ", IS_COMPLETE = (CASE WHEN (CAST(@AmounttoPaid AS DECIMAL(18,2)) + @AmountPaid) >= @loanAmount THEN 1 ELSE 0 END) WHERE LOAN_DETAILS_ID = @LOAN_ID", con) { })
             {
                 cmd.Parameters.AddWithValue("@LOAN_ID", LOAN_ID);
+                cmd.Parameters.AddWithValue("@AmounttoPaid", AmounttoPaid);
                 cmd.Parameters.AddWithValue("@USER_ID", userid);
                 using (var da = new SqlDataAdapter(cmd))
                     da.Fill(dt);

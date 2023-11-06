@@ -199,9 +199,9 @@ public partial class _Default : System.Web.UI.Page
     /// repayment
     /// 
     [WebMethod]
-    public static string repayment(int LOAN_ID)
+    public static string repayment(int LOAN_ID, string AmounttoPaid)
     {
-        var data = Borrower.repayment(LOAN_ID, userid);
+        var data = Borrower.repayment(LOAN_ID, AmounttoPaid, userid);
         return data;
     }
 

@@ -28,7 +28,9 @@ $(document).ready(function () {
         var pastYear = past.getFullYear();//Get Date of Birth year
 
         var age = nowYear - pastYear;  //calculate the difference
-        $('#txtAge').val(age);
+        if ((age >= 18) && (age <= 60)) { $('#txtAge').val(age); }
+        else { notification("warning", "Cannot file below 18 or above 60 yrs old!"); }
+        
     });
 
     if (currentLocation1.includes('Add_Borrower.aspx')) {
@@ -63,53 +65,54 @@ $(document).ready(function () {
             //var USER_ID = $('#txtValue').val();
             var CREATED_BY = '12345';
             var UPDATED_BY = 'ABCDE';
-            
 
-            GetUserDetail_Addborrower(EMAIL_ADDRESS, function () {
-                var _request = {
-                    FIRST_NAME : FIRST_NAME,
-                    MIDDLE_NAME : MIDDLE_NAME,
-                    LAST_NAME : LAST_NAME,
-                    EXTENSION_NAME : EXTENSION_NAME,
-                    EMAIL_ADDRESS : EMAIL_ADDRESS,
-                    CONTACTNO : CONTACTNO,
-                    REGION : REGION,
-                    PROVINCE : PROVINCE,
-                    CITY : CITY,
-                    AGE : AGE,
-                    DATE_OF_BIRTH : DATE_OF_BIRTH,
-                    SEX : SEX,
-                    MARITAL_STATUS : MARITAL_STATUS,
-                    SPOUSE_NAME : SPOUSE_NAME,
-                    BARANGAY : BARANGAY,
-                    ZIPCODE : ZIPCODE,
-                    STREET_NO : STREET_NO,
-                    BUSSINESS_NAME : BUSSINESS_NAME,
-                    MONTHLY_GROSS : MONTHLY_GROSS,
-                    CO_GUARANTOR_NAME : CO_GUARANTOR_NAME,
-                    NATURE_OF_WORK : NATURE_OF_WORK,
-                    CHARACTER_REFERENCE : CHARACTER_REFERENCE,
-                    CO_GUARANTOR_NUMBER : CO_GUARANTOR_NUMBER,
-                    CREATED_BY : CREATED_BY,
-                    UPDATED_BY : UPDATED_BY
-                };
+            if ($('#txtAge').val().trim() != "") {
+                GetUserDetail_Addborrower(EMAIL_ADDRESS, function () {
+                    var _request = {
+                        FIRST_NAME: FIRST_NAME,
+                        MIDDLE_NAME: MIDDLE_NAME,
+                        LAST_NAME: LAST_NAME,
+                        EXTENSION_NAME: EXTENSION_NAME,
+                        EMAIL_ADDRESS: EMAIL_ADDRESS,
+                        CONTACTNO: CONTACTNO,
+                        REGION: REGION,
+                        PROVINCE: PROVINCE,
+                        CITY: CITY,
+                        AGE: AGE,
+                        DATE_OF_BIRTH: DATE_OF_BIRTH,
+                        SEX: SEX,
+                        MARITAL_STATUS: MARITAL_STATUS,
+                        SPOUSE_NAME: SPOUSE_NAME,
+                        BARANGAY: BARANGAY,
+                        ZIPCODE: ZIPCODE,
+                        STREET_NO: STREET_NO,
+                        BUSSINESS_NAME: BUSSINESS_NAME,
+                        MONTHLY_GROSS: MONTHLY_GROSS,
+                        CO_GUARANTOR_NAME: CO_GUARANTOR_NAME,
+                        NATURE_OF_WORK: NATURE_OF_WORK,
+                        CHARACTER_REFERENCE: CHARACTER_REFERENCE,
+                        CO_GUARANTOR_NUMBER: CO_GUARANTOR_NUMBER,
+                        CREATED_BY: CREATED_BY,
+                        UPDATED_BY: UPDATED_BY
+                    };
 
-                $.ajax({
-                    url: 'Add_Borrower.aspx/AddBorrower2',
-                    type: 'POST',
-                    contentType: 'application/json;charset=utf-8',
-                    dataType: 'json',
-                    data: JSON.stringify({ request: _request }),
-                    success: function (e) {
-                        var d = JSON.parse(e.d)
-                        SaveAttachment(d[0].USER_ID);
-                        notification('success', 'Save successfully!');
-                        //Attachment();
-                        $('html, body').animate({ scrollTop: '0px' }, 0);
-                        //$('#content').load(' #content > *');
-                    }
+                    $.ajax({
+                        url: 'Add_Borrower.aspx/AddBorrower2',
+                        type: 'POST',
+                        contentType: 'application/json;charset=utf-8',
+                        dataType: 'json',
+                        data: JSON.stringify({ request: _request }),
+                        success: function (e) {
+                            var d = JSON.parse(e.d)
+                            SaveAttachment(d[0].USER_ID);
+                            notification('success', 'Save successfully!');
+                            //Attachment();
+                            $('html, body').animate({ scrollTop: '0px' }, 0);
+                            //$('#content').load(' #content > *');
+                        }
+                    });
                 });
-            });
+            } else { notification("error", "Please fill up all required fields!"); }
         })
 
         $('#btnUpdate').on('click', function () {
@@ -372,6 +375,7 @@ function LoadBorrowerListDatatable() {
             //});
 
             $('#btnAddLoan').on('click', function () {
+                var LOAN_ID;
                 var PRODUCT = $('#txtProduct').val();
                 var RELEASED_DATE = $('#datepicker1').val();
                 //var MATURITY_DATE = $('#')
@@ -397,14 +401,16 @@ function LoadBorrowerListDatatable() {
                     contentType: 'application/json;charset=utf-8',
                     dataType: 'json',
                     data: JSON.stringify({ request: _LOAN }),
-                    success: function () {
+                    success: function (e) {
+                        var d = JSON.parse(e.d);
+                        LOAN_ID = d[0]['LOAN_ID'];
+                        SaveAttachment_loan(USER_ID_edit);
                         $('#AddLoanModal').modal('toggle');
-                   
                         notification('success', 'Save successfully!');
-                     
-                        //$('#content').load(' #content > *');
                     }
                 });
+
+                
             });
         });
 
@@ -556,6 +562,7 @@ function LoadBorrowerListDatatable() {
                                 var data = tblBorrowers_delete.row($(this).closest('tr')).data();
                                 var LOAN_ID_PAYMENT = data[Object.keys(data)[0]];
                                 var LOAN_ID = data[Object.keys(data)[1]];
+                                var txtAmounttoPaid = $('#txtAmounttoPaid').val();
                                 console.log(LOAN_ID_PAYMENT);
 
                                 $.ajax({
@@ -564,7 +571,7 @@ function LoadBorrowerListDatatable() {
                                     type: 'POST',
                                     contentType: 'application/json;charset=utf-8',
                                     dataType: 'json',
-                                    data: JSON.stringify({ LOAN_ID: LOAN_ID_PAYMENT }),
+                                    data: JSON.stringify({ LOAN_ID: LOAN_ID_PAYMENT, AmounttoPaid: txtAmounttoPaid }),
                                     success: function (e) {
                                         var d = JSON.parse(e.d)
                                         //SaveAttachment(d[0].USER_ID);
@@ -663,6 +670,7 @@ function LoadBorrowerListDatatable() {
     });
 
     $('#btnAddLoan').on('click', function () {
+        var LOAN_ID;
         var PRODUCT = $('#txtProduct').val();
         var RELEASED_DATE = $('#datepicker1').val();
         //var MATURITY_DATE = $('#')
@@ -688,7 +696,10 @@ function LoadBorrowerListDatatable() {
             contentType: 'application/json;charset=utf-8',
             dataType: 'json',
             data: JSON.stringify({ request: _LOAN }),
-            success: function () {
+            success: function (e) {
+                var d = JSON.parse(e.d);
+                LOAN_ID = d[0]['LOAN_ID'];
+                SaveAttachment_loan(BORROWER_USER_ID);
                 $('#AddLoanModal').modal('hide');
                 notification('success', 'Save successfully!');
                
@@ -739,6 +750,62 @@ function LoadBorrowerListDatatable() {
                 });
             }
         });
+        var files = $('.custom-file-input-loan');
+        $(() => {
+
+        });
+
+        const filesArray = [];
+
+        const SaveAttachment_loan = (userid) => {
+            files.each(function (index, fileInput) {
+                var formData = new FormData();
+                formData.append("file", fileInput.files[0]);
+                formData.append("classification", fileInput.getAttribute("data-classification")); // Append the correct classification
+                filesArray.push(formData);
+            });
+
+            upload_loan(filesArray, userid);
+        }
+        const upload_loan = (filesArray, userid) => {
+            // Create a new FormData object to store all files
+            const allFilesFormData = new FormData();
+
+            // Append each FormData object to the new FormData
+            filesArray.forEach(formData => {
+                for (const [key, value] of formData.entries()) {
+                    allFilesFormData.append(key, value);
+                }
+            });
+            for (const value of allFilesFormData.values()) {
+                console.log(value);
+            }
+            alert("Uploading now to file server ");
+            $.ajax({
+                type: 'post',
+                url: 'Upload.ashx?USERID=' + userid + '&LOANID=' + LOAN_ID,
+                data: allFilesFormData,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function (e) {
+                    console.log(e);
+                    alert(e);
+
+                },
+                error: function (xhr, status, error) {
+                    if (xhr.status === 413) {
+                        alert('Request Entity Too Large: The file you are trying to upload is too large.');
+                    } else {
+                        alert('An error occurred during the request. Status: ' + xhr.status + ' - ' + xhr.statusText);
+                    }
+                    console.log(xhr, status, error);
+
+
+                }
+
+            })
+        }
     });
 }
 

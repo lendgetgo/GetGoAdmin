@@ -604,7 +604,7 @@
                                                 <div class="form-group">
                                                     <label for="InputFile_ProofofCollateral" class="col-sm-3 control-label">Attach Proof of Collateral</label>
                                                     <div class="col-sm-9">
-                                                        <input type="file" class="custom-file-input" data-classification="COLLATERAL_PHOTO" id="InputFile_ProofofCollateral">
+                                                        <input type="file" class="custom-file-input-loan" data-classification="COLLATERAL_PHOTO" id="InputFile_ProofofCollateral">
                                                         Note: Borrower included in the photo
                                         <%--<p class="help-block">Example block-level help text here.</p>--%>
                                                     </div>
@@ -612,7 +612,7 @@
                                                 <div class="form-group">
                                                     <label for="InputFile_ProofofReceipt" class="col-sm-3 control-label">Attach Proof of Receipt</label>
                                                     <div class="col-sm-9">
-                                                        <input type="file" class="custom-file-input" data-classification="PROOF_RECEIPT" id="InputFile_ProofofReceipt">
+                                                        <input type="file" class="custom-file-input-loan" data-classification="PROOF_RECEIPT" id="InputFile_ProofofReceipt">
 
                                                         <%--<p class="help-block">Example block-level help text here.</p>--%>
                                                     </div>
@@ -716,7 +716,10 @@
                                     </thead>
                                 </table>
                             </div>
-
+                             <div class="box-body" style="text-align: center; background-color: whitesmoke;">
+                                 <label>Amount to Pay :</label>
+                                 <input type="text" id="txtAmounttoPaid" />
+                                 </div>
                             <div class="box-body">
                                 <table id="tblBorrowersLoanDetails" class="table table-bordered table-striped" style="width: 100% !important">
                                     <thead>
