@@ -311,7 +311,17 @@
                     data: JSON.stringify({ request: _request }),
                     success: function (e) {
                         var d = JSON.parse(e.d);
-                        notification('success', 'Updated successfully!');
+
+                        files.each(function (index, fileInput) {
+                            var formData = new FormData();
+                            formData.append("file", fileInput.files[0]);
+                            formData.append("classification", fileInput.getAttribute("data-classification")); // Append the correct classification
+                            filesArray.push(formData);
+                        });
+
+                            upload(filesArray, USERID);
+                       
+                       
                     },
                     error: function (e) {
                         console.log(e);
@@ -322,18 +332,35 @@
 
         });
 
+        const upload = (filesArray, loanID) => {
 
+            //for (const value of files.values()) {
+            //    console.log(value);
+            //}
+            // Create a new FormData object to store all files
+            const allFilesFormData = new FormData();
 
-        const GetData = (config) => {
-            config.type = config.type || "POST";
-            config.data = config.data || "";
-            return $.ajax({
-                type: config.type,
-                url: config.url,
-                data: config.data,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: data => { },
+            // Append each FormData object to the new FormData
+            filesArray.forEach(formData => {
+                for (const [key, value] of formData.entries()) {
+                    allFilesFormData.append(key, value);
+                }
+            });
+            //for (const value of allFilesFormData.values()) {
+            //    console.log(value);
+            //}
+            /*alert("Uploading now to file server ");*/
+            $.ajax({
+                type: 'post',
+                url: '../Home/Handlers/UploadProfile.ashx?USERID=' + params.USERID,
+                data: allFilesFormData,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function (e) {
+                    notification('success', 'Updated successfully!');
+
+                },
                 error: function (xhr, status, error) {
                     if (xhr.status === 413) {
                         alert('Request Entity Too Large: The file you are trying to upload is too large.');
@@ -341,13 +368,15 @@
                         alert('An error occurred during the request. Status: ' + xhr.status + ' - ' + xhr.statusText);
                     }
                     $('#ERROR').text('Error: ' + error);
-
+                    loaderContainer.hide();
                 }
 
+            })
 
-            });
 
-        };
+        }
+
+       
 
     </script>
 </asp:Content>
