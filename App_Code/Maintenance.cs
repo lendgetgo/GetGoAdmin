@@ -902,4 +902,24 @@ public class Maintenance
         }
         return JsonConvert.SerializeObject(dt);
     }
+    
+    public string DisplayCollateral()
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("SELECT A.[ID], C.[USER_ID] + '/' + [DESCRIPTION] AS IMAGE_LINK, FIRST_NAME + ' ' + MIDDLE_NAME + ' ' + LAST_NAME AS COMPLETENAME,B.[LOAN_ID],[DESCRIPTION],[TYPE],A.[CREATED_DATE] " +
+                     " FROM[db_Getgo].[dbo].[TBL_T_USER_LOAN_ATTACHMENT] A" +
+                     " LEFT JOIN[db_Getgo].[dbo].[TBL_T_USER_LOAN] B" +
+                     " ON B.LOAN_ID = A.LOAN_ID" +
+                     " LEFT JOIN[db_Getgo].[dbo].[TBL_M_USER_MASTER] C" +
+                     " ON C.USER_ID = B.USER_ID" +
+                     " ORDER BY B.LOAN_ID", con) { })
+            {        
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
 }

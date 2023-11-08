@@ -2,6 +2,10 @@
 var baseUrl = "http://" + _ipaddress + "/Getgo/Images/";
 
 $(document).ready(function () {
+    $('#lblCollateral').click(function () {
+        window.location.replace("./Collateral.aspx");
+    });
+
     $.ajax({
         url: "Home.aspx/GetNewAccountImages",
         type: "POST",

@@ -156,7 +156,7 @@
                         <a href="#">
                             <i>
                                 <img src="..\resources\side_menu\collateral_register.png" class="img_side_menu" /></i>
-                            <span>Collateral Register</span>
+                            <span id="lblCollateral">Collateral Register</span>
                             <%--<span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>--%>

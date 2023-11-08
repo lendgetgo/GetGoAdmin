@@ -482,7 +482,7 @@ function LoadBorrowerListDatatable() {
                             });
 
                         };
-                        
+
                         if ($("#tblBorrowersLoan").hasClass("dataTable")) {
                             $("#tblBorrowersLoan").DataTable().destroy();
                         }
@@ -498,7 +498,7 @@ function LoadBorrowerListDatatable() {
                                 { "data": "PENALTY" },
                                 { "data": "AMOUNT" },
                                 { "data": "AMOUNT_PAID" },
-                                { "data": "BALANCE" }, 
+                                { "data": "BALANCE" },
                                 {
                                     "data": "STATUS",
                                     render: function (data, type, row) {
@@ -556,15 +556,17 @@ function LoadBorrowerListDatatable() {
                             });
 
                             GetBorrowerLoanPlanList(LOAN_ID);
-
-                            $('#tblBorrowersLoanDetails').on('click', 'button.btn-pay', function (e) {
-                                var tblBorrowers_delete = $('#tblBorrowersLoanDetails').DataTable();
-                                var data = tblBorrowers_delete.row($(this).closest('tr')).data();
-                                var LOAN_ID_PAYMENT = data[Object.keys(data)[0]];
-                                var LOAN_ID = data[Object.keys(data)[1]];
-                                var txtAmounttoPaid = $('#txtAmounttoPaid').val();
-                                console.log(LOAN_ID_PAYMENT);
-
+                        });
+                        $('#tblBorrowersLoanDetails').on('click', 'button.btn-pay', function (e) {
+                            var tblBorrowers_delete = $('#tblBorrowersLoanDetails').DataTable();
+                            var data = tblBorrowers_delete.row($(this).closest('tr')).data();
+                            var LOAN_ID_PAYMENT = data[Object.keys(data)[0]];
+                            var LOAN_ID = data[Object.keys(data)[1]];
+                            var txtAmounttoPaid = $('#txtAmounttoPaid').val();
+                            console.log(LOAN_ID_PAYMENT);
+                            if (txtAmounttoPaid.length <= 0) {
+                                notification("warning", "Please input Amount to pay!");
+                            } else {
                                 $.ajax({
 
                                     url: 'Borrowers.aspx/repayment',
@@ -574,9 +576,8 @@ function LoadBorrowerListDatatable() {
                                     data: JSON.stringify({ LOAN_ID: LOAN_ID_PAYMENT, AmounttoPaid: txtAmounttoPaid }),
                                     success: function (e) {
                                         var d = JSON.parse(e.d)
-                                        //SaveAttachment(d[0].USER_ID);
                                         notification('success', 'Updated successfully!');
-
+                                        //SaveAttachment(d[0].USER_ID);
                                         $.ajax({
 
                                             url: 'Borrowers.aspx/fullrepayment',
@@ -631,7 +632,7 @@ function LoadBorrowerListDatatable() {
                                                         });
                                                     }
                                                 });
-                                                
+
                                             },
                                             error: function (e) {
                                                 console.log(e);
@@ -642,8 +643,10 @@ function LoadBorrowerListDatatable() {
                                         console.log(e);
                                     }
                                 });
-                            });
+                                
+                            }
                         });
+
                     });
 
                     $('#btnAddloanModal').on('click', function () {

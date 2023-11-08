@@ -61,25 +61,49 @@ public class Upload : IHttpHandler
         }
     }
 
+    public void SaveFiles(FileDetails fd)
+    {
+        try
+        {
+            var maint = new Maintenance();
+            var parameters = new SqlParameter[]
+            {
+             new SqlParameter("@USER_ID", fd.UserId),
+             new SqlParameter("@DESCRIPTION",fd.FileName),
+             new SqlParameter("@IMAGE_TYPE",  fd.Classification),
+            };
+            //var parameters = new
+            //{
+            //    USER_ID = fd.UserId,
+            //    DESCRIPTION = fd.FileName,
+            //    IMAGE_TYPE = fd.Classification
+
+            //};
+            maint.QueryInsertOrUpdateAdoNet("APP_ATTACHMENT_POST", parameters);
+        }
+        catch (Exception ex)
+        {
+            throw ex;
+        }
+    }
+
     //public void SaveFiles(FileDetails fd)
     //{
     //    try
     //    {
-    //        var maint = new Maintenance();
-    //        var parameters = new SqlParameter[]
-    //        {
-    //         new SqlParameter("@USER_ID", fd.UserId),
-    //         new SqlParameter("@DESCRIPTION",fd.FileName),
-    //         new SqlParameter("@IMAGE_TYPE",  fd.Classification),
-    //        };
-    //        //var parameters = new
-    //        //{
-    //        //    USER_ID = fd.UserId,
-    //        //    DESCRIPTION = fd.FileName,
-    //        //    IMAGE_TYPE = fd.Classification
+    //        var maint = new Upload_Maintenance();
 
-    //        //};
-    //        maint.QueryInsertOrUpdateAdoNet("APP_ATTACHMENT_POST", parameters);
+    //        var commandText = @"INSERT INTO TBL_T_USER_LOAN_ATTACHMENT
+    //                            (LOAN_ID,DESCRIPTION,TYPE,CREATED_DATE)
+    //                      VALUES(@USERID,@DESCRIPTION,@TYPE,GETDATE())";
+    //        var parameters = new
+    //        {
+    //            USERID = fd.UserId,
+    //            DESCRIPTION = fd.FileName,
+    //            TYPE = fd.Classification
+
+    //        };
+    //        maint.QueryInsertOrUpdateText(commandText, parameters);
     //    }
     //    catch (Exception ex)
     //    {
@@ -87,53 +111,6 @@ public class Upload : IHttpHandler
     //    }
     //}
 
-    public void SaveFiles(FileDetails fd)
-    {
-        try
-        {
-            var maint = new Upload_Maintenance();
-
-            var commandText = @"INSERT INTO TBL_T_USER_LOAN_ATTACHMENT
-                                (LOAN_ID,DESCRIPTION,TYPE,CREATED_DATE)
-                          VALUES(@USERID,@DESCRIPTION,@TYPE,GETDATE())";
-            var parameters = new
-            {
-                USERID = fd.UserId,
-                DESCRIPTION = fd.FileName,
-                TYPE = fd.Classification
-
-            };
-            maint.QueryInsertOrUpdateText(commandText, parameters);
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-    }
-
-    public void SaveFiles2(FileDetails fd)
-    {
-        try
-        {
-            var maint = new Upload_Maintenance();
-
-            var commandText = @"INSERT INTO TBL_M_USER_MASTER_ATTACHMENT
-                                (USER_ID,DESCRIPTION,IMAGE_TYPE,CREATED_DATE)
-                          VALUES(@USERID,@DESCRIPTION,@TYPE,GETDATE())";
-            var parameters = new
-            {
-                USERID = fd.UserId,
-                DESCRIPTION = fd.FileName,
-                IMAGE_TYPE = fd.Classification
-
-            };
-            maint.QueryInsertOrUpdateText(commandText, parameters);
-        }
-        catch (Exception ex)
-        {
-            throw ex;
-        }
-    }
 
 
     public bool IsReusable
