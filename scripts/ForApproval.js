@@ -1,5 +1,6 @@
 ﻿var currentLocation1 = window.location.href;
-var baseUrl = "http://" + _ipaddress + "/Getgo/Images/";
+var baseUrl = "http://lendgetgo-001-site1.atempurl.com/UploadedFiles/";
+//var baseUrl = "http://" + _ipaddress + "/Getgo/Images/";
 //var baseUrl = "http://192.168.1.4/Getgo/Images/";
 $(document).ready(function () {
     $('#btnLoan').on('click', function () {

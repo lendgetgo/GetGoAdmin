@@ -33,7 +33,8 @@
     <script>
         $(document).ready(function () {
             var _ipaddress = "<%= this.ipAddress %>";
-            var baseUrl = "http://" + _ipaddress + "/Getgo/Images/";
+            //var baseUrl = "http://" + _ipaddress + "/Getgo/Images/";
+            var baseUrl = "http://lendgetgo-001-site1.atempurl.com/UploadedFiles/";
 
             DisplayCollateral(function (d) {
                 if ($("#tblCollateral").hasClass("dataTable")) {

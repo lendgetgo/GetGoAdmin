@@ -206,7 +206,8 @@
     <script>
         var _ipaddress = "<%= this.ipAddress %>";
         var USERID = "<%= this.userid %>";
-        var baseUrl = "http://" + _ipaddress + "/Getgo/Images/";
+        var baseUrl = "http://lendgetgo-001-site1.atempurl.com/UploadedFiles/";
+        
         console.log(baseUrl);
         var ProfileImage = $('#image_upload_preview');
         $(() => {

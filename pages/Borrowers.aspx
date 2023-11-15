@@ -830,7 +830,8 @@
     <script src="../bower_components/toastr/toastr.min.js"></script>
     <script type="text/javascript">
         var _ipaddress = "<%= this.ipAddress %>";
-        var baseUrl = "http://" + _ipaddress + "/Getgo/Images/";
+        //var baseUrl = "http://" + _ipaddress + "/Getgo/Images/";
+        var baseUrl = "http://lendgetgo-001-site1.atempurl.com/UploadedFiles/";
         var ProfileImage = $('#image_upload_preview');
         //$(() => {
 
