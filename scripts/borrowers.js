@@ -838,6 +838,7 @@ function LoadBorrowerListDatatable() {
 
 function GetBorrowerLoanPlanList(LOAN_ID) {
     GetBorrowerLoanPlanDetails(LOAN_ID, function (e) {
+        console.log(e);
         if ($("#tblBorrowersLoanDetails").hasClass("dataTable")) {
             $("#tblBorrowersLoanDetails").DataTable().destroy();
         }
