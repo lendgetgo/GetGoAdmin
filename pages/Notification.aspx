@@ -621,6 +621,8 @@
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../bower_components/toastr/toastr.min.js"></script>
     <script src="../scripts/notification.js"></script>
+
+   
     <script>
         var _ipaddress = "<%= this.ipAddress %>";
     </script>

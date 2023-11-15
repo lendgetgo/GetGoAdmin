@@ -264,6 +264,10 @@ function LoadBorrowerListDatatable() {
             $("#tblBorrowers").DataTable().destroy();
         }
         var tblBorrowers = $('#tblBorrowers').DataTable({
+            dom: 'Blfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
             data: e,
             columns: [
                 { "data": "USER_ID" },
@@ -488,6 +492,10 @@ function LoadBorrowerListDatatable() {
                         }
                         $('#tblBorrowersLoan').DataTable({
                             data: d,
+                            dom: 'Blfrtip',
+                            buttons: [
+                                'copy', 'csv', 'excel', 'pdf', 'print'
+                            ],
                             columns: [
                                 { "data": "LOAN_ID" },
                                 { "data": "COMPLETE_NAME" },
@@ -534,6 +542,10 @@ function LoadBorrowerListDatatable() {
                                 }
                                 $('#tblBorrowersLoanHeader').DataTable({
                                     data: e,
+                                    dom: 'Blfrtip',
+                                    buttons: [
+                                        'copy', 'csv', 'excel', 'pdf', 'print'
+                                    ],
                                     columns: [
                                         { "data": "LOAN_ID" },
                                         { "data": "COMPLETE_NAME" },
@@ -604,6 +616,10 @@ function LoadBorrowerListDatatable() {
                                                             }
                                                             $('#tblBorrowersLoan').DataTable({
                                                                 data: d,
+                                                                dom: 'Blfrtip',
+                                                                buttons: [
+                                                                    'copy', 'csv', 'excel', 'pdf', 'print'
+                                                                ],
                                                                 columns: [
                                                                     { "data": "LOAN_ID" },
                                                                     { "data": "COMPLETE_NAME" },
@@ -725,6 +741,10 @@ function LoadBorrowerListDatatable() {
                         }
                         $('#tblBorrowersLoan').DataTable({
                             data: d,
+                            dom: 'Blfrtip',
+                            buttons: [
+                                'copy', 'csv', 'excel', 'pdf', 'print'
+                            ],
                             columns: [
                                 { "data": "LOAN_ID" },
                                 { "data": "COMPLETE_NAME" },
@@ -823,6 +843,10 @@ function GetBorrowerLoanPlanList(LOAN_ID) {
         }
         $('#tblBorrowersLoanDetails').DataTable({
             data: e,
+            dom: 'Blfrtip',
+            buttons: [
+                'copy', 'csv', 'excel', 'pdf', 'print'
+            ],
             columns: [
                 { "data": "AMOUNT" },
                 { "data": "LOAN_DETAILS_ID" },
