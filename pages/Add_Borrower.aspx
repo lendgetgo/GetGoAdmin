@@ -154,7 +154,12 @@
                                     <label for="txtAge" class="col-sm-3 control-label">Marital Status</label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtMaritalStatus" placeholder="Marital Status">
+                                        <%--<input type="text" class="form-control" id="txtMaritalStatus" placeholder="Marital Status">--%>
+                                        <select class="form-control" id="txtMaritalStatus">
+                                            <option></option>
+                                            <option value="Single">Single</option>
+                                            <option value="Married">Married</option>
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="form-group">

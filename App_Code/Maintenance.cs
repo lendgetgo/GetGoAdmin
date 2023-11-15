@@ -134,7 +134,7 @@ public class Maintenance
         DataTable dt = new DataTable();
         using (var con = new SqlConnection(strConn))
         {
-            using (var cmd = new SqlCommand("UPDATE [db_Getgo].[dbo].[TBL_M_USER] SET ACTIVEFLAG = 0 WHERE USER_ID = @USER_ID", con) {  })
+            using (var cmd = new SqlCommand("UPDATE [TBL_M_USER] SET ACTIVEFLAG = 0 WHERE USER_ID = @USER_ID", con) {  })
             {
                 cmd.Parameters.AddWithValue("@USER_ID", _USER_ID);
                 using (var da = new SqlDataAdapter(cmd))
@@ -663,7 +663,7 @@ public class Maintenance
         DataTable dt = new DataTable();
         using (var con = new SqlConnection(strConn))
         {
-            using (var cmd = new SqlCommand("UPDATE [db_Getgo].[dbo].[TBL_M_USER] SET " +
+            using (var cmd = new SqlCommand("UPDATE [TBL_M_USER] SET " +
                 "USER_ACCESS=@USER_ACCESS, " +
                 "FIRST_NAME=@FIRST_NAME, " +
                 "MIDDLE_NAME=@MIDDLE_NAME,  " +
@@ -717,9 +717,9 @@ public class Maintenance
         DataTable dt = new DataTable();
         using (var con = new SqlConnection(strConn))
         {
-            using (var cmd = new SqlCommand("DECLARE @loanAmount Decimal(18,2) SET @loanAmount = (SELECT AMOUNT FROM [db_Getgo].[dbo].[TBL_T_BORROWER_LOAN_PLAN_DETAILS] WHERE LOAN_DETAILS_ID = @LOAN_ID)" +
-                "DECLARE @AmountPaid Decimal(18,2) SET @AmountPaid = (SELECT AMOUNT_PAID FROM [db_Getgo].[dbo].[TBL_T_BORROWER_LOAN_PLAN_DETAILS] WHERE LOAN_DETAILS_ID = @LOAN_ID)" +
-                " UPDATE [db_Getgo].[dbo].[TBL_T_BORROWER_LOAN_PLAN_DETAILS] SET COLLECTED_BY = @USER_ID" +
+            using (var cmd = new SqlCommand("DECLARE @loanAmount Decimal(18,2) SET @loanAmount = (SELECT AMOUNT FROM [TBL_T_BORROWER_LOAN_PLAN_DETAILS] WHERE LOAN_DETAILS_ID = @LOAN_ID)" +
+                "DECLARE @AmountPaid Decimal(18,2) SET @AmountPaid = (SELECT AMOUNT_PAID FROM [TBL_T_BORROWER_LOAN_PLAN_DETAILS] WHERE LOAN_DETAILS_ID = @LOAN_ID)" +
+                " UPDATE [TBL_T_BORROWER_LOAN_PLAN_DETAILS] SET COLLECTED_BY = @USER_ID" +
                 ", COLLECTED_DATE = GETDATE()" +
                 ", AMOUNT_PAID = @AmounttoPaid + @AmountPaid" +
                 ", BALANCE = (CASE WHEN CAST(@AmounttoPaid AS DECIMAL(18,2)) >= @loanAmount THEN 0 ELSE @loanAmount-(@AmounttoPaid + @AmountPaid) END)" +
@@ -742,10 +742,10 @@ public class Maintenance
         using (var con = new SqlConnection(strConn))
         {
             using (var cmd = new SqlCommand(" DECLARE @LOANCOUNT INT " +
-                 " SET @LOANCOUNT = (SELECT COUNT(LOAN_ID) FROM [db_Getgo].[dbo].[TBL_T_BORROWER_LOAN_PLAN_DETAILS] WHERE IS_COMPLETE = 0 AND LOAN_ID = @LOAN_ID)" +
+                 " SET @LOANCOUNT = (SELECT COUNT(LOAN_ID) FROM [TBL_T_BORROWER_LOAN_PLAN_DETAILS] WHERE IS_COMPLETE = 0 AND LOAN_ID = @LOAN_ID)" +
                  " IF (@LOANCOUNT = 0)" +
                  " BEGIN" +
-                 "   UPDATE [db_Getgo].[dbo].[TBL_T_USER_LOAN] SET [STATUS] = 'FULLY PAID' WHERE [LOAN_ID] = @LOAN_ID" +
+                 "   UPDATE [TBL_T_USER_LOAN] SET [STATUS] = 'FULLY PAID' WHERE [LOAN_ID] = @LOAN_ID" +
                  " END", con)
             { })
             {
@@ -863,7 +863,7 @@ public class Maintenance
         DataTable dt = new DataTable();
         using (var con = new SqlConnection(strConn))
         {
-            using (var cmd = new SqlCommand("SELECT [REGION_ID],[CODE],[REGION_DESCRIPTION],[REGION_CODE] FROM [db_Getgo].[dbo].[TBL_M_REGION]", con) { })
+            using (var cmd = new SqlCommand("SELECT [REGION_ID],[CODE],[REGION_DESCRIPTION],[REGION_CODE] FROM [TBL_M_REGION]", con) { })
             {
                 //cmd.Parameters.AddWithValue("@USER_ID", userid);
                 using (var da = new SqlDataAdapter(cmd))
@@ -878,7 +878,7 @@ public class Maintenance
         DataTable dt = new DataTable();
         using (var con = new SqlConnection(strConn))
         {
-            using (var cmd = new SqlCommand("SELECT [PROVINCE_ID],[CODE],[PROVINCE_DESCRIPTION],[REGION_CODE],[PROVINCE_CODE] FROM [db_Getgo].[dbo].[TBL_M_PROVINCE] WHERE [REGION_CODE] = @REGION_CODE", con) { })
+            using (var cmd = new SqlCommand("SELECT [PROVINCE_ID],[CODE],[PROVINCE_DESCRIPTION],[REGION_CODE],[PROVINCE_CODE] FROM [TBL_M_PROVINCE] WHERE [REGION_CODE] = @REGION_CODE", con) { })
             {
                 cmd.Parameters.AddWithValue("@REGION_CODE", REGION_CODE);
                 using (var da = new SqlDataAdapter(cmd))
@@ -893,7 +893,7 @@ public class Maintenance
         DataTable dt = new DataTable();
         using (var con = new SqlConnection(strConn))
         {
-            using (var cmd = new SqlCommand("SELECT [CITY_ID],[CODE],[CITY_DESCRIPTION],[REGION_CODE],[PROVINCE_CODE],[CITY_CODE],[ZIPCODE] FROM [db_Getgo].[dbo].[TBL_M_CITY] WHERE [PROVINCE_CODE] = @PROVINCE_CODE", con) { })
+            using (var cmd = new SqlCommand("SELECT [CITY_ID],[CODE],[CITY_DESCRIPTION],[REGION_CODE],[PROVINCE_CODE],[CITY_CODE],[ZIPCODE] FROM [TBL_M_CITY] WHERE [PROVINCE_CODE] = @PROVINCE_CODE", con) { })
             {
                 cmd.Parameters.AddWithValue("@PROVINCE_CODE", PROVINCE_CODE);
                 using (var da = new SqlDataAdapter(cmd))
@@ -909,13 +909,54 @@ public class Maintenance
         using (var con = new SqlConnection(strConn))
         {
             using (var cmd = new SqlCommand("SELECT A.[ID], C.[USER_ID] + '/' + [DESCRIPTION] AS IMAGE_LINK, FIRST_NAME + ' ' + MIDDLE_NAME + ' ' + LAST_NAME AS COMPLETENAME,B.[LOAN_ID],[DESCRIPTION],[TYPE],A.[CREATED_DATE] " +
-                     " FROM[db_Getgo].[dbo].[TBL_T_USER_LOAN_ATTACHMENT] A" +
-                     " LEFT JOIN[db_Getgo].[dbo].[TBL_T_USER_LOAN] B" +
+                     " FROM [TBL_T_USER_LOAN_ATTACHMENT] A" +
+                     " LEFT JOIN [TBL_T_USER_LOAN] B" +
                      " ON B.LOAN_ID = A.LOAN_ID" +
-                     " LEFT JOIN[db_Getgo].[dbo].[TBL_M_USER_MASTER] C" +
+                     " LEFT JOIN [TBL_M_USER_MASTER] C" +
                      " ON C.USER_ID = B.USER_ID" +
                      " ORDER BY B.LOAN_ID", con) { })
             {        
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+
+    public string GetCollectionReports()
+    {
+        DataSet dt = new DataSet();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("SELECT TOP 1 (COUNT(AMOUNT) OVER (PARTITION BY BRANCH)) AS TOTAL_LOAN_COUNT " +
+                    ", FORMAT(SUM(CAST(AMOUNT AS DECIMAL(18, 2))) OVER(PARTITION BY BRANCH), '#,0.00') AS TOTAL_LOAN_AMOUNT " +
+                    "FROM [TBL_T_USER_LOAN] " +
+                    "WHERE[STATUS] IN('APPROVED', 'FULLY PAID') AND BRANCH = 1 " +
+                    
+                    "SELECT TOP 1(COUNT(AMOUNT) OVER(PARTITION BY BRANCH)) AS TOTAL_PAID_LOAN_COUNT " +
+                    ", FORMAT(SUM(CAST(AMOUNT AS DECIMAL(18, 2))) OVER(PARTITION BY BRANCH), '#,0.00') AS TOTAL_PAID_LOAN_AMOUNT " +
+                    "FROM [TBL_T_USER_LOAN] " +
+                    "WHERE[STATUS] = 'FULLY PAID' AND BRANCH = 1 " +
+                    
+                    "SELECT COUNT(LOAN_ID) AS TOTAL_LOAN_DUE " +
+                    "FROM [TBL_T_BORROWER_LOAN_PLAN_DETAILS] " +
+                    "WHERE DUE_DATE <= GETDATE() AND ISNULL(IS_COMPLETE, 0) = 0" +
+
+                    "SELECT COUNT (LOAN_ID) AS COLLECTED_COUNT " +
+                    "FROM [TBL_T_BORROWER_LOAN_PLAN_DETAILS] "+
+                    "WHERE COLLECTED_DATE IS NOT NULL " +
+
+                    "SELECT COUNT([USER_ID]) AS BORROWER_COUNT FROM [TBL_M_USER_MASTER] " +
+
+                    "SELECT COUNT(LOAN_ID) AS OPEN_LOANS FROM [TBL_T_USER_LOAN] WHERE [STATUS] = 'APPROVED' " +
+
+                    "SELECT COUNT([USER_ID]) AS ACTIVE_COUNT FROM [TBL_M_USER_MASTER] WHERE ISNULL(ACTIVE_FLAG,0) = 1" +
+
+                    "SELECT FORMAT(SUM(CAST(A.[AMOUNT] AS DECIMAL(18,2)) - CAST(C.AMOUNT AS DECIMAL(18,2))), '#,0.00') AS SAVINGS " +
+                    "FROM [TBL_T_USER_LOAN] A " +
+                    "LEFT JOIN [TBL_M_LOAN_AMOUNT] C " +
+                    "ON C.INTEREST = A.INTEREST_RATE", con) { })
+            {
                 using (var da = new SqlDataAdapter(cmd))
                     da.Fill(dt);
             }

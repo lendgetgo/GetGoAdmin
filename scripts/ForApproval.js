@@ -363,11 +363,8 @@ $(document).ready(function () {
 
             $('#btnApproveUser').on('click', function () {
                 var _AMOUNT = $('#txtCreditLimit').val();
-                UpdateCreditLimitForApproval(USER_ID_view, _AMOUNT, function () {
-                    if (confirm("Approve?")) {
-                        notification("success", "Successfully Approved!");
-
-                        $(document).ready(function () {
+                if (confirm("Approve?")) {
+                    UpdateCreditLimitForApproval(USER_ID_view, _AMOUNT, function () {
                             $.ajax({
                                 url: "Notification.aspx/CountForApproval",
                                 type: "POST",
@@ -376,17 +373,18 @@ $(document).ready(function () {
                                 dataType: "json",
                                 success: function (e) {
                                     var d = JSON.parse(e.d)
+             
                                     $('#txtNotificationCount').text(d[0]["NOTIF"]);
-                                    $('#content').load(' #content > *');
+
                                 },
                                 error: function (errormessage) {
                                     alert(errormessage.responseText);
                                 }
-                            });
                         });
 
-                    }
-                });
+
+                    });
+                }
             });
         });
 
@@ -479,6 +477,8 @@ function UpdateCreditLimitForApproval(_USERID, _AMOUNT, callback) {
         contentType: "application/json;charset=utf-8",
         dataType: "json",
         success: function (e) {
+            notification("success", "Successfully Approved!");
+            window.location.replace('Notification.aspx');
         },
         error: function (errormessage) {
             alert(errormessage.responseText);

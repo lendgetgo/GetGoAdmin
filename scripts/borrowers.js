@@ -453,7 +453,7 @@ function LoadBorrowerListDatatable() {
                                 url: "Borrowers.aspx/GetSessionValue"
                             }).then(e => {
                                 let data = JSON.parse(e.d);
-                                console.log(data);
+                                //console.log(data);
                                 ProfileImage.attr('src', baseUrl + data[0].PROFILE_PIC);
                             });
                         });
@@ -560,90 +560,94 @@ function LoadBorrowerListDatatable() {
                         $('#tblBorrowersLoanDetails').on('click', 'button.btn-pay', function (e) {
                             var tblBorrowers_delete = $('#tblBorrowersLoanDetails').DataTable();
                             var data = tblBorrowers_delete.row($(this).closest('tr')).data();
-                            var LOAN_ID_PAYMENT = data[Object.keys(data)[0]];
-                            var LOAN_ID = data[Object.keys(data)[1]];
+                            var LOAN_ID_PAYMENT = data[Object.keys(data)[1]];
+                            var LOAN_ID = data[Object.keys(data)[2]];
                             var txtAmounttoPaid = $('#txtAmounttoPaid').val();
-                            console.log(LOAN_ID_PAYMENT);
+                            var LoanAmount = data[Object.keys(data)[0]];
+                            console.log(data);
                             if (txtAmounttoPaid.length <= 0) {
                                 notification("warning", "Please input Amount to pay!");
                             } else {
-                                $.ajax({
+                                if (txtAmounttoPaid <= LoanAmount) {
+                                    $.ajax({
 
-                                    url: 'Borrowers.aspx/repayment',
-                                    type: 'POST',
-                                    contentType: 'application/json;charset=utf-8',
-                                    dataType: 'json',
-                                    data: JSON.stringify({ LOAN_ID: LOAN_ID_PAYMENT, AmounttoPaid: txtAmounttoPaid }),
-                                    success: function (e) {
-                                        var d = JSON.parse(e.d)
-                                        notification('success', 'Updated successfully!');
-                                        //SaveAttachment(d[0].USER_ID);
-                                        $.ajax({
+                                        url: 'Borrowers.aspx/repayment',
+                                        type: 'POST',
+                                        contentType: 'application/json;charset=utf-8',
+                                        dataType: 'json',
+                                        data: JSON.stringify({ LOAN_ID: LOAN_ID_PAYMENT, AmounttoPaid: txtAmounttoPaid }),
+                                        success: function (e) {
+                                            var d = JSON.parse(e.d)
+                                            notification('success', 'Updated successfully!');
+                                            //SaveAttachment(d[0].USER_ID);
+                                            $.ajax({
 
-                                            url: 'Borrowers.aspx/fullrepayment',
-                                            type: 'POST',
-                                            contentType: 'application/json;charset=utf-8',
-                                            dataType: 'json',
-                                            data: JSON.stringify({ LOAN_ID: LOAN_ID, LOAN_DETAILS_ID: LOAN_ID_PAYMENT }),
-                                            success: function (e) {
-                                                var d = JSON.parse(e.d)
-                                                GetBorrowerLoanPlanList(LOAN_ID);
-                                                $.ajax({
-                                                    url: "Borrowers.aspx/GetBorrowerLoan",
-                                                    type: "POST",
-                                                    data: JSON.stringify({ _USER_ID: BORROWER_USER_ID }),
-                                                    contentType: "application/json;charset=utf-8",
-                                                    dataType: "json",
-                                                    success: function (e) {
-                                                        var d = JSON.parse(e.d)
+                                                url: 'Borrowers.aspx/fullrepayment',
+                                                type: 'POST',
+                                                contentType: 'application/json;charset=utf-8',
+                                                dataType: 'json',
+                                                data: JSON.stringify({ LOAN_ID: LOAN_ID, LOAN_DETAILS_ID: LOAN_ID_PAYMENT }),
+                                                success: function (e) {
+                                                    var d = JSON.parse(e.d)
+                                                    GetBorrowerLoanPlanList(LOAN_ID);
+                                                    $.ajax({
+                                                        url: "Borrowers.aspx/GetBorrowerLoan",
+                                                        type: "POST",
+                                                        data: JSON.stringify({ _USER_ID: BORROWER_USER_ID }),
+                                                        contentType: "application/json;charset=utf-8",
+                                                        dataType: "json",
+                                                        success: function (e) {
+                                                            var d = JSON.parse(e.d)
 
-                                                        if ($("#tblBorrowersLoan").hasClass("dataTable")) {
-                                                            $("#tblBorrowersLoan").DataTable().destroy();
+                                                            if ($("#tblBorrowersLoan").hasClass("dataTable")) {
+                                                                $("#tblBorrowersLoan").DataTable().destroy();
+                                                            }
+                                                            $('#tblBorrowersLoan').DataTable({
+                                                                data: d,
+                                                                columns: [
+                                                                    { "data": "LOAN_ID" },
+                                                                    { "data": "COMPLETE_NAME" },
+                                                                    { "data": "RELEASED_DATE" },
+                                                                    { "data": "START_DATE" },
+                                                                    { "data": "INSTALLMENT_PLAN" },
+                                                                    { "data": "PROCESSING_FEE" },
+                                                                    { "data": "PENALTY" },
+                                                                    { "data": "AMOUNT" },
+                                                                    { "data": "AMOUNT_PAID" },
+                                                                    { "data": "BALANCE" },
+                                                                    {
+                                                                        "data": "STATUS",
+                                                                        render: function (data, type, row) {
+                                                                            if (data == 'ONGOING') {
+                                                                                return '<button type="button" class="btn btn-block btn-primary btn-xs btn-status">' + data + '</button>';
+                                                                            }
+                                                                            if (data == 'FULLY PAID') {
+                                                                                return '<button type="button" class="btn btn-block btn-success btn-xs btn-status">' + data + '</button>';
+                                                                            }
+                                                                            if (data == 'APPROVED') {
+                                                                                return '<button type="button" class="btn btn-block btn-info btn-xs btn-status">' + data + '</button>';
+                                                                            }
+                                                                        }
+                                                                    },
+                                                                ],
+                                                                columnDefs: [{ "targets": 0, visible: false }]
+                                                            });
                                                         }
-                                                        $('#tblBorrowersLoan').DataTable({
-                                                            data: d,
-                                                            columns: [
-                                                                { "data": "LOAN_ID" },
-                                                                { "data": "COMPLETE_NAME" },
-                                                                { "data": "RELEASED_DATE" },
-                                                                { "data": "START_DATE" },
-                                                                { "data": "INSTALLMENT_PLAN" },
-                                                                { "data": "PROCESSING_FEE" },
-                                                                { "data": "PENALTY" },
-                                                                { "data": "AMOUNT" },
-                                                                { "data": "AMOUNT_PAID" },
-                                                                { "data": "BALANCE" },
-                                                                {
-                                                                    "data": "STATUS",
-                                                                    render: function (data, type, row) {
-                                                                        if (data == 'ONGOING') {
-                                                                            return '<button type="button" class="btn btn-block btn-primary btn-xs btn-status">' + data + '</button>';
-                                                                        }
-                                                                        if (data == 'FULLY PAID') {
-                                                                            return '<button type="button" class="btn btn-block btn-success btn-xs btn-status">' + data + '</button>';
-                                                                        }
-                                                                        if (data == 'APPROVED') {
-                                                                            return '<button type="button" class="btn btn-block btn-info btn-xs btn-status">' + data + '</button>';
-                                                                        }
-                                                                    }
-                                                                },
-                                                            ],
-                                                            columnDefs: [{ "targets": 0, visible: false }]
-                                                        });
-                                                    }
-                                                });
+                                                    });
 
-                                            },
-                                            error: function (e) {
-                                                console.log(e);
-                                            }
-                                        });
-                                    },
-                                    error: function (e) {
-                                        console.log(e);
-                                    }
-                                });
-                                
+                                                },
+                                                error: function (e) {
+                                                    console.log(e);
+                                                }
+                                            });
+                                        },
+                                        error: function (e) {
+                                            console.log(e);
+                                        }
+                                    });
+                                } else {
+                                    alert("Pay exact or less than amount.");
+                                }
                             }
                         });
 
@@ -820,6 +824,7 @@ function GetBorrowerLoanPlanList(LOAN_ID) {
         $('#tblBorrowersLoanDetails').DataTable({
             data: e,
             columns: [
+                { "data": "AMOUNT" },
                 { "data": "LOAN_DETAILS_ID" },
                 { "data": "COMPLETE_NAME" },
                 { "data": "LOAN_ID" },
@@ -840,7 +845,7 @@ function GetBorrowerLoanPlanList(LOAN_ID) {
                     }
                 },
             ],
-            columnDefs: [{ "targets": 0, visible: false }]
+            columnDefs: [{ "targets": 0, visible: false }, { "targets": 1, visible: false }]
         });
     });
 }

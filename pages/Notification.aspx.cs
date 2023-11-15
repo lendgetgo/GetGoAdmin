@@ -28,7 +28,7 @@ public partial class Notification : System.Web.UI.Page
 
     //[WebMethod]
     //public static string GetUSelectedserDetail(string _USER_ID)
-    //{
+    //{ 
     //    var data = User.GetUSelectedserDetail(_USER_ID);
     //    return data;
     //}

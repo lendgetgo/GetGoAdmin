@@ -39,7 +39,7 @@
                     }).appendTo($("#txtLoanTenure"));
                     for (var i in e) {
                         $('<option/>', {
-                            value: e[i]['TENURE'],
+                            value: e[i]['TENURE_ID'],
                             text: e[i]['TENURE']
                         }).appendTo($("#txtLoanTenure"));
                     }
