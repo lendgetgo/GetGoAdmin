@@ -742,7 +742,7 @@ public class Maintenance
         using (var con = new SqlConnection(strConn))
         {
             using (var cmd = new SqlCommand(" DECLARE @LOANCOUNT INT " +
-                 " SET @LOANCOUNT = (SELECT COUNT(LOAN_ID) FROM [TBL_T_BORROWER_LOAN_PLAN_DETAILS] WHERE IS_COMPLETE = 'true' AND LOAN_ID = @LOAN_ID)" +
+                 " SET @LOANCOUNT = (SELECT COUNT(LOAN_ID) FROM [TBL_T_BORROWER_LOAN_PLAN_DETAILS] WHERE ISNULL(IS_COMPLETE,'False') = 'True' AND LOAN_ID = @LOAN_ID)" +
                  " IF (@LOANCOUNT = 0)" +
                  " BEGIN" +
                  "   UPDATE [TBL_T_USER_LOAN] SET [STATUS] = 'FULLY PAID' WHERE [LOAN_ID] = @LOAN_ID" +
@@ -993,6 +993,60 @@ public class Maintenance
                     "FROM [TBL_T_BORROWER_LOAN_PLAN_DETAILS] " +
                     "WHERE COLLECTED_DATE IS NOT NULL " +
                     "GROUP BY DATEPART(MONTH, COLLECTED_DATE)", con)
+            { })
+            {
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+    
+    public string GetNumberofRelease()
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("SELECT DATENAME(MONTH, DATEADD(MONTH, DATEPART(MONTH, [RELEASED_DATE]), -1)) AS [RELEASED_MONTH] " +
+                            ", COUNT(CAST([AMOUNT] AS DECIMAL(18, 2))) AS LOAN_AMOUNT " +
+                        "FROM [TBL_T_USER_LOAN] " +
+                        "WHERE STATUS IN('APPROVED') " +
+                        "GROUP BY DATEPART(MONTH, [RELEASED_DATE])", con)
+            { })
+            {
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+    
+    public string GetFullyPaid()
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("SELECT DATENAME(MONTH, DATEADD(MONTH, DATEPART(MONTH, [RELEASED_DATE]), -1)) AS [RELEASED_MONTH] " +
+                ", COUNT(CAST([AMOUNT] AS DECIMAL(18, 2))) AS LOAN_AMOUNT " +
+                "FROM [TBL_T_USER_LOAN] " +
+                "WHERE STATUS IN('FULLY PAID') " +
+                "GROUP BY DATEPART(MONTH, [RELEASED_DATE])", con)
+            { })
+            {
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+    
+    public string GetActiveBygender()
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("SELECT COUNT(SEX) AS GENDER FROM [TBL_M_USER] " +
+                            "WHERE SEX IS NOT NULL GROUP BY SEX ORDER BY SEX", con)
             { })
             {
                 using (var da = new SqlDataAdapter(cmd))

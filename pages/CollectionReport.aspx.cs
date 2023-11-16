@@ -30,4 +30,28 @@ public partial class CollectionReport : System.Web.UI.Page
         var data = report.GetLoanCollect();
         return data;
     }
+    
+    [WebMethod]
+    public static string GetNumberofRelease()
+    {
+        var report = new Maintenance();
+        var data = report.GetNumberofRelease();
+        return data;
+    }
+    
+    [WebMethod]
+    public static string GetFullyPaid()
+    {
+        var report = new Maintenance();
+        var data = report.GetFullyPaid();
+        return data;
+    }
+    
+    [WebMethod]
+    public static string GetActiveBygender()
+    {
+        var report = new Maintenance();
+        var data = report.GetActiveBygender();
+        return data;
+    }
 }

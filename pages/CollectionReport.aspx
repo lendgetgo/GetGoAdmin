@@ -321,87 +321,84 @@
                     hideHover: 'auto'
                 });
             });
-            /*
-   * BAR CHART
-   * ---------
-   */
 
-            var NumberRelease_data = {
-                data: [['January', 10], ['February', 8], ['March', 4], ['April', 13], ['May', 17], ['June', 9]],
-                color: '#3c8dbc'
-            }
-            $.plot('#NumberRelease-chart', [NumberRelease_data], {
-                grid: {
-                    borderWidth: 1,
-                    borderColor: '#f3f3f3',
-                    tickColor: '#f3f3f3'
-                },
-                series: {
-                    bars: {
-                        show: true,
-                        barWidth: 0.5,
-                        align: 'center'
-                    }
-                },
-                xaxis: {
-                    mode: 'categories',
-                    tickLength: 0
+            GetNumberofRelease(function (d) {
+                var NumberRelease_data = {
+                    //data: [['January', 10], ['February', 8], ['March', 4], ['April', 13], ['May', 17], ['June', 9]],
+                    data: d,
+                    color: '#3c8dbc'
                 }
-            })
-
-            var FullyPaid_data = {
-                data: [['January', 10], ['February', 8], ['March', 4], ['April', 13], ['May', 17], ['June', 9]],
-                color: '#3c8dbc'
-            }
-            $.plot('#FullyPaid-chart', [FullyPaid_data], {
-                grid: {
-                    borderWidth: 1,
-                    borderColor: '#f3f3f3',
-                    tickColor: '#f3f3f3'
-                },
-                series: {
-                    bars: {
-                        show: true,
-                        barWidth: 0.5,
-                        align: 'center'
-                    }
-                },
-                xaxis: {
-                    mode: 'categories',
-                    tickLength: 0
-                }
-            })
-            /* END BAR CHART */
-
-            /*
-     * DONUT CHART
-     * -----------
-     */
-
-            var donutData = [
-                { label: 'Series2', data: 30, color: '#3c8dbc' },
-                { label: 'Series3', data: 20, color: '#0073b7' },
-                { label: 'Series4', data: 50, color: '#00c0ef' }
-            ]
-            $.plot('#donut-chart', donutData, {
-                series: {
-                    pie: {
-                        show: true,
-                        radius: 1,
-                        innerRadius: 0.5,
-                        label: {
+                $.plot('#NumberRelease-chart', [NumberRelease_data], {
+                    grid: {
+                        borderWidth: 1,
+                        borderColor: '#f3f3f3',
+                        tickColor: '#f3f3f3'
+                    },
+                    series: {
+                        bars: {
                             show: true,
-                            radius: 2 / 3,
-                            formatter: labelFormatter,
-                            threshold: 0.1
+                            barWidth: 0.5,
+                            align: 'center'
                         }
-
+                    },
+                    xaxis: {
+                        mode: 'categories',
+                        tickLength: 0
                     }
-                },
-                legend: {
-                    show: false
+                })
+            });
+
+            GetFullyPaid(function (d) {
+                var FullyPaid_data = {
+                   // data: [['January', 10], ['February', 8], ['March', 4], ['April', 13], ['May', 17], ['June', 9]],
+                    data: d,
+                    color: '#3c8dbc'
                 }
-            })
+                $.plot('#FullyPaid-chart', [FullyPaid_data], {
+                    grid: {
+                        borderWidth: 1,
+                        borderColor: '#f3f3f3',
+                        tickColor: '#f3f3f3'
+                    },
+                    series: {
+                        bars: {
+                            show: true,
+                            barWidth: 0.5,
+                            align: 'center'
+                        }
+                    },
+                    xaxis: {
+                        mode: 'categories',
+                        tickLength: 0
+                    }
+                })
+            });
+
+
+            GetActiveBygender(function (d) {
+                var donutData = [
+                    { label: 'Female', data: d, color: '#3c8dbc' },
+                ]
+                $.plot('#donut-chart', donutData, {
+                    series: {
+                        pie: {
+                            show: true,
+                            radius: 1,
+                            innerRadius: 0.5,
+                            label: {
+                                show: true,
+                                radius: 2 / 3,
+                                formatter: labelFormatter,
+                                threshold: 0.1
+                            }
+
+                        }
+                    },
+                    legend: {
+                        show: false
+                    }
+                })
+            });
             /*
              * END DONUT CHART
              */
@@ -460,6 +457,63 @@
         function GetLoanCollect(callback) {
             $.ajax({
                 url: "CollectionReport.aspx/GetLoanCollect",
+                type: "POST",
+                data: "{}",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (e) {
+                    var d = JSON.parse(e.d);
+                    if (callback !== undefined) {
+                        callback(d);
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+        function GetNumberofRelease(callback) {
+            $.ajax({
+                url: "CollectionReport.aspx/GetNumberofRelease",
+                type: "POST",
+                data: "{}",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (e) {
+                    var d = JSON.parse(e.d);
+                    if (callback !== undefined) {
+                        callback(d);
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+        function GetFullyPaid(callback) {
+            $.ajax({
+                url: "CollectionReport.aspx/GetFullyPaid",
+                type: "POST",
+                data: "{}",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (e) {
+                    var d = JSON.parse(e.d);
+                    if (callback !== undefined) {
+                        callback(d);
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+        function GetActiveBygender(callback) {
+            $.ajax({
+                url: "CollectionReport.aspx/GetActiveBygender",
                 type: "POST",
                 data: "{}",
                 contentType: "application/json;charset=utf-8",
