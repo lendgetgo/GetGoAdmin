@@ -963,4 +963,42 @@ public class Maintenance
         }
         return JsonConvert.SerializeObject(dt);
     }
+
+    public string GetLoanRelease()
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("SELECT CONCAT(DATEPART(MONTH, [RELEASED_DATE]), ' ' , DATENAME(MONTH, DATEADD(MONTH, DATEPART(MONTH, [RELEASED_DATE]), -1))) AS [RELEASED_MONTH] " +
+                    ", SUM(CAST([AMOUNT] AS DECIMAL(18, 2))) AS LOAN_AMOUNT " +
+                    "FROM [TBL_T_USER_LOAN] " +
+                    "WHERE STATUS IN('APPROVED', 'FULLY PAID') " +
+                    "GROUP BY DATEPART(MONTH, [RELEASED_DATE])", con)
+            { })
+            {
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+    
+    public string GetLoanCollect()
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand(" SELECT CONCAT(DATEPART(MONTH, COLLECTED_DATE), ' ' , DATENAME(MONTH, DATEADD(MONTH, DATEPART(MONTH, COLLECTED_DATE), -1))) AS COLLECTED_DATE  " +
+                    ",SUM(CAST([AMOUNT_PAID] AS DECIMAL(18,2))) AS [AMOUNT_PAID] " +
+                    "FROM[db_Getgo].[dbo].[TBL_T_BORROWER_LOAN_PLAN_DETAILS] " +
+                    "WHERE COLLECTED_DATE IS NOT NULL " +
+                    "GROUP BY DATEPART(MONTH, COLLECTED_DATE)", con)
+            { })
+            {
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
 }

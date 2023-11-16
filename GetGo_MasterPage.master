@@ -259,6 +259,12 @@
     <script src="../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
     <script src="../bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
     <script src="../plugins/timepicker/bootstrap-timepicker.min.js"></script>
+
+    <script src="../dist/js/demo.js"></script>
+    <script src="../bower_components/Flot/jquery.flot.js"></script>
+    <script src="../bower_components/Flot/jquery.flot.resize.js"></script>
+    <script src="../bower_components/Flot/jquery.flot.pie.js"></script>
+    <script src="../bower_components/Flot/jquery.flot.categories.js"></script>
     <script>
         var _ipaddress = "<%= this.ipAddress %>";
     </script>

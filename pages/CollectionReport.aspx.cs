@@ -14,4 +14,20 @@ public partial class CollectionReport : System.Web.UI.Page
         var data = Borrower.GetCollectionReports();
         return data;
     }
+    
+    [WebMethod]
+    public static string GetLoanRelease()
+    {
+        var report = new Maintenance();
+        var data = report.GetLoanRelease();
+        return data;
+    }
+    
+    [WebMethod]
+    public static string GetLoanCollect()
+    {
+        var report = new Maintenance();
+        var data = report.GetLoanCollect();
+        return data;
+    }
 }

@@ -1,7 +1,10 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/GetGo_MasterPage.master" AutoEventWireup="true" CodeFile="CollectionReport.aspx.cs" Inherits="CollectionReport" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
+    <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../dist/css/AdminLTE.css" rel="stylesheet" />
     <link href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="../bower_components/morris.js/morris.css" rel="stylesheet" />
     <style>
         .box-header.with-border {
             background-color: ghostwhite;
@@ -115,12 +118,12 @@
                     <!-- /.box-header -->
                     <div class="box-body" style="display: flex; justify-content: space-between;">
                         <span id="lblSAVINGS"></span>
-                        
+
                     </div>
                 </div>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <div class="box">
                     <div class="box-header with-border">
                         <h3 class="box-title">Open Loans</h3>
@@ -132,7 +135,7 @@
                 </div>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-6">
                 <div class="box">
                     <div class="box-header with-border">
                         <h3 class="box-title">No. of Active Borrowers</h3>
@@ -143,10 +146,129 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-6">
+                <!-- LINE CHART -->
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><b style="color: red">Loan Release</b> - Monthly</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body chart-responsive">
+                        <div class="chart" id="Release-chart" style="height: 300px;"></div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+
+            <div class="col-md-6">
+                <!-- LINE CHART -->
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><b style="color: red">Loan Collections</b> - Monthly</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body chart-responsive">
+                        <div class="chart" id="Collections-chart" style="height: 300px;"></div>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+
+            <div class="col-md-6">
+                <!-- Bar chart -->
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <i class="fa fa-bar-chart-o"></i>
+
+                        <h3 class="box-title">Number of Loans Release - Monthly</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div id="NumberRelease-chart" style="height: 300px;"></div>
+                    </div>
+                    <!-- /.box-body-->
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <!-- Bar chart -->
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <i class="fa fa-bar-chart-o"></i>
+
+                        <h3 class="box-title">Number of Fully Paid Loans - Monthly</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div id="FullyPaid-chart" style="height: 300px;"></div>
+                    </div>
+                    <!-- /.box-body-->
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <!-- Donut chart -->
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <i class="fa fa-bar-chart-o"></i>
+
+                        <h3 class="box-title">Active Male/Female Borrowers % (All Time)</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse">
+                                <i class="fa fa-minus"></i>
+                            </button>
+                            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div id="donut-chart" style="height: 300px;"></div>
+                    </div>
+                    <!-- /.box-body-->
+                </div>
+            </div>
         </div>
     </section>
 
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="../bower_components/raphael/raphael.min.js"></script>
+    <script src="../bower_components/morris.js/morris.min.js"></script>
+
+    <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="../bower_components/fastclick/lib/fastclick.js"></script>
+    <script src="../dist/js/adminlte.min.js"></script>
+    <%--<script src="../dist/js/demo.js"></script>
+    <script src="../bower_components/Flot/jquery.flot.js"></script>
+    <script src="../bower_components/Flot/jquery.flot.resize.js"></script>
+    <script src="../bower_components/Flot/jquery.flot.pie.js"></script>
+    <script src="../bower_components/Flot/jquery.flot.categories.js"></script>--%>
     <script>
         $(document).ready(function () {
             GetCollectionReports(function (d) {
@@ -168,7 +290,132 @@
                 $('#lblActiveCount').text(d['Table6'][0]['ACTIVE_COUNT']);
 
                 $('#lblSAVINGS').text(d['Table7'][0]['SAVINGS']);
+
+
             });
+
+            GetLoanRelease(function (d) {
+                var line = new Morris.Line({
+                    element: 'Release-chart',
+                    resize: true,
+                    data: d,
+                    xkey: 'RELEASED_MONTH',
+                    ykeys: ['LOAN_AMOUNT'],
+                    labels: ['LOAN_AMOUNT'],
+                    lineColors: ['#3c8dbc'],
+                    parseTime: false,
+                    hideHover: 'auto'
+                });
+            });
+
+            GetLoanCollect(function (d) {
+                var line = new Morris.Line({
+                    element: 'Collections-chart',
+                    resize: true,
+                    data: d,
+                    xkey: 'COLLECTED_DATE',
+                    ykeys: ['AMOUNT_PAID'],
+                    labels: ['AMOUNT COLLECT'],
+                    lineColors: ['#3c8dbc'],
+                    parseTime: false,
+                    hideHover: 'auto'
+                });
+            });
+            /*
+   * BAR CHART
+   * ---------
+   */
+
+            var NumberRelease_data = {
+                data: [['January', 10], ['February', 8], ['March', 4], ['April', 13], ['May', 17], ['June', 9]],
+                color: '#3c8dbc'
+            }
+            $.plot('#NumberRelease-chart', [NumberRelease_data], {
+                grid: {
+                    borderWidth: 1,
+                    borderColor: '#f3f3f3',
+                    tickColor: '#f3f3f3'
+                },
+                series: {
+                    bars: {
+                        show: true,
+                        barWidth: 0.5,
+                        align: 'center'
+                    }
+                },
+                xaxis: {
+                    mode: 'categories',
+                    tickLength: 0
+                }
+            })
+
+            var FullyPaid_data = {
+                data: [['January', 10], ['February', 8], ['March', 4], ['April', 13], ['May', 17], ['June', 9]],
+                color: '#3c8dbc'
+            }
+            $.plot('#FullyPaid-chart', [FullyPaid_data], {
+                grid: {
+                    borderWidth: 1,
+                    borderColor: '#f3f3f3',
+                    tickColor: '#f3f3f3'
+                },
+                series: {
+                    bars: {
+                        show: true,
+                        barWidth: 0.5,
+                        align: 'center'
+                    }
+                },
+                xaxis: {
+                    mode: 'categories',
+                    tickLength: 0
+                }
+            })
+            /* END BAR CHART */
+
+            /*
+     * DONUT CHART
+     * -----------
+     */
+
+            var donutData = [
+                { label: 'Series2', data: 30, color: '#3c8dbc' },
+                { label: 'Series3', data: 20, color: '#0073b7' },
+                { label: 'Series4', data: 50, color: '#00c0ef' }
+            ]
+            $.plot('#donut-chart', donutData, {
+                series: {
+                    pie: {
+                        show: true,
+                        radius: 1,
+                        innerRadius: 0.5,
+                        label: {
+                            show: true,
+                            radius: 2 / 3,
+                            formatter: labelFormatter,
+                            threshold: 0.1
+                        }
+
+                    }
+                },
+                legend: {
+                    show: false
+                }
+            })
+            /*
+             * END DONUT CHART
+             */
+
+            /*
+             * Custom Label formatter
+             * ----------------------
+             */
+            function labelFormatter(label, series) {
+                return '<div style="font-size:13px; text-align:center; padding:2px; color: #fff; font-weight: 600;">'
+                    + label
+                    + '<br>'
+                    + Math.round(series.percent) + '%</div>'
+            }
         });
 
         function GetCollectionReports(callback) {
@@ -181,6 +428,44 @@
                 success: function (e) {
                     var d = JSON.parse(e.d);
                     console.log(d['Table']);
+                    if (callback !== undefined) {
+                        callback(d);
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+        function GetLoanRelease(callback) {
+            $.ajax({
+                url: "CollectionReport.aspx/GetLoanRelease",
+                type: "POST",
+                data: "{}",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (e) {
+                    var d = JSON.parse(e.d);
+                    if (callback !== undefined) {
+                        callback(d);
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+        function GetLoanCollect(callback) {
+            $.ajax({
+                url: "CollectionReport.aspx/GetLoanCollect",
+                type: "POST",
+                data: "{}",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (e) {
+                    var d = JSON.parse(e.d);
                     if (callback !== undefined) {
                         callback(d);
                     }
