@@ -742,7 +742,7 @@ public class Maintenance
         using (var con = new SqlConnection(strConn))
         {
             using (var cmd = new SqlCommand(" DECLARE @LOANCOUNT INT " +
-                 " SET @LOANCOUNT = (SELECT COUNT(LOAN_ID) FROM [TBL_T_BORROWER_LOAN_PLAN_DETAILS] WHERE IS_COMPLETE = 0 AND LOAN_ID = @LOAN_ID)" +
+                 " SET @LOANCOUNT = (SELECT COUNT(LOAN_ID) FROM [TBL_T_BORROWER_LOAN_PLAN_DETAILS] WHERE IS_COMPLETE = 'true' AND LOAN_ID = @LOAN_ID)" +
                  " IF (@LOANCOUNT = 0)" +
                  " BEGIN" +
                  "   UPDATE [TBL_T_USER_LOAN] SET [STATUS] = 'FULLY PAID' WHERE [LOAN_ID] = @LOAN_ID" +
@@ -950,7 +950,7 @@ public class Maintenance
 
                     "SELECT COUNT(LOAN_ID) AS OPEN_LOANS FROM [TBL_T_USER_LOAN] WHERE [STATUS] = 'APPROVED' " +
 
-                    "SELECT COUNT([USER_ID]) AS ACTIVE_COUNT FROM [TBL_M_USER_MASTER] WHERE ISNULL(ACTIVE_FLAG,0) = 1" +
+                    "SELECT COUNT([USER_ID]) AS ACTIVE_COUNT FROM [TBL_M_USER_MASTER] WHERE ISNULL(ACTIVE_FLAG,1) = 1" +
 
                     "SELECT FORMAT(SUM(CAST(A.[AMOUNT] AS DECIMAL(18,2)) - CAST(C.AMOUNT AS DECIMAL(18,2))), '#,0.00') AS SAVINGS " +
                     "FROM [TBL_T_USER_LOAN] A " +
@@ -990,7 +990,7 @@ public class Maintenance
         {
             using (var cmd = new SqlCommand(" SELECT CONCAT(DATEPART(MONTH, COLLECTED_DATE), ' ' , DATENAME(MONTH, DATEADD(MONTH, DATEPART(MONTH, COLLECTED_DATE), -1))) AS COLLECTED_DATE  " +
                     ",SUM(CAST([AMOUNT_PAID] AS DECIMAL(18,2))) AS [AMOUNT_PAID] " +
-                    "FROM[db_Getgo].[dbo].[TBL_T_BORROWER_LOAN_PLAN_DETAILS] " +
+                    "FROM [TBL_T_BORROWER_LOAN_PLAN_DETAILS] " +
                     "WHERE COLLECTED_DATE IS NOT NULL " +
                     "GROUP BY DATEPART(MONTH, COLLECTED_DATE)", con)
             { })

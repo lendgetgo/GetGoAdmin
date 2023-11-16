@@ -575,7 +575,7 @@ function LoadBorrowerListDatatable() {
                             var LOAN_ID_PAYMENT = data[Object.keys(data)[1]];
                             var LOAN_ID = data[Object.keys(data)[2]];
                             var txtAmounttoPaid = $('#txtAmounttoPaid').val();
-                            var LoanAmount = data[Object.keys(data)[0]];
+                            var LoanAmount = data[Object.keys(data)[8]];
                             console.log(data);
                             if (txtAmounttoPaid.length <= 0) {
                                 notification("warning", "Please input Amount to pay!");
