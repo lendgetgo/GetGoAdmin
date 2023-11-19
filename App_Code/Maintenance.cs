@@ -951,26 +951,26 @@ public class Maintenance
                     "SELECT TOP 1 (COUNT(ISNULL(AMOUNT,0)) OVER (PARTITION BY BRANCH)) AS TOTAL_PAID_LOAN_COUNT " +
                     ", FORMAT(SUM(CAST(ISNULL(AMOUNT,0) AS DECIMAL(18, 2))) OVER(PARTITION BY BRANCH), '#,0.00') AS TOTAL_PAID_LOAN_AMOUNT " +
                     "FROM [TBL_T_USER_LOAN] " +
-                    "WHERE[STATUS] = 'FULLY PAID' AND BRANCH = 1 " +
+                    "WHERE[STATUS] = 'FULLY PAID' AND BRANCH = 1 AND RELEASED_DATE BETWEEN @dtFrom AND @dtTo " +
 
                     "SELECT COUNT(ISNULL(LOAN_ID,0)) AS TOTAL_LOAN_DUE " +
                     "FROM [TBL_T_BORROWER_LOAN_PLAN_DETAILS] " +
-                    "WHERE DUE_DATE <= GETDATE() AND ISNULL(IS_COMPLETE, 0) = 0" +
+                    "WHERE DUE_DATE <= GETDATE() AND ISNULL(IS_COMPLETE, 0) = 0 AND DUE_DATE BETWEEN @dtFrom AND @dtTo  " +
 
                     "SELECT COUNT (ISNULL(LOAN_ID,0)) AS COLLECTED_COUNT " +
                     "FROM [TBL_T_BORROWER_LOAN_PLAN_DETAILS] "+
-                    "WHERE COLLECTED_DATE IS NOT NULL " +
+                    "WHERE COLLECTED_DATE IS NOT NULL AND COLLECTED_DATE BETWEEN @dtFrom AND @dtTo " +
 
                     "SELECT COUNT(ISNULL([USER_ID],0)) AS BORROWER_COUNT FROM [TBL_M_USER_MASTER] " +
 
-                    "SELECT COUNT(ISNULL(LOAN_ID,0)) AS OPEN_LOANS FROM [TBL_T_USER_LOAN] WHERE [STATUS] = 'APPROVED' " +
+                    "SELECT COUNT(ISNULL(LOAN_ID,0)) AS OPEN_LOANS FROM [TBL_T_USER_LOAN] WHERE [STATUS] = 'APPROVED' AND RELEASED_DATE BETWEEN @dtFrom AND @dtTo " +
 
                     "SELECT COUNT(ISNULL([USER_ID],0)) AS ACTIVE_COUNT FROM [TBL_M_USER_MASTER] WHERE ISNULL(ACTIVE_FLAG,1) = 1" +
 
                     "SELECT FORMAT(SUM(CAST(ISNULL(A.[AMOUNT],0) AS DECIMAL(18,2)) - CAST(ISNULL(C.AMOUNT,0) AS DECIMAL(18,2))), '#,0.00') AS SAVINGS " +
                     "FROM [TBL_T_USER_LOAN] A " +
                     "LEFT JOIN [TBL_M_LOAN_AMOUNT] C " +
-                    "ON C.INTEREST = A.INTEREST_RATE", con) { })
+                    "ON C.INTEREST = A.INTEREST_RATE WHERE A.RELEASED_DATE BETWEEN @dtFrom AND @dtTo", con) { })
             {
                 cmd.Parameters.AddWithValue("@dtFrom", dtFrom);
                 cmd.Parameters.AddWithValue("@dtTo", dtTo);
@@ -981,7 +981,7 @@ public class Maintenance
         return JsonConvert.SerializeObject(dt);
     }
 
-    public string GetLoanRelease()
+    public string GetLoanRelease(DateTime dtFrom, DateTime dtTo)
     {
         DataTable dt = new DataTable();
         using (var con = new SqlConnection(strConn))
@@ -989,10 +989,12 @@ public class Maintenance
             using (var cmd = new SqlCommand("SELECT CONCAT(DATEPART(MONTH, [RELEASED_DATE]), ' ' , DATENAME(MONTH, DATEADD(MONTH, DATEPART(MONTH, [RELEASED_DATE]), -1))) AS [RELEASED_MONTH] " +
                     ", SUM(CAST([AMOUNT] AS DECIMAL(18, 2))) AS LOAN_AMOUNT " +
                     "FROM [TBL_T_USER_LOAN] " +
-                    "WHERE STATUS IN('APPROVED', 'FULLY PAID') " +
+                    "WHERE STATUS IN('APPROVED', 'FULLY PAID') AND RELEASED_DATE BETWEEN @dtFrom AND @dtTo " +
                     "GROUP BY DATEPART(MONTH, [RELEASED_DATE])", con)
             { })
             {
+                cmd.Parameters.AddWithValue("@dtFrom", dtFrom);
+                cmd.Parameters.AddWithValue("@dtTo", dtTo);
                 using (var da = new SqlDataAdapter(cmd))
                     da.Fill(dt);
             }
@@ -1000,7 +1002,7 @@ public class Maintenance
         return JsonConvert.SerializeObject(dt);
     }
     
-    public string GetLoanCollect()
+    public string GetLoanCollect(DateTime dtFrom, DateTime dtTo)
     {
         DataTable dt = new DataTable();
         using (var con = new SqlConnection(strConn))
@@ -1008,10 +1010,12 @@ public class Maintenance
             using (var cmd = new SqlCommand(" SELECT CONCAT(DATEPART(MONTH, COLLECTED_DATE), ' ' , DATENAME(MONTH, DATEADD(MONTH, DATEPART(MONTH, COLLECTED_DATE), -1))) AS COLLECTED_DATE  " +
                     ",SUM(CAST([AMOUNT_PAID] AS DECIMAL(18,2))) AS [AMOUNT_PAID] " +
                     "FROM [TBL_T_BORROWER_LOAN_PLAN_DETAILS] " +
-                    "WHERE COLLECTED_DATE IS NOT NULL " +
+                    "WHERE COLLECTED_DATE IS NOT NULL AND COLLECTED_DATE BETWEEN @dtFrom AND @dtTo " +
                     "GROUP BY DATEPART(MONTH, COLLECTED_DATE)", con)
             { })
             {
+                cmd.Parameters.AddWithValue("@dtFrom", dtFrom);
+                cmd.Parameters.AddWithValue("@dtTo", dtTo);
                 using (var da = new SqlDataAdapter(cmd))
                     da.Fill(dt);
             }
@@ -1019,7 +1023,7 @@ public class Maintenance
         return JsonConvert.SerializeObject(dt);
     }
     
-    public string GetNumberofRelease()
+    public string GetNumberofRelease(DateTime dtFrom, DateTime dtTo)
     {
         DataTable dt = new DataTable();
         using (var con = new SqlConnection(strConn))
@@ -1027,10 +1031,12 @@ public class Maintenance
             using (var cmd = new SqlCommand("SELECT DATENAME(MONTH, DATEADD(MONTH, DATEPART(MONTH, [RELEASED_DATE]), -1)) AS [RELEASED_MONTH] " +
                             ", COUNT(CAST([AMOUNT] AS DECIMAL(18, 2))) AS LOAN_AMOUNT " +
                         "FROM [TBL_T_USER_LOAN] " +
-                        "WHERE STATUS IN('APPROVED') " +
+                        "WHERE STATUS IN('APPROVED') AND RELEASED_DATE BETWEEN @dtFrom AND @dtTo " +
                         "GROUP BY DATEPART(MONTH, [RELEASED_DATE])", con)
             { })
             {
+                cmd.Parameters.AddWithValue("@dtFrom", dtFrom);
+                cmd.Parameters.AddWithValue("@dtTo", dtTo);
                 using (var da = new SqlDataAdapter(cmd))
                     da.Fill(dt);
             }
@@ -1038,7 +1044,7 @@ public class Maintenance
         return JsonConvert.SerializeObject(dt);
     }
     
-    public string GetFullyPaid()
+    public string GetFullyPaid(DateTime dtFrom, DateTime dtTo)
     {
         DataTable dt = new DataTable();
         using (var con = new SqlConnection(strConn))
@@ -1046,10 +1052,12 @@ public class Maintenance
             using (var cmd = new SqlCommand("SELECT DATENAME(MONTH, DATEADD(MONTH, DATEPART(MONTH, [RELEASED_DATE]), -1)) AS [RELEASED_MONTH] " +
                 ", COUNT(CAST([AMOUNT] AS DECIMAL(18, 2))) AS LOAN_AMOUNT " +
                 "FROM [TBL_T_USER_LOAN] " +
-                "WHERE STATUS IN('FULLY PAID') " +
+                "WHERE STATUS IN('FULLY PAID') AND STATUS_DATE BETWEEN @dtFrom AND @dtTo " +
                 "GROUP BY DATEPART(MONTH, [RELEASED_DATE])", con)
             { })
             {
+                cmd.Parameters.AddWithValue("@dtFrom", dtFrom);
+                cmd.Parameters.AddWithValue("@dtTo", dtTo);
                 using (var da = new SqlDataAdapter(cmd))
                     da.Fill(dt);
             }

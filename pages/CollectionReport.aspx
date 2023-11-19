@@ -301,106 +301,109 @@
                 var dtTo = dt.split('-')[1].trim();
 
                 GetCollectionReports(dtFrom, dtTo, function (d) {
-                    $('#lblLoanCount').text(d['Table'][0]['TOTAL_LOAN_COUNT'] ? d['Table'][0]['TOTAL_LOAN_COUNT'] : 0);
-                    $('#lblLoanAmount').text('P' + d['Table'][0]['TOTAL_LOAN_AMOUNT'] ? 'P' + d['Table'][0]['TOTAL_LOAN_AMOUNT'] : 0);
+                    //if (d['Table'][0]['TOTAL_LOAN_COUNT']) { $('#lblLoanCount').text(d['Table'][0]['TOTAL_LOAN_COUNT']); } else { $('#lblLoanCount').text(0) }
+                    $('#lblLoanCount').text(d['Table'][0] && d['Table'][0]['TOTAL_LOAN_COUNT'] ? d['Table'][0]['TOTAL_LOAN_COUNT'] : 0);
+                    $('#lblLoanAmount').text(d['Table'][0] && d['Table'][0]['TOTAL_LOAN_AMOUNT'] ? 'P' + d['Table'][0]['TOTAL_LOAN_AMOUNT'] : 0);
 
-                    $('#lblLoanPaidCount').text(d['Table1'][0]['TOTAL_PAID_LOAN_COUNT']);
-                    $('#lblLoanPaidAmount').text('P' + d['Table1'][0]['TOTAL_PAID_LOAN_AMOUNT']);
+                    $('#lblLoanPaidCount').text(d['Table1'][0] && d['Table1'][0]['TOTAL_PAID_LOAN_COUNT'] ? d['Table1'][0]['TOTAL_PAID_LOAN_COUNT'] : 0);
+                    $('#lblLoanPaidAmount').text(d['Table1'][0] && d['Table1'][0]['TOTAL_PAID_LOAN_AMOUNT'] ? 'P' + d['Table1'][0]['TOTAL_PAID_LOAN_AMOUNT'] : 0);
 
-                    $('#lblDue').text(d['Table2'][0]['TOTAL_LOAN_DUE']);
+                    $('#lblDue').text(d['Table2'][0] && d['Table2'][0]['TOTAL_LOAN_DUE'] ? d['Table2'][0]['TOTAL_LOAN_DUE'] : 0);
 
 
-                    $('#lblCollected').text(d['Table3'][0]['COLLECTED_COUNT']);
+                    $('#lblCollected').text(d['Table3'][0] && d['Table3'][0]['COLLECTED_COUNT'] ? d['Table3'][0]['COLLECTED_COUNT'] : 0);
 
-                    $('#lblBorrowerCount').text(d['Table4'][0]['BORROWER_COUNT']);
+                    $('#lblBorrowerCount').text(d['Table4'][0] && d['Table4'][0]['BORROWER_COUNT'] ? d['Table4'][0]['BORROWER_COUNT'] : 0);
 
-                    $('#lblOpenLons').text(d['Table5'][0]['OPEN_LOANS']);
+                    $('#lblOpenLons').text(d['Table5'][0] && d['Table5'][0]['OPEN_LOANS'] ? d['Table5'][0]['OPEN_LOANS'] : 0);
 
-                    $('#lblActiveCount').text(d['Table6'][0]['ACTIVE_COUNT']);
+                    $('#lblActiveCount').text(d['Table6'][0] && d['Table6'][0]['ACTIVE_COUNT'] ? d['Table6'][0]['ACTIVE_COUNT'] : 0);
 
-                    $('#lblSAVINGS').text(d['Table7'][0]['SAVINGS']);
+                    $('#lblSAVINGS').text(d['Table7'][0] && d['Table7'][0]['SAVINGS'] ? d['Table7'][0]['SAVINGS'] : 0);
                 });
-            });
-            GetLoanRelease(function (d) {
-                var line = new Morris.Line({
-                    element: 'Release-chart',
-                    resize: true,
-                    data: d,
-                    xkey: 'RELEASED_MONTH',
-                    ykeys: ['LOAN_AMOUNT'],
-                    labels: ['LOAN_AMOUNT'],
-                    lineColors: ['#3c8dbc'],
-                    parseTime: false,
-                    hideHover: 'auto'
-                });
-            });
 
-            GetLoanCollect(function (d) {
-                var line = new Morris.Line({
-                    element: 'Collections-chart',
-                    resize: true,
-                    data: d,
-                    xkey: 'COLLECTED_DATE',
-                    ykeys: ['AMOUNT_PAID'],
-                    labels: ['AMOUNT COLLECT'],
-                    lineColors: ['#3c8dbc'],
-                    parseTime: false,
-                    hideHover: 'auto'
+                GetLoanRelease(dtFrom, dtTo, function (d) {
+                    var line = new Morris.Line({
+                        element: 'Release-chart',
+                        resize: true,
+                        data: d,
+                        xkey: 'RELEASED_MONTH',
+                        ykeys: ['LOAN_AMOUNT'],
+                        labels: ['LOAN_AMOUNT'],
+                        lineColors: ['#3c8dbc'],
+                        parseTime: false,
+                        hideHover: 'auto'
+                    });
                 });
-            });
 
-            GetNumberofRelease(function (d) {
-                var NumberRelease_data = {
-                    //data: [['January', 10], ['February', 8], ['March', 4], ['April', 13], ['May', 17], ['June', 9]],
-                    data: d,
-                    color: '#3c8dbc'
-                }
-                $.plot('#NumberRelease-chart', [NumberRelease_data], {
-                    grid: {
-                        borderWidth: 1,
-                        borderColor: '#f3f3f3',
-                        tickColor: '#f3f3f3'
-                    },
-                    series: {
-                        bars: {
-                            show: true,
-                            barWidth: 0.5,
-                            align: 'center'
-                        }
-                    },
-                    xaxis: {
-                        mode: 'categories',
-                        tickLength: 0
+                GetLoanCollect(dtFrom, dtTo, function (d) {
+                    var line = new Morris.Line({
+                        element: 'Collections-chart',
+                        resize: true,
+                        data: d,
+                        xkey: 'COLLECTED_DATE',
+                        ykeys: ['AMOUNT_PAID'],
+                        labels: ['AMOUNT COLLECT'],
+                        lineColors: ['#3c8dbc'],
+                        parseTime: false,
+                        hideHover: 'auto'
+                    });
+                });
+
+                GetNumberofRelease(dtFrom, dtTo, function (d) {
+
+                    //var NumberRelease_data = {
+                    //    //data: [['January', 10]],
+                    //    data: d,
+                    //    color: '#3c8dbc'
+                    //}
+
+                    //$.plot('#NumberRelease-chart', [NumberRelease_data], {
+                    //    grid: {
+                    //        borderWidth: 1,
+                    //        borderColor: '#f3f3f3',
+                    //        tickColor: '#f3f3f3'
+                    //    },
+                    //    series: {
+                    //        bars: {
+                    //            show: true,
+                    //            barWidth: 0.5,
+                    //            align: 'center'
+                    //        }
+                    //    },
+                    //    xaxis: {
+                    //        mode: 'categories',
+                    //        tickLength: 0
+                    //    }
+                    //})
+                });
+
+                GetFullyPaid(dtFrom, dtTo, function (d) {
+                    var FullyPaid_data = {
+                        // data: [['January', 10], ['February', 8], ['March', 4], ['April', 13], ['May', 17], ['June', 9]],
+                        data: d,
+                        color: '#3c8dbc'
                     }
-                })
-            });
-
-            GetFullyPaid(function (d) {
-                var FullyPaid_data = {
-                    // data: [['January', 10], ['February', 8], ['March', 4], ['April', 13], ['May', 17], ['June', 9]],
-                    data: d,
-                    color: '#3c8dbc'
-                }
-                $.plot('#FullyPaid-chart', [FullyPaid_data], {
-                    grid: {
-                        borderWidth: 1,
-                        borderColor: '#f3f3f3',
-                        tickColor: '#f3f3f3'
-                    },
-                    series: {
-                        bars: {
-                            show: true,
-                            barWidth: 0.5,
-                            align: 'center'
+                    $.plot('#FullyPaid-chart', [FullyPaid_data], {
+                        grid: {
+                            borderWidth: 1,
+                            borderColor: '#f3f3f3',
+                            tickColor: '#f3f3f3'
+                        },
+                        series: {
+                            bars: {
+                                show: true,
+                                barWidth: 0.5,
+                                align: 'center'
+                            }
+                        },
+                        xaxis: {
+                            mode: 'categories',
+                            tickLength: 0
                         }
-                    },
-                    xaxis: {
-                        mode: 'categories',
-                        tickLength: 0
-                    }
-                })
+                    })
+                });
             });
-
 
             GetActiveBygender(function (d) {
                 console.log(d);
@@ -452,7 +455,6 @@
                 dataType: "json",
                 success: function (e) {
                     var d = JSON.parse(e.d);
-                    console.log(d['Table']);
                     if (callback !== undefined) {
                         callback(d);
                     }
@@ -463,11 +465,11 @@
             });
         }
 
-        function GetLoanRelease(callback) {
+        function GetLoanRelease(dtFrom, dtTo, callback) {
             $.ajax({
                 url: "CollectionReport.aspx/GetLoanRelease",
                 type: "POST",
-                data: "{}",
+                data: JSON.stringify({ dtFrom: dtFrom, dtTo: dtTo }),
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (e) {
@@ -482,11 +484,11 @@
             });
         }
 
-        function GetLoanCollect(callback) {
+        function GetLoanCollect(dtFrom, dtTo, callback) {
             $.ajax({
                 url: "CollectionReport.aspx/GetLoanCollect",
                 type: "POST",
-                data: "{}",
+                data: JSON.stringify({ dtFrom: dtFrom, dtTo: dtTo }),
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (e) {
@@ -501,18 +503,53 @@
             });
         }
 
-        function GetNumberofRelease(callback) {
+        function GetNumberofRelease(dtFrom, dtTo, callback) {
             $.ajax({
                 url: "CollectionReport.aspx/GetNumberofRelease",
                 type: "POST",
-                data: "{}",
+                data: JSON.stringify({ dtFrom: dtFrom, dtTo: dtTo }),
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (e) {
                     var d = JSON.parse(e.d);
-                    if (callback !== undefined) {
-                        callback(d);
+                    var result = [];
+                    for (var i = 0; i < d.length ; i++) {
+                        var obj = d[i];
+                        for (var key in obj) {
+                            var value = obj[key];
+                            result.push(value);
+                        }
                     }
+                    console.log(result);
+                    var NumberRelease_data = {
+                        //data: [['January', 10]],
+                        data: [result],
+                        color: '#3c8dbc'
+                    }
+                    console.log(NumberRelease_data);
+                    $.plot('#NumberRelease-chart', [NumberRelease_data], {
+                        grid: {
+                            borderWidth: 1,
+                            borderColor: '#f3f3f3',
+                            tickColor: '#f3f3f3'
+                        },
+                        series: {
+                            bars: {
+                                show: true,
+                                barWidth: 0.5,
+                                align: 'center'
+                            }
+                        },
+                        xaxis: {
+                            mode: 'categories',
+                            tickLength: 0
+                        }
+                    })
+                    
+                    //if (callback !== undefined) {
+                        
+                    //    callback(d);
+                    //}
                 },
                 error: function (errormessage) {
                     alert(errormessage.responseText);
@@ -520,11 +557,11 @@
             });
         }
 
-        function GetFullyPaid(callback) {
+        function GetFullyPaid(dtFrom, dtTo, callback) {
             $.ajax({
                 url: "CollectionReport.aspx/GetFullyPaid",
                 type: "POST",
-                data: "{}",
+                data: JSON.stringify({ dtFrom: dtFrom, dtTo: dtTo }),
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (e) {

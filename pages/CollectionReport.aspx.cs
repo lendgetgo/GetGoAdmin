@@ -16,34 +16,34 @@ public partial class CollectionReport : System.Web.UI.Page
     }
     
     [WebMethod]
-    public static string GetLoanRelease()
+    public static string GetLoanRelease(DateTime dtFrom, DateTime dtTo)
     {
         var report = new Maintenance();
-        var data = report.GetLoanRelease();
+        var data = report.GetLoanRelease(dtFrom, dtTo);
         return data;
     }
     
     [WebMethod]
-    public static string GetLoanCollect()
+    public static string GetLoanCollect(DateTime dtFrom, DateTime dtTo)
     {
         var report = new Maintenance();
-        var data = report.GetLoanCollect();
+        var data = report.GetLoanCollect(dtFrom, dtTo);
         return data;
     }
     
     [WebMethod]
-    public static string GetNumberofRelease()
+    public static string GetNumberofRelease(DateTime dtFrom, DateTime dtTo)
     {
         var report = new Maintenance();
-        var data = report.GetNumberofRelease();
+        var data = report.GetNumberofRelease(dtFrom, dtTo);
         return data;
     }
     
     [WebMethod]
-    public static string GetFullyPaid()
+    public static string GetFullyPaid(DateTime dtFrom, DateTime dtTo)
     {
         var report = new Maintenance();
-        var data = report.GetFullyPaid();
+        var data = report.GetFullyPaid(dtFrom, dtTo);
         return data;
     }
     
