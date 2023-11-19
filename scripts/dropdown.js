@@ -1,4 +1,15 @@
 ﻿$(document).ready(function () {
+    $('#txtLoanAmount').on('click', function () {
+        $("#txtLoanAmount").find('option').prop('disabled', false);
+        $('#txtLoanAmount').find('option').each(function (i, e) {
+            var opt = $(e);
+            console.log(opt.text());
+            if (opt.text() > _CREDIT_LIMIT) {
+                opt.prop('disabled', true);
+            }
+        })
+        console.log(_CREDIT_LIMIT);
+    });
     GetLoanAmount(function (e) {
         $("#txtLoanAmount").html("");
         $('<option/>', {

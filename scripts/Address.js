@@ -47,6 +47,24 @@
 
                 $("#txtCity").change(function () {
                     $("#txtZipCode").val($("#txtCity").find(':selected').attr('data-zipcode'));
+                    var CITY_CODE = $("#txtCity").val();
+                    GetBarangay(CITY_CODE, function (e) {
+                        $("#txtBarangay").html("");
+                        $('<option/>', {
+                            value: 'none',
+                            text: 'Please select'
+                        }).appendTo($("#txtBarangay"));
+                        for (var i in e) {
+                            $('<option/>', {
+                                value: e[i]['BRGY_CODE'],
+                                text: e[i]['BRGY_DESC'],
+                                'style':  "text-transform: uppercase" 
+                            }).appendTo($("#txtBarangay"));
+                        }
+                    });
+                    //$('#txtBarangay option').each(function () {
+                    //    $(this).text($(this).text().toUpperCase());
+                    //});
                 });
             });
         });
@@ -98,6 +116,26 @@ function GetCity(PROVINCE_CODE, callback) {
         url: "SharedService.asmx/GetCity",
         type: "POST",
         data: JSON.stringify({ PROVINCE_CODE: PROVINCE_CODE }),
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (e) {
+            var d = JSON.parse(e.d)
+            console.log(d);
+            if (callback !== undefined) {
+                callback(d);
+            }
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}
+
+function GetBarangay(CITY_CODE, callback) {
+    $.ajax({
+        url: "SharedService.asmx/GetBarangay",
+        type: "POST",
+        data: JSON.stringify({ CITY_CODE: CITY_CODE }),
         contentType: "application/json;charset=utf-8",
         dataType: "json",
         success: function (e) {

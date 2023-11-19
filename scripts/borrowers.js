@@ -1,11 +1,173 @@
 ﻿var currentLocation1 = window.location.href;
-
+var BORROWER_USER_ID;
+var BORROWER_NAME;
+var _CONTACTNO;
+var _emailaddress;
+var _CREDIT_LIMIT;
 $(document).ready(function () {
     $('#datepicker').datepicker({
         autoclose: true
     })
     if (currentLocation1.includes('Borrowers.aspx')) {
         LoadBorrowerListDatatable();
+
+        $('#tblBorrowers').on('click', 'td.editor-delete', function (e) {
+            var tblBorrowers_delete = $('#tblBorrowers').DataTable();
+            var data = tblBorrowers_delete.row($(this).closest('tr')).data();
+            var USER_ID_delete = data[Object.keys(data)[0]];
+            if (confirm("Are you sure you want to delete this data?")) {
+                tblBorrowers.row($(this).closest('tr')).remove().draw();
+                DeleteBorrower(USER_ID_delete, function () {
+                    notification('success', 'Deleted successfully!');
+                });
+            }
+        });
+
+        $('#tblBorrowers').on('click', 'td.editor-edit', function (e) {
+            var tblBorrowers_edit = $('#tblBorrowers').DataTable();
+            var data = tblBorrowers_edit.row($(this).closest('tr')).data();
+            var USER_ID_edit = data[Object.keys(data)[0]];
+
+            $('#borrowerModal').modal('show');
+            $('#USERID').val(USER_ID_edit);
+
+            GetBorrowerDetails(USER_ID_edit, function (d) {
+                $('#txtFirstName').val(d[0]['FIRST_NAME']);
+                $('#txtMiddleName').val(d[0]['MIDDLE_NAME']);
+                $('#txtLastName').val(d[0]['LAST_NAME']);
+                $('#txtExtensionName').val(d[0]['EXTENSION_NAME']);
+                $('#txtEmail').val(d[0]['EMAIL_ADDRESS']);
+                $('#txtLandlinePhone').val(d[0]['CONTACTNO']);
+                $('#txtRegion').val(d[0]['REGION']);
+                $('#txtProvince').val(d[0]['PROVINCE']);
+                $('#txtCity').val(d[0]['CITY']);
+                $('#txtAge').val(d[0]['AGE']);
+                $('#datepicker').val(d[0]['DATE_OF_BIRTH']);
+                $('#slctSex').val(d[0]['SEX']);
+                $('#txtMaritalStatus').val(d[0]['MARITAL_STATUS']);
+                $('#txtSpouseName').val(d[0]['SPOUSE_NAME']);
+                $('#txtBarangay').val(d[0]['BARANGAY']);
+                $('#txtZipCode').val(d[0]['ZIPCODE']);
+                $('#txtStNo').val(d[0]['STREET_NO']);
+                $('#txtBusinessName').val(d[0]['BUSINESS_NAME']);
+                $('#txtMonthlyGrossIncome').val(d[0]['MONTHLY_GROSS']);
+                $('#txtCoguarantorName').val(d[0]['CO_GUARANTOR_NAME']);
+                $('#slctNatureOfWork').val(d[0]['NATURE_OF_WORK']);
+                $('#txtCharacterReference').val(d[0]['CHARACTER_REFERENCE']);
+                $('#txtCoguarantorPhoneNumber').val(d[0]['CO_GUARANTOR_NUMBER']);
+            });
+
+        });
+
+        $('#btnAddloanModal').on('click', function () {
+            $('#datepicker1').datepicker({
+                autoclose: true
+            })
+            GetRemainingCredit(BORROWER_USER_ID, function (e) {
+                $('#txtBorrowerName').val(BORROWER_NAME);
+                if ($('#btnAddloanModal').text() == "Add Loan") {
+                    $('#btnAddloanModal').text("Back");
+                    $('#addloan_content').css("display", "block");
+                }
+                else {
+                    $('#btnAddloanModal').text("Add Loan");
+                    $('#addloan_content').css("display", "none");
+                }
+            });
+        });
+
+        $('#tblBorrowersLoan').on('click', 'button.btn-status', function (e) {
+            var tblBorrowersLoan_view = $('#tblBorrowersLoan').DataTable();
+            var data = tblBorrowersLoan_view.row($(this).closest('tr')).data();
+            var LOAN_ID = data[Object.keys(data)[0]];
+            GetBorrowerLoanDetails(LOAN_ID, function (e) {
+                $('#BorrrowerLoanModalDetails').modal('show');
+                if ($("#tblBorrowersLoanHeader").hasClass("dataTable")) {
+                    $("#tblBorrowersLoanHeader").DataTable().destroy();
+                }
+                $('#tblBorrowersLoanHeader').DataTable({
+                    data: e,
+                    dom: 'Blfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ],
+                    columns: [
+                        { "data": "LOAN_ID" },
+                        { "data": "COMPLETE_NAME" },
+                        { "data": "RELEASED_DATE" },
+                        { "data": "START_DATE" },
+                        { "data": "INSTALLMENT_PLAN" },
+                        { "data": "PROCESSING_FEE" },
+                        { "data": "PENALTY" },
+                        { "data": "AMOUNT" },
+                        { "data": "AMOUNT_PAID" },
+                        { "data": "BALANCE" },
+                        { "data": "STATUS" }
+                    ],
+                    columnDefs: [{ "targets": 0, visible: false }],
+                    searching: false,
+                    info: false,
+                    ordering: false,
+                    paging: false
+                });
+            });
+
+            GetBorrowerLoanPlanList(LOAN_ID);
+        });
+
+        $('#tblBorrowersLoanDetails').on('click', 'button.btn-pay', function (e) {
+            var tblBorrowers_delete = $('#tblBorrowersLoanDetails').DataTable();
+            var data = tblBorrowers_delete.row($(this).closest('tr')).data();
+            var LOAN_ID_PAYMENT = data[Object.keys(data)[1]];
+            var LOAN_ID = data[Object.keys(data)[2]];
+            var txtAmounttoPaid = parseFloat($('#txtAmounttoPaid').val());
+            var LoanAmount = parseFloat(data[Object.keys(data)[0]]);
+            //console.log(txtAmounttoPaid);
+            if (txtAmounttoPaid.length <= 0) {
+                notification("warning", "Please input Amount to pay!");
+            } else {
+                if (txtAmounttoPaid <= LoanAmount) {
+                    $.ajax({
+
+                        url: 'Borrowers.aspx/repayment',
+                        type: 'POST',
+                        contentType: 'application/json;charset=utf-8',
+                        dataType: 'json',
+                        data: JSON.stringify({ LOAN_ID: LOAN_ID_PAYMENT, AmounttoPaid: txtAmounttoPaid }),
+                        success: function (e) {
+                            var d = JSON.parse(e.d)
+                            notification('success', 'Updated successfully!');
+                            //SaveAttachment(d[0].USER_ID);
+                            $.ajax({
+
+                                url: 'Borrowers.aspx/fullrepayment',
+                                type: 'POST',
+                                contentType: 'application/json;charset=utf-8',
+                                dataType: 'json',
+                                data: JSON.stringify({ LOAN_ID: LOAN_ID, LOAN_DETAILS_ID: LOAN_ID_PAYMENT }),
+                                success: function (e) {
+                                    var d = JSON.parse(e.d)
+                                    var output = 'You have successfully paid worth P' + txtAmounttoPaid;
+                                    GetBorrowerLoanPlanList(LOAN_ID);
+                                    displayUserLoanDetails();
+                                    GetUserID(output, _emailaddress, function () { });
+                                    console.log(output + ' ' + _CONTACTNO);
+                                    SendSMS(_CONTACTNO, output, function () { });
+                                },
+                                error: function (e) {
+                                    console.log(e);
+                                }
+                            });
+                        },
+                        error: function (e) {
+                            console.log(e);
+                        }
+                    });
+                } else {
+                    alert("Pay exact or less than amount.");
+                }
+            }
+        });
     }
 
     $('#txtLandlinePhone').on('input', function () {
@@ -13,6 +175,14 @@ $(document).ready(function () {
         if ($('#txtLandlinePhone').val().length > 10) {
             alert('invalid number');
             $('#txtLandlinePhone').val('');
+        }
+    });
+
+    $('#txtCoguarantorPhoneNumber').on('input', function () {
+        this.value = this.value.replace(/\D/g, '');
+        if ($('#txtCoguarantorPhoneNumber').val().length > 10) {
+            alert('invalid number');
+            $('#txtCoguarantorPhoneNumber').val('');
         }
     });
 
@@ -41,9 +211,9 @@ $(document).ready(function () {
             var EXTENSION_NAME = $('#txtExtensionName').val();
             var EMAIL_ADDRESS = $('#txtEmail').val();
             var CONTACTNO = $('#txt63').val() + '' + $('#txtLandlinePhone').val();
-            var REGION = $('#txtRegion').val();
-            var PROVINCE = $('#txtProvince').val();
-            var CITY = $('#txtCity').val();
+            var REGION = $('#txtRegion').text();
+            var PROVINCE = $('#txtProvince').text();
+            var CITY = $('#txtCity').text();
             var AGE = $('#txtAge').val();
             var DATE_OF_BIRTH = $('#datepicker').val();
             var SEX = $('#slctSex').val();
@@ -57,7 +227,7 @@ $(document).ready(function () {
             var CO_GUARANTOR_NAME = $('#txtCoguarantorName').val();
             var NATURE_OF_WORK = $('#slctNatureOfWork').val();
             var CHARACTER_REFERENCE = $('#txtCharacterReference').val();
-            var CO_GUARANTOR_NUMBER = $('#txtCoguarantorPhoneNumber').val();
+            var CO_GUARANTOR_NUMBER = $('#txt63').val() + '' + $('#txtCoguarantorPhoneNumber').val();
             //var USER_ID = $('#slctType').val();
             //var USER_ID = $('#txtNatureofCollateral').val();
             //var USER_ID = $('#txtDescription').val();
@@ -66,7 +236,7 @@ $(document).ready(function () {
             var CREATED_BY = '12345';
             var UPDATED_BY = 'ABCDE';
 
-            if ($('#txtAge').val().trim() != "") {
+            if (($('#txtAge').val().trim() != "") && ($('#txtLandlinePhone').val().trim() != "" )) {
                 GetUserDetail_Addborrower(EMAIL_ADDRESS, function () {
                     var _request = {
                         FIRST_NAME: FIRST_NAME,
@@ -146,8 +316,8 @@ $(document).ready(function () {
                 //var USER_ID = $('#txtDescription').val();
                 //var USER_ID = $('#txtStatus').val();
                 //var USER_ID = $('#txtValue').val();
-                var CREATED_BY = '12345';
-                var UPDATED_BY = 'ABCDE';
+                var CREATED_BY = 'admin';
+                var UPDATED_BY = 'admin';
                 var _request = {};
 
                 _request.USER_ID = USER_ID;
@@ -255,10 +425,12 @@ $(document).ready(function () {
 
         }
     }
+
+    
 });
 
 function LoadBorrowerListDatatable() {
-    var BORROWER_USER_ID;
+    
     LoadBorrowerList(function (e) {
         if ($("#tblBorrowers").hasClass("dataTable")) {
             $("#tblBorrowers").DataTable().destroy();
@@ -305,56 +477,9 @@ function LoadBorrowerListDatatable() {
             ],
             columnDefs: [{ "targets": 0, visible: false }, { "targets": 1, visible: false }]
         });
+    });
 
-        $('#tblBorrowers').on('click', 'td.editor-delete', function (e) {
-            var tblBorrowers_delete = $('#tblBorrowers').DataTable();
-            var data = tblBorrowers_delete.row($(this).closest('tr')).data();
-            var USER_ID_delete = data[Object.keys(data)[0]];
-            if (confirm("Are you sure you want to delete this data?")) {
-                tblBorrowers.row($(this).closest('tr')).remove().draw();
-                DeleteBorrower(USER_ID_delete, function () {
-                    notification('success', 'Deleted successfully!');
-                });
-            }
-        });
-
-        $('#tblBorrowers').on('click', 'td.editor-edit', function (e) {
-            var tblBorrowers_edit = $('#tblBorrowers').DataTable();
-            var data = tblBorrowers_edit.row($(this).closest('tr')).data();
-            var USER_ID_edit = data[Object.keys(data)[0]];
-
-            $('#borrowerModal').modal('show');
-            $('#USERID').val(USER_ID_edit);
-            
-            GetBorrowerDetails(USER_ID_edit, function (d) {
-                $('#txtFirstName').val(d[0]['FIRST_NAME']);
-                $('#txtMiddleName').val(d[0]['MIDDLE_NAME']);
-                $('#txtLastName').val(d[0]['LAST_NAME']);
-                $('#txtExtensionName').val(d[0]['EXTENSION_NAME']);
-                $('#txtEmail').val(d[0]['EMAIL_ADDRESS']);
-                $('#txtLandlinePhone').val(d[0]['CONTACTNO']);
-                $('#txtRegion').val(d[0]['REGION']);
-                $('#txtProvince').val(d[0]['PROVINCE']);
-                $('#txtCity').val(d[0]['CITY']);
-                $('#txtAge').val(d[0]['AGE']);
-                $('#datepicker').val(d[0]['DATE_OF_BIRTH']);
-                $('#slctSex').val(d[0]['SEX']);
-                $('#txtMaritalStatus').val(d[0]['MARITAL_STATUS']);
-                $('#txtSpouseName').val(d[0]['SPOUSE_NAME']);
-                $('#txtBarangay').val(d[0]['BARANGAY']);
-                $('#txtZipCode').val(d[0]['ZIPCODE']);
-                $('#txtStNo').val(d[0]['STREET_NO']);
-                $('#txtBusinessName').val(d[0]['BUSINESS_NAME']);
-                $('#txtMonthlyGrossIncome').val(d[0]['MONTHLY_GROSS']);
-                $('#txtCoguarantorName').val(d[0]['CO_GUARANTOR_NAME']);
-                $('#slctNatureOfWork').val(d[0]['NATURE_OF_WORK']);
-                $('#txtCharacterReference').val(d[0]['CHARACTER_REFERENCE']);
-                $('#txtCoguarantorPhoneNumber').val(d[0]['CO_GUARANTOR_NUMBER']);
-            });
-
-        });
-
-        $('#tblBorrowers').on('click', 'td.editor-plus', function (e) {
+    $('#tblBorrowers').on('click', 'td.editor-plus', function (e) {
             $('#AddLoanModal').modal('show');
             $('#datepicker1').datepicker({
                 autoclose: true
@@ -418,278 +543,74 @@ function LoadBorrowerListDatatable() {
             });
         });
 
-        $('#tblBorrowers').on('click', 'td.editor-view', function (e) {
-            $('#BorrrowerLoanModal').modal('show');
-            var tblBorrowers_Borrowerloan = $('#tblBorrowers').DataTable();
-            var data = tblBorrowers_Borrowerloan.row($(this).closest('tr')).data();
-            BORROWER_USER_ID = data[Object.keys(data)[0]];
-            var BORROWER_NAME = data[Object.keys(data)[1]];
-            var AGE = data[Object.keys(data)[2]];
-            var GENDER = data[Object.keys(data)[3]];
-            if (GENDER == 'F') { GENDER = 'FEMALE' } else { GENDER = 'MALE'}
-            
-            //console.log(data);
-            $.ajax({
-                url: "Borrowers.aspx/GetBorrowerLoan",
-                type: "POST",
-                data: JSON.stringify({ _USER_ID: BORROWER_USER_ID }),
-                contentType: "application/json;charset=utf-8", 
-                dataType: "json",
-                success: function (e) {
-                    var d = JSON.parse(e.d)
-                    
-                    GetBorrowerDetails(BORROWER_USER_ID, function (b) {
-                        $('#lblName').text(BORROWER_NAME);
-                        $('#lblAge').text(AGE);
-                        $('#lblSex').text(GENDER);
-                        $('#lblBusinessName').text(b[0]['BUSSINESS_NAME']);
-                        $('#lblStreet').text(b[0]['STREET_NO'] + ' ' + b[0]['BARANGAY']);
-                        $('#lblCity').text(b[0]['CITY']);
-                        $('#lblProvince').text(b[0]['PROVINCE']);
-                        $('#lblZipcode').text(b[0]['ZIPCODE']);
-                        $('#lblLandline').text('N/A');
-                        $('#lblEmail').text(b[0]['EMAIL_ADDRESS']);
-                        $('#lblContactNo').text(b[0]['CONTACTNO']);
+    $('#tblBorrowers').on('click', 'td.editor-view', function (e) {
+        $('#BorrrowerLoanModal').modal('show');
+        var tblBorrowers_Borrowerloan = $('#tblBorrowers').DataTable();
+        var data = tblBorrowers_Borrowerloan.row($(this).closest('tr')).data();
+        BORROWER_USER_ID = data[Object.keys(data)[0]];
+        BORROWER_NAME = data[Object.keys(data)[1]];
+        var AGE = data[Object.keys(data)[2]];
+        var GENDER = data[Object.keys(data)[3]];
+        if (GENDER == 'F') { GENDER = 'FEMALE' } else { GENDER = 'MALE' }
 
-                        $(() => {
-
-                            GetData({
-                                url: "Borrowers.aspx/GetSessionValue"
-                            }).then(e => {
-                                let data = JSON.parse(e.d);
-                                //console.log(data);
-                                ProfileImage.attr('src', baseUrl + data[0].PROFILE_PIC);
-                            });
-                        });
-
-                        const GetData = (config) => {
-                            config.type = config.type || "POST";
-                            config.data = config.data || "";
-                            return $.ajax({
-                                type: config.type,
-                                url: config.url,
-                                data: config.data,
-                                contentType: "application/json; charset=utf-8",
-                                dataType: "json",
-                                success: data => { },
-                                error: function (xhr, status, error) {
-                                    if (xhr.status === 413) {
-                                        alert('Request Entity Too Large: The file you are trying to upload is too large.');
-                                    } else {
-                                        alert('An error occurred during the request. Status: ' + xhr.status + ' - ' + xhr.statusText);
-                                    }
-                                    $('#ERROR').text('Error: ' + error);
-
-                                }
+        //console.log(data);
 
 
-                            });
+        GetBorrowerDetails(BORROWER_USER_ID, function (b) {
+            $('#lblName').text(BORROWER_NAME);
+            $('#lblAge').text(AGE);
+            $('#lblSex').text(GENDER);
+            $('#lblBusinessName').text(b[0]['BUSSINESS_NAME']);
+            $('#lblStreet').text(b[0]['STREET_NO'] + ' ' + b[0]['BARANGAY']);
+            $('#lblCity').text(b[0]['CITY']);
+            $('#lblProvince').text(b[0]['PROVINCE']);
+            $('#lblZipcode').text(b[0]['ZIPCODE']);
+            $('#lblLandline').text('N/A');
+            $('#lblEmail').text(b[0]['EMAIL_ADDRESS']);
+            $('#lblContactNo').text(b[0]['CONTACTNO']);
+            _CONTACTNO = b[0]['CONTACTNO'];
+            _emailaddress = b[0]['EMAIL_ADDRESS'];
 
-                        };
+            $(() => {
 
-                        if ($("#tblBorrowersLoan").hasClass("dataTable")) {
-                            $("#tblBorrowersLoan").DataTable().destroy();
-                        }
-                        $('#tblBorrowersLoan').DataTable({
-                            data: d,
-                            dom: 'Blfrtip',
-                            buttons: [
-                                'copy', 'csv', 'excel', 'pdf', 'print'
-                            ],
-                            columns: [
-                                { "data": "LOAN_ID" },
-                                { "data": "COMPLETE_NAME" },
-                                { "data": "RELEASED_DATE" },
-                                { "data": "START_DATE" },
-                                { "data": "INSTALLMENT_PLAN" },
-                                { "data": "PROCESSING_FEE" },
-                                { "data": "PENALTY" },
-                                { "data": "AMOUNT" },
-                                { "data": "AMOUNT_PAID" },
-                                { "data": "BALANCE" },
-                                {
-                                    "data": "STATUS",
-                                    render: function (data, type, row) {
-                                        if (data == 'ONGOING') {
-                                            return '<button type="button" class="btn btn-block btn-primary btn-xs btn-status">' + data + '</button>';
-                                        }
-                                        if (data == 'FULLY PAID') {
-                                            return '<button type="button" class="btn btn-block btn-success btn-xs btn-status">' + data + '</button>';
-                                        }
-                                        if (data == 'APPROVED') {
-                                            return '<button type="button" class="btn btn-block btn-info btn-xs btn-status">' + data + '</button>';
-                                        }
-                                    }
-                                },
-                                //{
-                                //    "data": null,
-                                //    "className": "dt-center editor-edit",
-                                //    "defaultContent": '<i class="glyphicon glyphicon-edit" style="cursor: pointer"/>',
-                                //    "orderable": false
-                                //},
-                            ],
-                            columnDefs: [{ "targets": 0, visible: false }]
-                        });
-
-                        $('#tblBorrowersLoan').on('click', 'button.btn-status', function (e) {
-                            var tblBorrowersLoan_view = $('#tblBorrowersLoan').DataTable();
-                            var data = tblBorrowersLoan_view.row($(this).closest('tr')).data();
-                            var LOAN_ID = data[Object.keys(data)[0]];
-                            GetBorrowerLoanDetails(LOAN_ID, function (e) {
-                                $('#BorrrowerLoanModalDetails').modal('show');
-                                if ($("#tblBorrowersLoanHeader").hasClass("dataTable")) {
-                                    $("#tblBorrowersLoanHeader").DataTable().destroy();
-                                }
-                                $('#tblBorrowersLoanHeader').DataTable({
-                                    data: e,
-                                    dom: 'Blfrtip',
-                                    buttons: [
-                                        'copy', 'csv', 'excel', 'pdf', 'print'
-                                    ],
-                                    columns: [
-                                        { "data": "LOAN_ID" },
-                                        { "data": "COMPLETE_NAME" },
-                                        { "data": "RELEASED_DATE" },
-                                        { "data": "START_DATE" },
-                                        { "data": "INSTALLMENT_PLAN" },
-                                        { "data": "PROCESSING_FEE" },
-                                        { "data": "PENALTY" },
-                                        { "data": "AMOUNT" },
-                                        { "data": "AMOUNT_PAID" },
-                                        { "data": "BALANCE" },
-                                        { "data": "STATUS" }
-                                    ],
-                                    columnDefs: [{ "targets": 0, visible: false }],
-                                    searching: false,
-                                    info: false,
-                                    ordering: false,
-                                    paging: false
-                                });
-                            });
-
-                            GetBorrowerLoanPlanList(LOAN_ID);
-                        });
-                        $('#tblBorrowersLoanDetails').on('click', 'button.btn-pay', function (e) {
-                            var tblBorrowers_delete = $('#tblBorrowersLoanDetails').DataTable();
-                            var data = tblBorrowers_delete.row($(this).closest('tr')).data();
-                            var LOAN_ID_PAYMENT = data[Object.keys(data)[1]];
-                            var LOAN_ID = data[Object.keys(data)[2]];
-                            var txtAmounttoPaid = $('#txtAmounttoPaid').val();
-                            var LoanAmount = data[Object.keys(data)[0]];
-                            console.log(data);
-                            if (txtAmounttoPaid.length <= 0) {
-                                notification("warning", "Please input Amount to pay!");
-                            } else {
-                                if (txtAmounttoPaid <= LoanAmount) {
-                                    $.ajax({
-
-                                        url: 'Borrowers.aspx/repayment',
-                                        type: 'POST',
-                                        contentType: 'application/json;charset=utf-8',
-                                        dataType: 'json',
-                                        data: JSON.stringify({ LOAN_ID: LOAN_ID_PAYMENT, AmounttoPaid: txtAmounttoPaid }),
-                                        success: function (e) {
-                                            var d = JSON.parse(e.d)
-                                            notification('success', 'Updated successfully!');
-                                            //SaveAttachment(d[0].USER_ID);
-                                            $.ajax({
-
-                                                url: 'Borrowers.aspx/fullrepayment',
-                                                type: 'POST',
-                                                contentType: 'application/json;charset=utf-8',
-                                                dataType: 'json',
-                                                data: JSON.stringify({ LOAN_ID: LOAN_ID, LOAN_DETAILS_ID: LOAN_ID_PAYMENT }),
-                                                success: function (e) {
-                                                    var d = JSON.parse(e.d)
-                                                    GetBorrowerLoanPlanList(LOAN_ID);
-                                                    $.ajax({
-                                                        url: "Borrowers.aspx/GetBorrowerLoan",
-                                                        type: "POST",
-                                                        data: JSON.stringify({ _USER_ID: BORROWER_USER_ID }),
-                                                        contentType: "application/json;charset=utf-8",
-                                                        dataType: "json",
-                                                        success: function (e) {
-                                                            var d = JSON.parse(e.d)
-
-                                                            if ($("#tblBorrowersLoan").hasClass("dataTable")) {
-                                                                $("#tblBorrowersLoan").DataTable().destroy();
-                                                            }
-                                                            $('#tblBorrowersLoan').DataTable({
-                                                                data: d,
-                                                                dom: 'Blfrtip',
-                                                                buttons: [
-                                                                    'copy', 'csv', 'excel', 'pdf', 'print'
-                                                                ],
-                                                                columns: [
-                                                                    { "data": "LOAN_ID" },
-                                                                    { "data": "COMPLETE_NAME" },
-                                                                    { "data": "RELEASED_DATE" },
-                                                                    { "data": "START_DATE" },
-                                                                    { "data": "INSTALLMENT_PLAN" },
-                                                                    { "data": "PROCESSING_FEE" },
-                                                                    { "data": "PENALTY" },
-                                                                    { "data": "AMOUNT" },
-                                                                    { "data": "AMOUNT_PAID" },
-                                                                    { "data": "BALANCE" },
-                                                                    {
-                                                                        "data": "STATUS",
-                                                                        render: function (data, type, row) {
-                                                                            if (data == 'ONGOING') {
-                                                                                return '<button type="button" class="btn btn-block btn-primary btn-xs btn-status">' + data + '</button>';
-                                                                            }
-                                                                            if (data == 'FULLY PAID') {
-                                                                                return '<button type="button" class="btn btn-block btn-success btn-xs btn-status">' + data + '</button>';
-                                                                            }
-                                                                            if (data == 'APPROVED') {
-                                                                                return '<button type="button" class="btn btn-block btn-info btn-xs btn-status">' + data + '</button>';
-                                                                            }
-                                                                        }
-                                                                    },
-                                                                ],
-                                                                columnDefs: [{ "targets": 0, visible: false }]
-                                                            });
-                                                        }
-                                                    });
-
-                                                },
-                                                error: function (e) {
-                                                    console.log(e);
-                                                }
-                                            });
-                                        },
-                                        error: function (e) {
-                                            console.log(e);
-                                        }
-                                    });
-                                } else {
-                                    alert("Pay exact or less than amount.");
-                                }
-                            }
-                        });
-
-                    });
-
-                    $('#btnAddloanModal').on('click', function () {
-                        $('#datepicker1').datepicker({
-                            autoclose: true
-                        })
-                        $('#txtBorrowerName').val(BORROWER_NAME);
-                        if ($('#btnAddloanModal').text() == "Add Loan") {
-                            $('#btnAddloanModal').text("Back");
-                            $('#addloan_content').css("display", "block");
-                        }
-                        else {
-                            $('#btnAddloanModal').text("Add Loan");
-                            $('#addloan_content').css("display", "none");
-                        }
-                    });
-                },
-                error: function (errormessage) {
-                    alert(errormessage.responseText);
-                }
+                GetData({
+                    url: "Borrowers.aspx/GetSessionValue"
+                }).then(e => {
+                    let data = JSON.parse(e.d);
+                    //console.log(data);
+                    ProfileImage.attr('src', baseUrl + data[0].PROFILE_PIC);
+                });
             });
-            
+
+            const GetData = (config) => {
+                config.type = config.type || "POST";
+                config.data = config.data || "";
+                return $.ajax({
+                    type: config.type,
+                    url: config.url,
+                    data: config.data,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: data => { },
+                    error: function (xhr, status, error) {
+                        if (xhr.status === 413) {
+                            alert('Request Entity Too Large: The file you are trying to upload is too large.');
+                        } else {
+                            alert('An error occurred during the request. Status: ' + xhr.status + ' - ' + xhr.statusText);
+                        }
+                        $('#ERROR').text('Error: ' + error);
+
+                    }
+
+
+                });
+
+            };
+
+            displayUserLoanDetails();
+
         });
+
     });
 
     $('#btnAddLoan').on('click', function () {
@@ -832,6 +753,56 @@ function LoadBorrowerListDatatable() {
                 }
 
             })
+        }
+    });
+}
+
+function displayUserLoanDetails() {
+    $.ajax({
+        url: "Borrowers.aspx/GetBorrowerLoan",
+        type: "POST",
+        data: JSON.stringify({ _USER_ID: BORROWER_USER_ID }),
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (e) {
+            var d = JSON.parse(e.d)
+            if ($("#tblBorrowersLoan").hasClass("dataTable")) {
+                $("#tblBorrowersLoan").DataTable().destroy();
+            }
+            $('#tblBorrowersLoan').DataTable({
+                data: d,
+                dom: 'Blfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ],
+                columns: [
+                    { "data": "LOAN_ID" },
+                    { "data": "COMPLETE_NAME" },
+                    { "data": "RELEASED_DATE" },
+                    { "data": "START_DATE" },
+                    { "data": "INSTALLMENT_PLAN" },
+                    { "data": "PROCESSING_FEE" },
+                    { "data": "PENALTY" },
+                    { "data": "AMOUNT" },
+                    { "data": "AMOUNT_PAID" },
+                    { "data": "BALANCE" },
+                    {
+                        "data": "STATUS",
+                        render: function (data, type, row) {
+                            if (data == 'ONGOING') {
+                                return '<button type="button" class="btn btn-block btn-primary btn-xs btn-status">' + data + '</button>';
+                            }
+                            if (data == 'FULLY PAID') {
+                                return '<button type="button" class="btn btn-block btn-success btn-xs btn-status">' + data + '</button>';
+                            }
+                            if (data == 'APPROVED') {
+                                return '<button type="button" class="btn btn-block btn-info btn-xs btn-status">' + data + '</button>';
+                            }
+                        }
+                    },
+                ],
+                columnDefs: [{ "targets": 0, visible: false }]
+            });
         }
     });
 }
@@ -1038,73 +1009,67 @@ function GetInstallmentTypeList(callback) {
         }
     });
 }
-//const filesArray = [];
 
-//const Attachment = () => {
-//    var files = $('.custom-file-input');
+function SendSMS(_contactNo, _AuthenticationCode, callback) {
+    $.ajax({
+        url: "Borrowers.aspx/SendSMS",
+        type: "POST",
+        data: JSON.stringify({ ContactNo: _contactNo, AutheticationCode: _AuthenticationCode }),
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (e) {
+            var d = JSON.parse(e.d)
+            if (callback !== undefined) {
+                callback(d);
+            }
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}
 
-//    files.each(function (index, fileInput) {
-//        var formData = new FormData();
-//        formData.append("file", fileInput.files[0]);
-//        formData.append("classification", fileInput.getAttribute("data-classification")); // Append the correct classification
-//        filesArray.push(formData);
-//    });
-//    GetData({
+function GetUserID(_query, _input, callback) {
+    $.ajax({
+        url: "Borrowers.aspx/GetUserID",
+        type: "POST",
+        data: JSON.stringify({ Vcode: _query, input: _input }),
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (e) {
+            var d = JSON.parse(e.d)
+            if (callback !== undefined) {
+                callback(d);
+            }
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}
 
-//        url: "Borrowers.aspx/GetLoanID",
-//        data: JSON.stringify({
-//            userid: $('#USERID').val() 
-//        })
-//    }).then(e => {
-//        let result = JSON.parse(e.d);
-//        /*       alert('uploadarray goes');*/
-
-//        LoadingInfo.text('Verifying attached file');
-
-//        upload(filesArray, result[0].LOAN_ID);
-//    }
-//    );
-
-//    upload(filesArray, result[0].LOAN_ID);
-//}
-//const upload = (filesArray, loanID) => {
-
-//    //for (const value of files.values()) {
-//    //    console.log(value);
-//    //}
-//    // Create a new FormData object to store all files
-//    const allFilesFormData = new FormData();
-
-//    // Append each FormData object to the new FormData
-//    filesArray.forEach(formData => {
-//        for (const [key, value] of formData.entries()) {
-//            allFilesFormData.append(key, value);
-//        }
-//    });
-//    //for (const value of allFilesFormData.values()) {
-//    //    console.log(value);
-//    //}
-//    LoadingInfo.text('Processing your loan');
-//    /*alert("Uploading now to file server ");*/
-//    $.ajax({
-//        type: 'post',
-//        url: '../pages/Handlers/FileUpload.ashx?USERID=' + $('#USERID').val() + '&LOANID=' + loanID,
-//        data: allFilesFormData,
-//        cache: false,
-//        processData: false,
-//        contentType: false,
-//        success: function (e) {
-//                   alert('success');
-//        },
-//        error: function (xhr, status, error) {
-//            if (xhr.status === 413) {
-//                alert('Request Entity Too Large: The file you are trying to upload is too large.');
-//            } else {
-//                alert('An error occurred during the request. Status: ' + xhr.status + ' - ' + xhr.statusText);
-//            }
-//            $('#ERROR').text('Error: ' + error);
-//            loaderContainer.hide();
-//        }
-
-//    })
-//    }
+function GetRemainingCredit(USER_ID_CREDIT, callback) {
+    $.ajax({
+        url: "Borrowers.aspx/GetRemainingCredit",
+        type: "POST",
+        data: JSON.stringify({ _USER_ID: USER_ID_CREDIT }),
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (e) {
+            var d = JSON.parse(e.d)
+            _CREDIT_LIMIT = parseFloat(d[0]['REMAINING_CREDIT']);
+            //console.log(d[0]['REMAINING_CREDIT']);
+            if (callback !== undefined) {
+                if (_CREDIT_LIMIT > 3000) {
+                    callback(d);
+                }
+                else {
+                    notification("warning", "Cannot file loan!, You only have P" + _CREDIT_LIMIT + "!");
+                }
+            }
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}

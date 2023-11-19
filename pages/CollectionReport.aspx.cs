@@ -8,10 +8,10 @@ public partial class CollectionReport : System.Web.UI.Page
     }
 
     [WebMethod]
-    public static string GetCollectionReports()
+    public static string GetCollectionReports(DateTime dtFrom, DateTime dtTo)
     {
         var Borrower = new Maintenance();
-        var data = Borrower.GetCollectionReports();
+        var data = Borrower.GetCollectionReports(dtFrom, dtTo);
         return data;
     }
     

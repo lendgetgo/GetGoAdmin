@@ -5,6 +5,7 @@
     <link href="../dist/css/AdminLTE.css" rel="stylesheet" />
     <link href="../bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
     <link href="../bower_components/morris.js/morris.css" rel="stylesheet" />
+    <link href="../bower_components/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet" />
     <style>
         .box-header.with-border {
             background-color: ghostwhite;
@@ -20,7 +21,26 @@
     </style>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
-    <section class="content">
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label>Date range:</label>
+
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                    </div>
+                    <input type="text" class="form-control pull-right" id="reservation">
+                </div>
+                <!-- /.input group -->
+            </div>
+            <input type='button' id='btn' class="btn btn-success" value='Print Report' onclick='printtag("DivIdToPrint");'>
+        </div>
+    </div>
+    
+    <section class="content" id="DivIdToPrint">
+        <label><h3>Collection Reports</h3></label>
         <div class="row">
             <div class="col-md-6">
                 <div class="box">
@@ -264,6 +284,9 @@
     <script src="../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="../bower_components/fastclick/lib/fastclick.js"></script>
     <script src="../dist/js/adminlte.min.js"></script>
+
+    <script src="../bower_components/moment/min/moment.min.js"></script>
+    <script src="../bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
     <%--<script src="../dist/js/demo.js"></script>
     <script src="../bower_components/Flot/jquery.flot.js"></script>
     <script src="../bower_components/Flot/jquery.flot.resize.js"></script>
@@ -271,29 +294,33 @@
     <script src="../bower_components/Flot/jquery.flot.categories.js"></script>--%>
     <script>
         $(document).ready(function () {
-            GetCollectionReports(function (d) {
-                $('#lblLoanCount').text(d['Table'][0]['TOTAL_LOAN_COUNT']);
-                $('#lblLoanAmount').text('P' + d['Table'][0]['TOTAL_LOAN_AMOUNT']);
+            $('#reservation').daterangepicker();
+            $('#reservation').on('change', function () {
+                var dt = $('#reservation').val();
+                var dtFrom = dt.split('-')[0].trim();
+                var dtTo = dt.split('-')[1].trim();
 
-                $('#lblLoanPaidCount').text(d['Table1'][0]['TOTAL_PAID_LOAN_COUNT']);
-                $('#lblLoanPaidAmount').text('P' + d['Table1'][0]['TOTAL_PAID_LOAN_AMOUNT']);
+                GetCollectionReports(dtFrom, dtTo, function (d) {
+                    $('#lblLoanCount').text(d['Table'][0]['TOTAL_LOAN_COUNT'] ? d['Table'][0]['TOTAL_LOAN_COUNT'] : 0);
+                    $('#lblLoanAmount').text('P' + d['Table'][0]['TOTAL_LOAN_AMOUNT'] ? 'P' + d['Table'][0]['TOTAL_LOAN_AMOUNT'] : 0);
 
-                $('#lblDue').text(d['Table2'][0]['TOTAL_LOAN_DUE']);
+                    $('#lblLoanPaidCount').text(d['Table1'][0]['TOTAL_PAID_LOAN_COUNT']);
+                    $('#lblLoanPaidAmount').text('P' + d['Table1'][0]['TOTAL_PAID_LOAN_AMOUNT']);
 
-
-                $('#lblCollected').text(d['Table3'][0]['COLLECTED_COUNT']);
-
-                $('#lblBorrowerCount').text(d['Table4'][0]['BORROWER_COUNT']);
-
-                $('#lblOpenLons').text(d['Table5'][0]['OPEN_LOANS']);
-
-                $('#lblActiveCount').text(d['Table6'][0]['ACTIVE_COUNT']);
-
-                $('#lblSAVINGS').text(d['Table7'][0]['SAVINGS']);
+                    $('#lblDue').text(d['Table2'][0]['TOTAL_LOAN_DUE']);
 
 
+                    $('#lblCollected').text(d['Table3'][0]['COLLECTED_COUNT']);
+
+                    $('#lblBorrowerCount').text(d['Table4'][0]['BORROWER_COUNT']);
+
+                    $('#lblOpenLons').text(d['Table5'][0]['OPEN_LOANS']);
+
+                    $('#lblActiveCount').text(d['Table6'][0]['ACTIVE_COUNT']);
+
+                    $('#lblSAVINGS').text(d['Table7'][0]['SAVINGS']);
+                });
             });
-
             GetLoanRelease(function (d) {
                 var line = new Morris.Line({
                     element: 'Release-chart',
@@ -350,7 +377,7 @@
 
             GetFullyPaid(function (d) {
                 var FullyPaid_data = {
-                   // data: [['January', 10], ['February', 8], ['March', 4], ['April', 13], ['May', 17], ['June', 9]],
+                    // data: [['January', 10], ['February', 8], ['March', 4], ['April', 13], ['May', 17], ['June', 9]],
                     data: d,
                     color: '#3c8dbc'
                 }
@@ -376,8 +403,9 @@
 
 
             GetActiveBygender(function (d) {
+                console.log(d);
                 var donutData = [
-                    { label: 'Female', data: d, color: '#3c8dbc' },
+                    { label: 'Female', data: 10, color: '#3c8dbc' },
                 ]
                 $.plot('#donut-chart', donutData, {
                     series: {
@@ -415,11 +443,11 @@
             }
         });
 
-        function GetCollectionReports(callback) {
+        function GetCollectionReports(dtFrom, dtTo, callback) {
             $.ajax({
                 url: "CollectionReport.aspx/GetCollectionReports",
                 type: "POST",
-                data: "{}",
+                data: JSON.stringify({ dtFrom: dtFrom, dtTo: dtTo }),
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
                 success: function (e) {
@@ -528,6 +556,23 @@
                     alert(errormessage.responseText);
                 }
             });
+        }
+
+        function printtag(tagid) {
+            var hashid = "#" + tagid;
+            var tagname = $(hashid).prop("tagName").toLowerCase();
+            var attributes = "";
+            var attrs = document.getElementById(tagid).attributes;
+            $.each(attrs, function (i, elem) {
+                attributes += " " + elem.name + " ='" + elem.value + "' ";
+            })
+            var divToPrint = $(hashid).html();
+            var head = "<html><head>" + $("head").html() + "</head>";
+            var allcontent = head + "<body  onload='window.print()' >" + "<" + tagname + attributes + ">" + divToPrint + "</" + tagname + ">" + "</body></html>";
+            var newWin = window.open('', 'Print-Window');
+            newWin.document.open();
+            newWin.document.write(allcontent);
+            newWin.document.close();
         }
     </script>
 </asp:Content>

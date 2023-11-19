@@ -877,13 +877,13 @@
     <script src="../datatable/jquery.dataTables.min.js"></script>
     <script src="../bower_components/datatables.net/js/dataTables.editor.min.js"></script>
     <script src="../datatable/dataTables.bootstrap.min.js"></script>
-     <script src="../datatable/dataTables.buttons.min.js"></script>
+     <%--<script src="../datatable/dataTables.buttons.min.js"></script>
     <script src="../datatable/buttons.html5.min.js"></script>
     <script src="../datatable/buttons.print.min.js"></script>
     <script src="../datatable/htmlencode.min.js"></script>
     <script src="../datatable/jszip.min.js"></script>
     <script src="../datatable/moment.min.js"></script>
     <script src="../datatable/pdfmake.min.js"></script>
-    <script src="../datatable/vfs_fonts.js"></script>
+    <script src="../datatable/vfs_fonts.js"></script>--%>
 </asp:Content>
 

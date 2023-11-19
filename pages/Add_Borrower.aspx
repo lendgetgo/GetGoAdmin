@@ -173,7 +173,8 @@
                                     <label for="txtBarangay" class="col-sm-3 control-label">Barangay</label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtBarangay" placeholder="Barangay">
+                                        <%--<input type="text" class="form-control" id="txtBarangay" placeholder="Barangay">--%>
+                                        <select class="form-control" id="txtBarangay" style="text-transform:uppercase"></select>
                                     </div>
                                 </div>
                                 <div class="form-group">

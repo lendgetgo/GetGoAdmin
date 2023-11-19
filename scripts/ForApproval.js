@@ -1,13 +1,19 @@
 ﻿var currentLocation1 = window.location.href;
 var baseUrl = "http://lendgetgo-001-site1.atempurl.com/UploadedFiles/";
 //var baseUrl = "http://" + _ipaddress + "/Getgo/Images/";
+
+var USER_ID;
+var USER_ID_loan;
+var _STATUS;
+var _CONTACTNO;
+var _emailaddress;
+var USER_ID_view;
+var USER_ID_loan_W;
 $(document).ready(function () {
+    
+
     $('#btnLoan').on('click', function () {
-        var USER_ID;
-        var USER_ID_loan;
-        var _STATUS;
-        var _CONTACTNO;
-        var _emailaddress;
+
 
         $('#btnLoan').removeClass('btn btn-primary').addClass('btn btn-success');
         $('#btnAccount').removeClass('btn btn-success').addClass('btn btn-primary');
@@ -20,141 +26,54 @@ $(document).ready(function () {
         $('#AccountContent').hide();
         $('#RepaymentsContent').hide();
         $('#WithdrawalContent').hide();
+
         $('#btnApproveUser_Loan').on('click', function (e) {
-            _STATUS = 'APPROVED';
-            $('#LoanModal').modal('toggle');
-            UpdateBorrowerLoanStatus(USER_ID_loan, _STATUS, function () { });
-            displayLoanForApproval();
-            var output = 'Your Loan ' + USER_ID_loan + ' was successfully Approved!';
-            SendSMS(_CONTACTNO, output, function () {
-                GetUserID(output, _emailaddress, function () { });
-            });
-            notification("success", "Successfully Approved!");
-            _emailaddress = '';
+            if (confirm("Are you sure you want to Approve?")) {
+                _STATUS = 'APPROVED';
+                UpdateBorrowerLoanStatus(USER_ID_loan, _STATUS, function () {
+                    _emailaddress = '';
+                });
+            }
         });
-
-        function displayLoanForApproval() {
-
-            //var _tblLoan;
-            GetUserLoanForApproval(function (e) {
-                if ($("#tblLoan").hasClass("dataTable")) {
-                    $("#tblLoan").DataTable().destroy();
-                }
-                $('#tblLoan').DataTable({
-                    data: e,
-                    columns: [
-                        {
-                            "data": null,
-                            "className": "dt-center editor-view",
-                            "defaultContent": '<i class="glyphicon glyphicon-open" style="cursor: pointer"/> view',
-                            "orderable": false
-                        },
-                        { "data": "COMPLETE_NAME" },
-                        { "data": "STATUS_DATE" }
-                    ]
-                });
-
-                $('#tblLoan').on('click', 'td.editor-view', function (e) {
-                    var tblBorrowers_delete = $('#tblLoan').DataTable();
-                    var data = tblBorrowers_delete.row($(this).closest('tr')).data();
-                    USER_ID_loan = data[Object.keys(data)[0]];
-                    USER_ID = data[Object.keys(data)[1]];
-
-                    $('#LoanModal').modal('show');
-
-                    $.ajax({
-                        url: "SharedService.asmx/GetUSelectedserDetail",
-                        type: "POST",
-                        data: JSON.stringify({ _USER_ID: USER_ID }),
-                        contentType: "application/json;charset=utf-8",
-                        dataType: "json",
-                        success: function (e) {
-                            var d = JSON.parse(e.d)
-                            //console.log(d);
-                            _CONTACTNO = d[0]['CONTACTNO'];
-                            $('#lblName_Loan').text(d[0]['FIRST_NAME'] + ' ' + d[0]['LAST_NAME']);
-                            $('#lblAge_Loan').text(d[0]['AGE'] + ' ');
-                            $('#lblSex_Loan').text(d[0]['SEX']);
-                            $('#lblBusinessName_Loan').text(d[0]['BUSSINESS_NAME']);
-                            $('#lblStreet_Loan').text(d[0]['STREET_NO'] + ' ' + d[0]['BARANGAY']);
-                            $('#lblCity_Loan').text(d[0]['CITY']);
-                            $('#lblProvince_Loan').text(d[0]['PROVINCE']);
-                            $('#lblZipcode_Loan').text(d[0]['ZIPCODE']);
-                            $('#lblLandline_Loan').text('N/A');
-                            $('#lblEmail_Loan').text(d[0]['EMAIL_ADDRESS']);
-                            $('#lblContactNo_Loan').text(d[0]['CONTACTNO']);
-                            _emailaddress = d[0]['EMAIL_ADDRESS'];
-
-                            $.ajax({
-                                url: "Notification.aspx/GetUserLoanDetailsForApproval",
-                                type: "POST",
-                                data: JSON.stringify({ _LOAN_ID: USER_ID_loan }),
-                                contentType: "application/json;charset=utf-8",
-                                dataType: "json",
-                                success: function (e) {
-                                    var d = JSON.parse(e.d)
-                                    console.log(d);
-                                    $('#lblLoan_Amount').text(d[0]['AMOUNT']);
-                                    $('#lblInstallment_Plan').text(d[0]['INSTALLMENT_PLAN']);
-                                    $('#lblMonthsTo_Pay').text(d[0]['MONTHSTOPAY']);
-                                    $('#lblBranch_Name').text(d[0]['BRANCH']);
-                                    $('#lblMonthly_Payment').text(d[0]['MONTHLYPAYMENT']);
-                                    $('#lblNature_of_Work').text(d[0]['NATURE_OF_WORK']);
-                                    $('#lblMonthly_Gross_Income').text(d[0]['MONTHLY_GROSS']);
-                                    $('#lblCharacter_Reference').text(d[0]['CHARACTER_REFERENCE']);
-                                    $('#lblCo-guarantor').text(d[0]['CO_GUARANTOR_NAME']);
-                                    $('#lblPhone_of_Co-guarantor').text(d[0]['CO_GUARANTOR_NUMBER']);
-                                }
-                            });
-
-                            $.ajax({
-                                url: "Notification.aspx/GetNewAccountImages",
-                                type: "POST",
-                                data: JSON.stringify({ userid: USER_ID }),
-                                contentType: "application/json;charset=utf-8",
-                                dataType: "json",
-                                success: function (e) {
-
-
-                                    var d = JSON.parse(e.d)
-
-                                    var defaultImage = "../dist/img/avatar.png";
-
-                                    // Set profile picture with default image if the source is null or empty
-                                    $('#profilePic_loan').attr('src', d[0].PROFILE_IMAGE ? baseUrl + d[0].PROFILE_IMAGE : defaultImage);
-
-                                    // Set front face image with default image if the source is null or empty
-                                    $('#imgFrontFace_Loan').attr('src', d[0].FRONTFACE ? baseUrl + d[0].FRONTFACE : defaultImage);
-                                    $('#lblFrontFace_Loan').attr('href', d[0].FRONTFACE ? baseUrl + d[0].FRONTFACE : '');
-                                    // Set back face image with default image if the source is null or empty
-                                    $('#imgBackFace_Loan').attr('src', d[0].BACKFACE ? baseUrl + d[0].BACKFACE : defaultImage);
-                                    $('#lblBackFace_Loan').attr('href', d[0].BACKFACE ? baseUrl + d[0].BACKFACE : defaultImage);
-
-                                    // Set signature image with default image if the source is null or empty
-                                    $('#imgSignature_Loan').attr('src', d[0].SIGNATURE_ ? baseUrl + d[0].SIGNATURE_ : defaultImage);
-                                    $('#lblSignature_Loan').attr('href', d[0].SIGNATURE_ ? baseUrl + d[0].SIGNATURE_ : defaultImage);
-
-                                    console.log(d);
-                                }
-                            });
-
-                        }
-                    });
-                });
-            });
-        }
-
     });
-
+   
     $('#btnAccount').on('click', function () {
         $('#btnAccount').removeClass('btn btn-primary').addClass('btn btn-success');
         $('#btnLoan').removeClass('btn btn-success').addClass('btn btn-primary');
         $('#btnWithdrawal').removeClass('btn btn-success').addClass('btn btn-primary');
         $('#btnRepayments').removeClass('btn btn-success').addClass('btn btn-primary');
+
+        displayUsersForApproval();
+
         $('#AccountContent').show();
         $('#LoanContent').hide();
         $('#RepaymentsContent').hide();
         $('#WithdrawalContent').hide();
+
+        $('#btnApproveUser').on('click', function () {
+            var _AMOUNT = $('#txtCreditLimit').val();
+            if (confirm("Are you sure you want to Approve?")) {
+                UpdateCreditLimitForApproval(USER_ID_view, _AMOUNT, function () {
+                    $.ajax({
+                        url: "Notification.aspx/CountForApproval",
+                        type: "POST",
+                        data: "{}",
+                        contentType: "application/json;charset=utf-8",
+                        dataType: "json",
+                        success: function (e) {
+                            var d = JSON.parse(e.d)
+
+                            $('#txtNotificationCount').text(d[0]["NOTIF"]);
+                        },
+                        error: function (errormessage) {
+                            alert(errormessage.responseText);
+                        }
+                    });
+
+
+                });
+            }
+        });
     });
 
     $('#btnWithdrawal').on('click', function () {
@@ -163,102 +82,16 @@ $(document).ready(function () {
         $('#btnWithdrawal').removeClass('btn btn-primary').addClass('btn btn-success');
         $('#btnRepayments').removeClass('btn btn-success').addClass('btn btn-primary');
 
-        var USER_ID_loan_W;
-        var _CONTACTNO_W;
-        var _emailaddress_w;
-
-        GetUserWithdrawalForApproval(function (e) {
-            if ($("#tblRepayments").hasClass("dataTable")) {
-                $("#tblRepayments").DataTable().destroy();
-            }
-            $('#tblRepayments').DataTable({
-                data: e,
-                columns: [
-                    {
-                        "data": null,
-                        "className": "dt-center editor-view-w",
-                        "defaultContent": '<i class="glyphicon glyphicon-open" style="cursor: pointer"/> view',
-                        "orderable": false
-                    },
-                    { "data": "COMPLETE_NAME" },
-                    { "data": "CREATED_DATE" }
-                ]
-            });
-
-            $('#tblRepayments').on('click', 'td.editor-view-w', function (e) {
-                var tblBorrowers_delete = $('#tblRepayments').DataTable();
-                var data = tblBorrowers_delete.row($(this).closest('tr')).data();
-                USER_ID_loan_W = data[Object.keys(data)[0]];
-                var USER_ID_W = data[Object.keys(data)[1]];
-                console.log(USER_ID_loan_W);
-                $('#WithdrawalModal').modal('show');
-
-                $.ajax({
-                    url: "SharedService.asmx/GetUSelectedserDetail",
-                    type: "POST",
-                    data: JSON.stringify({ _USER_ID: USER_ID_W }),
-                    contentType: "application/json;charset=utf-8",
-                    dataType: "json",
-                    success: function (e) {
-                        var d = JSON.parse(e.d)
-                        _CONTACTNO_W = d[0]['CONTACTNO'];
-                        $('#lblName_W').text(d[0]['FIRST_NAME'] + ' ' + d[0]['LAST_NAME']);
-                        $('#lblAge_W').text(d[0]['AGE'] + ' ');
-                        $('#lblSex_W').text(d[0]['SEX']);
-                        $('#lblBusinessName_W').text(d[0]['BUSSINESS_NAME']);
-                        $('#lblStreet_W').text(d[0]['STREET_NO'] + ' ' + d[0]['BARANGAY']);
-                        $('#lblCity_W').text(d[0]['CITY']);
-                        $('#lblProvince_W').text(d[0]['PROVINCE']);
-                        $('#lblZipcode_W').text(d[0]['ZIPCODE']);
-                        $('#lblLandline_W').text('N/A');
-                        $('#lblEmail_W').text(d[0]['EMAIL_ADDRESS']);
-                        $('#lblContactNo_W').text(d[0]['CONTACTNO']);
-                        _emailaddress_w = d[0]['EMAIL_ADDRESS'];
-
-                        $.ajax({
-                            url: "Notification.aspx/GetUserLoanDetailsForApproval",
-                            type: "POST",
-                            data: JSON.stringify({ _LOAN_ID: USER_ID_loan_W }),
-                            contentType: "application/json;charset=utf-8",
-                            dataType: "json",
-                            success: function (e) {
-                                var d = JSON.parse(e.d)
-                                console.log(d);
-                                $('#lblLoan_Amount_W').text(d[0]['AMOUNT']);
-                                $('#lblInstallment_Plan_W').text(d[0]['INSTALLMENT_PLAN']);
-                                $('#lblMonthsTo_Pay_W').text(d[0]['MONTHSTOPAY']);
-                                $('#lblBranch_Name_W').text(d[0]['BRANCH']);
-                                $('#lblMonthly_Payment_W').text(d[0]['MONTHLYPAYMENT']);
-                                $('#lblNature_of_Work_W').text(d[0]['NATURE_OF_WORK']);
-                                $('#lblMonthly_Gross_Income_W').text(d[0]['MONTHLY_GROSS']);
-                                $('#lblCharacter_Reference_W').text(d[0]['CHARACTER_REFERENCE']);
-                                $('#lblCo-guarantor_W').text(d[0]['CO_GUARANTOR_NAME']);
-                                $('#lblPhone_of_Co-guarantor_W').text(d[0]['CO_GUARANTOR_NUMBER']);
-                                
-                            }
-                        });
-                    }
-                });
-            });
-        });
+        displayWithrawalForApproval();
+        
 
         $('#AccountContent').hide();
         $('#LoanContent').hide();
         $('#RepaymentsContent').show();
         $('#WithdrawalContent').hide();
+
         $('#btnNotifyBorrower').click(function () {
-            $('#WithdrawalModal').modal('toggle');
-            UpdateBorrowerWithdrawalStatus(USER_ID_loan_W, function () {
-                var tblBorrowers_W = $('#tblRepayments').DataTable();
-                tblBorrowers_W.row($(this).closest('tr')).remove().draw();
-            });
-            var output = 'Your Withdrawal Request was successfully Approved!';
-            //SendSMS(_CONTACTNO_W, output, function () {
-            console.log(_emailaddress_w);
-                GetUserID(output, _emailaddress_w, function () { });
-            //});
-            notification("success", "Successfully Approved!");
-            _emailaddress_w = '';
+            UpdateBorrowerWithdrawalStatus(USER_ID_loan_W, function () { });
         });
     });
 
@@ -276,6 +109,242 @@ $(document).ready(function () {
 
     });
 
+    ///// USERS FRO APPROVAL 
+    $('#tblUsers').on('click', 'td.editor-view', function (e) {
+        var tblBorrowers_delete = $('#tblUsers').DataTable();
+        var data = tblBorrowers_delete.row($(this).closest('tr')).data();
+        USER_ID_view = data[Object.keys(data)[1]];
+        console.log(USER_ID_view);
+        $('#UserModal').modal('show');
+
+        $.ajax({
+            url: "SharedService.asmx/GetUSelectedserDetail",
+            type: "POST",
+            data: JSON.stringify({ _USER_ID: USER_ID_view }),
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (e) {
+                var d = JSON.parse(e.d)
+                //GetBorrowerDetails(BORROWER_USER_ID, function (b) {
+                $('#lblName').text(d[0]['FIRST_NAME'] + ' ' + d[0]['LAST_NAME']);
+                $('#lblAge').text(d[0]['AGE'] + ' ');
+                $('#lblSex').text(d[0]['SEX']);
+                $('#lblBusinessName').text(d[0]['BUSSINESS_NAME']);
+                $('#lblStreet').text(d[0]['STREET_NO'] + ' ' + d[0]['BARANGAY']);
+                $('#lblCity').text(d[0]['CITY']);
+                $('#lblProvince').text(d[0]['PROVINCE']);
+                $('#lblZipcode').text(d[0]['ZIPCODE']);
+                $('#lblLandline').text('N/A');
+                $('#lblEmail').text(d[0]['EMAIL_ADDRESS']);
+                $('#lblContactNo').text(d[0]['CONTACTNO']);
+                _emailaddress = d[0]['EMAIL_ADDRESS'];
+                _CONTACTNO = d[0]['CONTACTNO'];
+                $.ajax({
+                    url: "Notification.aspx/GetNewAccountImages",
+                    type: "POST",
+                    data: JSON.stringify({ userid: USER_ID_view }),
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (e) {
+
+
+                        var d = JSON.parse(e.d)
+
+                        var defaultImage = "../dist/img/avatar.png";
+
+                        // Set profile picture with default image if the source is null or empty
+                        $('#profilePic').attr('src', d[0].PROFILE_IMAGE ? baseUrl + d[0].PROFILE_IMAGE : defaultImage);
+
+                        // Set front face image with default image if the source is null or empty
+                        $('#imgFrontFace').attr('src', d[0].FRONTFACE ? baseUrl + d[0].FRONTFACE : defaultImage);
+                        $('#lblFrontFace').text(d[0].FRONTFACE ? baseUrl + d[0].FRONTFACE : '');
+                        // Set back face image with default image if the source is null or empty
+                        $('#imgBackFace').attr('src', d[0].BACKFACE ? baseUrl + d[0].BACKFACE : defaultImage);
+                        $('#lblBackFace').text(d[0].BACKFACE ? baseUrl + d[0].BACKFACE : defaultImage);
+
+                        // Set signature image with default image if the source is null or empty
+                        $('#imgSignature').attr('src', d[0].SIGNATURE_ ? baseUrl + d[0].SIGNATURE_ : defaultImage);
+                        $('#lblSignature').text(d[0].SIGNATURE_ ? baseUrl + d[0].SIGNATURE_ : defaultImage);
+
+                        console.log(d);
+                    }
+                });
+                //});
+            }
+
+        });
+
+    });
+
+    ///// LOAN FOR APPROVAL
+    $('#tblLoan').on('click', 'td.editor-view', function (e) {
+        var tblBorrowers_delete = $('#tblLoan').DataTable();
+        var data = tblBorrowers_delete.row($(this).closest('tr')).data();
+        USER_ID_loan = data[Object.keys(data)[0]];
+        USER_ID = data[Object.keys(data)[1]];
+
+        $('#LoanModal').modal('show');
+
+        $.ajax({
+            url: "SharedService.asmx/GetUSelectedserDetail",
+            type: "POST",
+            data: JSON.stringify({ _USER_ID: USER_ID }),
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (e) {
+                var d = JSON.parse(e.d)
+                //console.log(d);
+                $('#lblName_Loan').text(d[0]['FIRST_NAME'] + ' ' + d[0]['LAST_NAME']);
+                $('#lblAge_Loan').text(d[0]['AGE'] + ' ');
+                $('#lblSex_Loan').text(d[0]['SEX']);
+                $('#lblBusinessName_Loan').text(d[0]['BUSSINESS_NAME']);
+                $('#lblStreet_Loan').text(d[0]['STREET_NO'] + ' ' + d[0]['BARANGAY']);
+                $('#lblCity_Loan').text(d[0]['CITY']);
+                $('#lblProvince_Loan').text(d[0]['PROVINCE']);
+                $('#lblZipcode_Loan').text(d[0]['ZIPCODE']);
+                $('#lblLandline_Loan').text('N/A');
+                $('#lblEmail_Loan').text(d[0]['EMAIL_ADDRESS']);
+                $('#lblContactNo_Loan').text(d[0]['CONTACTNO']);
+
+                _CONTACTNO = d[0]['CONTACTNO'];
+                _emailaddress = d[0]['EMAIL_ADDRESS'];
+
+                $.ajax({
+                    url: "Notification.aspx/GetUserLoanDetailsForApproval",
+                    type: "POST",
+                    data: JSON.stringify({ _LOAN_ID: USER_ID_loan }),
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (e) {
+                        var d = JSON.parse(e.d)
+                        console.log(d);
+                        $('#lblLoan_Amount').text(d[0]['AMOUNT']);
+                        $('#lblInstallment_Plan').text(d[0]['INSTALLMENT_PLAN']);
+                        $('#lblMonthsTo_Pay').text(d[0]['MONTHSTOPAY']);
+                        $('#lblBranch_Name').text(d[0]['BRANCH']);
+                        $('#lblMonthly_Payment').text(d[0]['MONTHLYPAYMENT']);
+                        $('#lblNature_of_Work').text(d[0]['NATURE_OF_WORK']);
+                        $('#lblMonthly_Gross_Income').text(d[0]['MONTHLY_GROSS']);
+                        $('#lblCharacter_Reference').text(d[0]['CHARACTER_REFERENCE']);
+                        $('#lblCo-guarantor').text(d[0]['CO_GUARANTOR_NAME']);
+                        $('#lblPhone_of_Co-guarantor').text(d[0]['CO_GUARANTOR_NUMBER']);
+                    }
+                });
+
+                $.ajax({
+                    url: "Notification.aspx/GetNewAccountImages",
+                    type: "POST",
+                    data: JSON.stringify({ userid: USER_ID }),
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (e) {
+
+
+                        var d = JSON.parse(e.d)
+
+                        var defaultImage = "../dist/img/avatar.png";
+
+                        // Set profile picture with default image if the source is null or empty
+                        $('#profilePic_loan').attr('src', d[0].PROFILE_IMAGE ? baseUrl + d[0].PROFILE_IMAGE : defaultImage);
+
+                        // Set front face image with default image if the source is null or empty
+                        $('#imgFrontFace_Loan').attr('src', d[0].FRONTFACE ? baseUrl + d[0].FRONTFACE : defaultImage);
+                        $('#lblFrontFace_Loan').attr('href', d[0].FRONTFACE ? baseUrl + d[0].FRONTFACE : '');
+                        // Set back face image with default image if the source is null or empty
+                        $('#imgBackFace_Loan').attr('src', d[0].BACKFACE ? baseUrl + d[0].BACKFACE : defaultImage);
+                        $('#lblBackFace_Loan').attr('href', d[0].BACKFACE ? baseUrl + d[0].BACKFACE : defaultImage);
+
+                        // Set signature image with default image if the source is null or empty
+                        $('#imgSignature_Loan').attr('src', d[0].SIGNATURE_ ? baseUrl + d[0].SIGNATURE_ : defaultImage);
+                        $('#lblSignature_Loan').attr('href', d[0].SIGNATURE_ ? baseUrl + d[0].SIGNATURE_ : defaultImage);
+
+                        console.log(d);
+                    }
+                });
+
+            }
+        });
+
+    });
+
+    ///// WITHSRAWAL FOR APPROVAL
+    $('#tblRepayments').on('click', 'td.editor-view-w', function (e) {
+        var tblBorrowers_delete = $('#tblRepayments').DataTable();
+        var data = tblBorrowers_delete.row($(this).closest('tr')).data();
+        USER_ID_loan_W = data[Object.keys(data)[0]];
+        var USER_ID_W = data[Object.keys(data)[1]];
+        $('#WithdrawalModal').modal('show');
+
+        $.ajax({
+            url: "SharedService.asmx/GetUSelectedserDetail",
+            type: "POST",
+            data: JSON.stringify({ _USER_ID: USER_ID_W }),
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (e) {
+                var d = JSON.parse(e.d)
+                $('#lblName_W').text(d[0]['FIRST_NAME'] + ' ' + d[0]['LAST_NAME']);
+                $('#lblAge_W').text(d[0]['AGE'] + ' ');
+                $('#lblSex_W').text(d[0]['SEX']);
+                $('#lblBusinessName_W').text(d[0]['BUSSINESS_NAME']);
+                $('#lblStreet_W').text(d[0]['STREET_NO'] + ' ' + d[0]['BARANGAY']);
+                $('#lblCity_W').text(d[0]['CITY']);
+                $('#lblProvince_W').text(d[0]['PROVINCE']);
+                $('#lblZipcode_W').text(d[0]['ZIPCODE']);
+                $('#lblLandline_W').text('N/A');
+                $('#lblEmail_W').text(d[0]['EMAIL_ADDRESS']);
+                $('#lblContactNo_W').text(d[0]['CONTACTNO']);
+                _CONTACTNO = d[0]['CONTACTNO'];
+                _emailaddress = d[0]['EMAIL_ADDRESS'];
+
+                $.ajax({
+                    url: "Notification.aspx/GetUserLoanDetailsForApproval",
+                    type: "POST",
+                    data: JSON.stringify({ _LOAN_ID: USER_ID_loan_W }),
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (e) {
+                        var d = JSON.parse(e.d)
+                        $('#lblLoan_Amount_W').text(d[0]['AMOUNT']);
+                        $('#lblInstallment_Plan_W').text(d[0]['INSTALLMENT_PLAN']);
+                        $('#lblMonthsTo_Pay_W').text(d[0]['MONTHSTOPAY']);
+                        $('#lblBranch_Name_W').text(d[0]['BRANCH']);
+                        $('#lblMonthly_Payment_W').text(d[0]['MONTHLYPAYMENT']);
+                        $('#lblNature_of_Work_W').text(d[0]['NATURE_OF_WORK']);
+                        $('#lblMonthly_Gross_Income_W').text(d[0]['MONTHLY_GROSS']);
+                        $('#lblCharacter_Reference_W').text(d[0]['CHARACTER_REFERENCE']);
+                        $('#lblCo-guarantor_W').text(d[0]['CO_GUARANTOR_NAME']);
+                        $('#lblPhone_of_Co-guarantor_W').text(d[0]['CO_GUARANTOR_NUMBER']);
+
+                    }
+                });
+            }
+        });
+    });
+});
+
+function displayWithrawalForApproval() {
+    GetUserWithdrawalForApproval(function (e) {
+        if ($("#tblRepayments").hasClass("dataTable")) {
+            $("#tblRepayments").DataTable().destroy();
+        }
+        $('#tblRepayments').DataTable({
+            data: e,
+            columns: [
+                {
+                    "data": null,
+                    "className": "dt-center editor-view-w",
+                    "defaultContent": '<i class="glyphicon glyphicon-open" style="cursor: pointer"/> view',
+                    "orderable": false
+                },
+                { "data": "COMPLETE_NAME" },
+                { "data": "CREATED_DATE" }
+            ]
+        });
+    });
+}
+
+function displayUsersForApproval() {
     GetUserListForApproval(function (e) {
         if ($("#tblUsers").hasClass("dataTable")) {
             $("#tblUsers").DataTable().destroy();
@@ -293,111 +362,30 @@ $(document).ready(function () {
                 { "data": "CREATED_DATE" }
             ]
         });
- // meow
-        var USER_ID_view;
-        $('#tblUsers').on('click', 'td.editor-view', function (e) {
-            var tblBorrowers_delete = $('#tblUsers').DataTable();
-            var data = tblBorrowers_delete.row($(this).closest('tr')).data();
-            USER_ID_view = data[Object.keys(data)[1]];
-            console.log(USER_ID_view);
-            $('#UserModal').modal('show');
-
-            $.ajax({
-                url: "SharedService.asmx/GetUSelectedserDetail",
-                type: "POST",
-                data: JSON.stringify({ _USER_ID: USER_ID_view }),
-                contentType: "application/json;charset=utf-8",
-                dataType: "json",
-                success: function (e) {
-                    var d = JSON.parse(e.d)
-                    //GetBorrowerDetails(BORROWER_USER_ID, function (b) {
-                    $('#lblName').text(d[0]['FIRST_NAME'] + ' ' + d[0]['LAST_NAME']);
-                    $('#lblAge').text(d[0]['AGE'] + ' ');
-                    $('#lblSex').text(d[0]['SEX']);
-                    $('#lblBusinessName').text(d[0]['BUSSINESS_NAME']);
-                    $('#lblStreet').text(d[0]['STREET_NO'] + ' ' + d[0]['BARANGAY']);
-                    $('#lblCity').text(d[0]['CITY']);
-                    $('#lblProvince').text(d[0]['PROVINCE']);
-                    $('#lblZipcode').text(d[0]['ZIPCODE']);
-                    $('#lblLandline').text('N/A');
-                    $('#lblEmail').text(d[0]['EMAIL_ADDRESS']);
-                    $('#lblContactNo').text(d[0]['CONTACTNO']);
-
-                   
-                    $.ajax({
-                        url: "Notification.aspx/GetNewAccountImages",
-                        type: "POST",
-                        data: JSON.stringify({ userid: USER_ID_view }),
-                        contentType: "application/json;charset=utf-8",
-                        dataType: "json",
-                        success: function (e) {
-                 
-
-                            var d = JSON.parse(e.d)
-         
-                            var defaultImage = "../dist/img/avatar.png";
-                         
-                            // Set profile picture with default image if the source is null or empty
-                            $('#profilePic').attr('src', d[0].PROFILE_IMAGE ? baseUrl + d[0].PROFILE_IMAGE : defaultImage);
-
-                            // Set front face image with default image if the source is null or empty
-                            $('#imgFrontFace').attr('src', d[0].FRONTFACE ? baseUrl + d[0].FRONTFACE : defaultImage);
-                            $('#lblFrontFace').text(d[0].FRONTFACE ? baseUrl + d[0].FRONTFACE : '');
-                            // Set back face image with default image if the source is null or empty
-                            $('#imgBackFace').attr('src', d[0].BACKFACE ? baseUrl + d[0].BACKFACE : defaultImage);
-                            $('#lblBackFace').text(d[0].BACKFACE ? baseUrl + d[0].BACKFACE : defaultImage);
-
-                            // Set signature image with default image if the source is null or empty
-                            $('#imgSignature').attr('src', d[0].SIGNATURE_ ? baseUrl + d[0].SIGNATURE_ : defaultImage);
-                            $('#lblSignature').text( d[0].SIGNATURE_ ? baseUrl + d[0].SIGNATURE_ : defaultImage);
-
-                            console.log(d);
-                        }
-                    });
-                    //});
-                }
-                
-            });
-
-            //GetUserAttachment(USER_ID_view, function (d) {
-            //    var imgsource = "..\..\GetGo\UploadedFiles";
-            //    var imgType = d[0]["IMAGE_TYPE"];
-            //    if (imgType == 'FRONTFACE') {
-            //        $("#imgFrontFace").attr("src", imgsource + "'\'" + d[0]["DESCRIPTION"]);
-            //    }
-            //    console.log(imgsource);
-            //});
-
-            $('#btnApproveUser').on('click', function () {
-                var _AMOUNT = $('#txtCreditLimit').val();
-                if (confirm("Approve?")) {
-                    UpdateCreditLimitForApproval(USER_ID_view, _AMOUNT, function () {
-                            $.ajax({
-                                url: "Notification.aspx/CountForApproval",
-                                type: "POST",
-                                data: "{}",
-                                contentType: "application/json;charset=utf-8",
-                                dataType: "json",
-                                success: function (e) {
-                                    var d = JSON.parse(e.d)
-             
-                                    $('#txtNotificationCount').text(d[0]["NOTIF"]);
-
-                                },
-                                error: function (errormessage) {
-                                    alert(errormessage.responseText);
-                                }
-                        });
-
-
-                    });
-                }
-            });
-        });
-
-
     });
-});
+}
+
+function displayLoanForApproval() {
+
+    GetUserLoanForApproval(function (e) {
+        if ($("#tblLoan").hasClass("dataTable")) {
+            $("#tblLoan").DataTable().destroy();
+        }
+        $('#tblLoan').DataTable({
+            data: e,
+            columns: [
+                {
+                    "data": null,
+                    "className": "dt-center editor-view",
+                    "defaultContent": '<i class="glyphicon glyphicon-open" style="cursor: pointer"/> view',
+                    "orderable": false
+                },
+                { "data": "COMPLETE_NAME" },
+                { "data": "STATUS_DATE" }
+            ]
+        });
+    });
+}
 
 function GetUserListForApproval(callback) {
     $.ajax({
@@ -477,6 +465,7 @@ function GetUserAttachment(_USERID, callback) {
 }
 
 function UpdateCreditLimitForApproval(_USERID, _AMOUNT, callback) {
+    var output = 'Your Account was successfully Approved!';
     $.ajax({
         url: "Notification.aspx/UpdateCreditLimitForApproval",
         type: "POST",
@@ -484,8 +473,13 @@ function UpdateCreditLimitForApproval(_USERID, _AMOUNT, callback) {
         contentType: "application/json;charset=utf-8",
         dataType: "json",
         success: function (e) {
+            displayUsersForApproval();
+            $('#UserModal').modal('toggle');
             notification("success", "Successfully Approved!");
-            window.location.replace('Notification.aspx');
+            GetUserID(output, _emailaddress, function () { });
+            SendSMS(_CONTACTNO, output, function () { });
+            _emailaddress = '';
+            //window.location.replace('Notification.aspx');
         },
         error: function (errormessage) {
             alert(errormessage.responseText);
@@ -494,6 +488,7 @@ function UpdateCreditLimitForApproval(_USERID, _AMOUNT, callback) {
 }
 
 function UpdateBorrowerLoanStatus(_LOAN_ID, _STATUS, callback) {
+    var output = 'Your Loan was successfully Approved!';
     $.ajax({
         url: "Notification.aspx/UpdateBorrowerLoanStatus",
         type: "POST",
@@ -501,6 +496,16 @@ function UpdateBorrowerLoanStatus(_LOAN_ID, _STATUS, callback) {
         contentType: "application/json;charset=utf-8",
         dataType: "json",
         success: function (e) {
+            var d = JSON.parse(e.d);
+            displayLoanForApproval();
+            $('#LoanModal').modal('toggle');
+            notification("success", "Successfully Approved!");
+            GetUserID(output, _emailaddress, function () { });
+            SendSMS(_CONTACTNO, output, function () { });
+            _emailaddress = '';
+            if (callback !== undefined) {
+                callback(d);
+            }
         },
         error: function (errormessage) {
             alert(errormessage.responseText);
@@ -509,6 +514,7 @@ function UpdateBorrowerLoanStatus(_LOAN_ID, _STATUS, callback) {
 }
 
 function UpdateBorrowerWithdrawalStatus(_WITHDRAWAL_ID, callback) {
+    var output = 'Your Withdrawal Request was successfully Approved!';
     $.ajax({
         url: "Notification.aspx/UpdateBorrowerWithdrawalStatus",
         type: "POST",
@@ -516,6 +522,17 @@ function UpdateBorrowerWithdrawalStatus(_WITHDRAWAL_ID, callback) {
         contentType: "application/json;charset=utf-8",
         dataType: "json",
         success: function (e) {
+            var d = JSON.parse(e.d);
+            displayWithrawalForApproval();
+            $('#WithdrawalModal').modal('toggle');
+            notification("success", "Successfully Approved!");
+            GetUserID(output, _emailaddress, function () { });
+            console.log(_CONTACTNO + ' ' + output);
+            SendSMS(_CONTACTNO, output, function () { });
+            _emailaddress = '';
+            if (callback !== undefined) {
+                callback(d);
+            }
         },
         error: function (errormessage) {
             alert(errormessage.responseText);

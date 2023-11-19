@@ -742,7 +742,7 @@ public class Maintenance
         using (var con = new SqlConnection(strConn))
         {
             using (var cmd = new SqlCommand(" DECLARE @LOANCOUNT INT " +
-                 " SET @LOANCOUNT = (SELECT COUNT(LOAN_ID) FROM [TBL_T_BORROWER_LOAN_PLAN_DETAILS] WHERE ISNULL(IS_COMPLETE,'False') = 'True' AND LOAN_ID = @LOAN_ID)" +
+                 " SET @LOANCOUNT = (SELECT COUNT(LOAN_ID) FROM [TBL_T_BORROWER_LOAN_PLAN_DETAILS] WHERE ISNULL(IS_COMPLETE,'False') = 'False' AND LOAN_ID = @LOAN_ID)" +
                  " IF (@LOANCOUNT = 0)" +
                  " BEGIN" +
                  "   UPDATE [TBL_T_USER_LOAN] SET [STATUS] = 'FULLY PAID' WHERE [LOAN_ID] = @LOAN_ID" +
@@ -902,7 +902,22 @@ public class Maintenance
         }
         return JsonConvert.SerializeObject(dt);
     }
-    
+
+    public string GetBarangay(string CITY_CODE)
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("SELECT * FROM [TBL_M_BRGY]	WHERE [CITY_CODE] = @CITY_CODE", con) { })
+            {
+                cmd.Parameters.AddWithValue("@CITY_CODE", CITY_CODE);
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+
     public string DisplayCollateral()
     {
         DataTable dt = new DataTable();
@@ -923,40 +938,42 @@ public class Maintenance
         return JsonConvert.SerializeObject(dt);
     }
 
-    public string GetCollectionReports()
+    public string GetCollectionReports(DateTime dtFrom, DateTime dtTo)
     {
         DataSet dt = new DataSet();
         using (var con = new SqlConnection(strConn))
         {
-            using (var cmd = new SqlCommand("SELECT TOP 1 (COUNT(AMOUNT) OVER (PARTITION BY BRANCH)) AS TOTAL_LOAN_COUNT " +
-                    ", FORMAT(SUM(CAST(AMOUNT AS DECIMAL(18, 2))) OVER(PARTITION BY BRANCH), '#,0.00') AS TOTAL_LOAN_AMOUNT " +
+            using (var cmd = new SqlCommand("SELECT TOP 1 (COUNT(ISNULL(AMOUNT,0)) OVER (PARTITION BY BRANCH)) AS TOTAL_LOAN_COUNT " +
+                    ", FORMAT(SUM(CAST(ISNULL(AMOUNT,0) AS DECIMAL(18, 2))) OVER(PARTITION BY BRANCH), '#,0.00') AS TOTAL_LOAN_AMOUNT " +
                     "FROM [TBL_T_USER_LOAN] " +
-                    "WHERE[STATUS] IN('APPROVED', 'FULLY PAID') AND BRANCH = 1 " +
-                    
-                    "SELECT TOP 1(COUNT(AMOUNT) OVER(PARTITION BY BRANCH)) AS TOTAL_PAID_LOAN_COUNT " +
-                    ", FORMAT(SUM(CAST(AMOUNT AS DECIMAL(18, 2))) OVER(PARTITION BY BRANCH), '#,0.00') AS TOTAL_PAID_LOAN_AMOUNT " +
+                    "WHERE [STATUS] IN('APPROVED', 'FULLY PAID') AND BRANCH = 1 AND RELEASED_DATE BETWEEN @dtFrom AND @dtTo " +
+
+                    "SELECT TOP 1 (COUNT(ISNULL(AMOUNT,0)) OVER (PARTITION BY BRANCH)) AS TOTAL_PAID_LOAN_COUNT " +
+                    ", FORMAT(SUM(CAST(ISNULL(AMOUNT,0) AS DECIMAL(18, 2))) OVER(PARTITION BY BRANCH), '#,0.00') AS TOTAL_PAID_LOAN_AMOUNT " +
                     "FROM [TBL_T_USER_LOAN] " +
                     "WHERE[STATUS] = 'FULLY PAID' AND BRANCH = 1 " +
-                    
-                    "SELECT COUNT(LOAN_ID) AS TOTAL_LOAN_DUE " +
+
+                    "SELECT COUNT(ISNULL(LOAN_ID,0)) AS TOTAL_LOAN_DUE " +
                     "FROM [TBL_T_BORROWER_LOAN_PLAN_DETAILS] " +
                     "WHERE DUE_DATE <= GETDATE() AND ISNULL(IS_COMPLETE, 0) = 0" +
 
-                    "SELECT COUNT (LOAN_ID) AS COLLECTED_COUNT " +
+                    "SELECT COUNT (ISNULL(LOAN_ID,0)) AS COLLECTED_COUNT " +
                     "FROM [TBL_T_BORROWER_LOAN_PLAN_DETAILS] "+
                     "WHERE COLLECTED_DATE IS NOT NULL " +
 
-                    "SELECT COUNT([USER_ID]) AS BORROWER_COUNT FROM [TBL_M_USER_MASTER] " +
+                    "SELECT COUNT(ISNULL([USER_ID],0)) AS BORROWER_COUNT FROM [TBL_M_USER_MASTER] " +
 
-                    "SELECT COUNT(LOAN_ID) AS OPEN_LOANS FROM [TBL_T_USER_LOAN] WHERE [STATUS] = 'APPROVED' " +
+                    "SELECT COUNT(ISNULL(LOAN_ID,0)) AS OPEN_LOANS FROM [TBL_T_USER_LOAN] WHERE [STATUS] = 'APPROVED' " +
 
-                    "SELECT COUNT([USER_ID]) AS ACTIVE_COUNT FROM [TBL_M_USER_MASTER] WHERE ISNULL(ACTIVE_FLAG,1) = 1" +
+                    "SELECT COUNT(ISNULL([USER_ID],0)) AS ACTIVE_COUNT FROM [TBL_M_USER_MASTER] WHERE ISNULL(ACTIVE_FLAG,1) = 1" +
 
-                    "SELECT FORMAT(SUM(CAST(A.[AMOUNT] AS DECIMAL(18,2)) - CAST(C.AMOUNT AS DECIMAL(18,2))), '#,0.00') AS SAVINGS " +
+                    "SELECT FORMAT(SUM(CAST(ISNULL(A.[AMOUNT],0) AS DECIMAL(18,2)) - CAST(ISNULL(C.AMOUNT,0) AS DECIMAL(18,2))), '#,0.00') AS SAVINGS " +
                     "FROM [TBL_T_USER_LOAN] A " +
                     "LEFT JOIN [TBL_M_LOAN_AMOUNT] C " +
                     "ON C.INTEREST = A.INTEREST_RATE", con) { })
             {
+                cmd.Parameters.AddWithValue("@dtFrom", dtFrom);
+                cmd.Parameters.AddWithValue("@dtTo", dtTo);
                 using (var da = new SqlDataAdapter(cmd))
                     da.Fill(dt);
             }
@@ -1049,6 +1066,32 @@ public class Maintenance
                             "WHERE SEX IS NOT NULL GROUP BY SEX ORDER BY SEX", con)
             { })
             {
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+    
+    public string GetRemainingCredit(string USER_ID)
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("DECLARE @TOTAL_LOAN DECIMAL(18,2) " +
+                            "DECLARE @CREDIT_LIMIT DECIMAL(18, 2) " +
+                            "DECLARE @RESULT DECIMAL(18, 2) " +
+
+                            "SET @TOTAL_LOAN = (SELECT SUM(CAST([AMOUNT] AS DECIMAL(18, 2))) AS TOTAL_LOAN " +
+                                                    "FROM [TBL_T_USER_LOAN] " +
+                                                    "WHERE[USER_ID] = @USER_ID AND STATUS IN ('APPROVED','ONGOING')) " +
+
+                            "SET @CREDIT_LIMIT = (SELECT TOP 1 [AMOUNT] FROM [TBL_T_USER_CREDIT_LIMIT] WHERE[USER_ID] = @USER_ID) " +
+                            "SET @RESULT = @CREDIT_LIMIT - @TOTAL_LOAN " +
+                            "SELECT @RESULT AS REMAINING_CREDIT", con)
+            { })
+            {
+                cmd.Parameters.AddWithValue("@USER_ID", USER_ID);
                 using (var da = new SqlDataAdapter(cmd))
                     da.Fill(dt);
             }

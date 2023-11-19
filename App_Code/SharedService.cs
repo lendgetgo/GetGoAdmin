@@ -71,4 +71,12 @@ public class SharedService : System.Web.Services.WebService {
         var data = maint.GetCity(PROVINCE_CODE);
         return data;
     }
+    
+    [WebMethod]
+    public string GetBarangay(string CITY_CODE)
+    {
+        maint = new Maintenance();
+        var data = maint.GetBarangay(CITY_CODE);
+        return data;
+    }
 }
