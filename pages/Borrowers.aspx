@@ -249,7 +249,8 @@
                                                 <label for="txtBarangay" class="col-sm-3 control-label">Barangay</label>
 
                                                 <div class="col-sm-9">
-                                                    <input type="text" class="form-control" id="txtBarangay" placeholder="Barangay">
+                                                    <%--<input type="text" class="form-control" id="txtBarangay" placeholder="Barangay">--%>
+                                                    <select class="form-control" id="txtBarangay"></select>
                                                 </div>
                                             </div>
                                             <div class="form-group">
@@ -870,9 +871,9 @@
         //};
     </script>
     <script src="../scripts/notification.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
+    <script src="../scripts/Address.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
     <script src="../scripts/borrowers.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
     <script src="../scripts/dropdown.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
-    <script src="../scripts/Address.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
 
     <script src="../datatable/jquery.dataTables.min.js"></script>
     <script src="../bower_components/datatables.net/js/dataTables.editor.min.js"></script>

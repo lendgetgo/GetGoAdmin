@@ -16,7 +16,7 @@ $(document).ready(function () {
             var data = tblBorrowers_delete.row($(this).closest('tr')).data();
             var USER_ID_delete = data[Object.keys(data)[0]];
             if (confirm("Are you sure you want to delete this data?")) {
-                tblBorrowers.row($(this).closest('tr')).remove().draw();
+                tblBorrowers_delete.row($(this).closest('tr')).remove().draw();
                 DeleteBorrower(USER_ID_delete, function () {
                     notification('success', 'Deleted successfully!');
                 });
@@ -38,18 +38,18 @@ $(document).ready(function () {
                 $('#txtExtensionName').val(d[0]['EXTENSION_NAME']);
                 $('#txtEmail').val(d[0]['EMAIL_ADDRESS']);
                 $('#txtLandlinePhone').val(d[0]['CONTACTNO']);
-                $('#txtRegion').val(d[0]['REGION']);
-                $('#txtProvince').val(d[0]['PROVINCE']);
-                $('#txtCity').val(d[0]['CITY']);
+                $("#txtRegion option:contains('" + d[0]['REGION'] + "')").attr('selected', true);
+                $("#txtProvince option:contains('" + d[0]['PROVINCE'] + "')").attr('selected', true);
+                $("#txtCity option:contains('" + d[0]['CITY'] + "')").attr('selected', true);
                 $('#txtAge').val(d[0]['AGE']);
                 $('#datepicker').val(d[0]['DATE_OF_BIRTH']);
                 $('#slctSex').val(d[0]['SEX']);
                 $('#txtMaritalStatus').val(d[0]['MARITAL_STATUS']);
                 $('#txtSpouseName').val(d[0]['SPOUSE_NAME']);
-                $('#txtBarangay').val(d[0]['BARANGAY']);
+                $("#txtBarangay option:contains('" + d[0]['BARANGAY'] + "')").attr('selected', true);
                 $('#txtZipCode').val(d[0]['ZIPCODE']);
                 $('#txtStNo').val(d[0]['STREET_NO']);
-                $('#txtBusinessName').val(d[0]['BUSINESS_NAME']);
+                $('#txtBusinessName').val(d[0]['BUSSINESS_NAME']);
                 $('#txtMonthlyGrossIncome').val(d[0]['MONTHLY_GROSS']);
                 $('#txtCoguarantorName').val(d[0]['CO_GUARANTOR_NAME']);
                 $('#slctNatureOfWork').val(d[0]['NATURE_OF_WORK']);
@@ -166,6 +166,77 @@ $(document).ready(function () {
                 } else {
                     alert("Pay exact or less than amount.");
                 }
+            }
+        });
+
+        $('#btnUpdate').on('click', function () {
+            if (confirm("Are you sure you want to update this data?")) {
+                var USER_ID = $('#USERID').val();
+                var FIRST_NAME = $('#txtFirstName').val();
+                var MIDDLE_NAME = $('#txtMiddleName').val();
+                var LAST_NAME = $('#txtLastName').val();
+                var EXTENSION_NAME = $('#txtExtensionName').val();
+                var EMAIL_ADDRESS = $('#txtEmail').val();
+                var CONTACTNO = $('#txtLandlinePhone').val();
+                var REGION = $('#txtRegion option:selected').text();
+                var PROVINCE = $('#txtProvince option:selected').text();
+                var CITY = $('#txtCity option:selected').text();
+                var AGE = $('#txtAge').val();
+                var DATE_OF_BIRTH = $('#datepicker').val();
+                var SEX = $('#slctSex').val();
+                var MARITAL_STATUS = $('#txtMaritalStatus').val();
+                var SPOUSE_NAME = $('#txtSpouseName').val();
+                var BARANGAY = $('#txtBarangay option:selected').text();
+                var ZIPCODE = $('#txtZipCode').val();
+                var STREET_NO = $('#txtStNo').val();
+                var BUSSINESS_NAME = $('#txtBusinessName').val();
+                var MONTHLY_GROSS = $('#txtMonthlyGrossIncome').val();
+                var CO_GUARANTOR_NAME = $('#txtCoguarantorName').val();
+                var NATURE_OF_WORK = $('#slctNatureOfWork').val();
+                var CHARACTER_REFERENCE = $('#txtCharacterReference').val();
+                var CO_GUARANTOR_NUMBER = $('#txtCoguarantorPhoneNumber').val();
+                var CREATED_BY = 'admin';
+                var UPDATED_BY = 'admin';
+                var _request = {};
+
+                _request.USER_ID = USER_ID;
+                _request.FIRST_NAME = FIRST_NAME;
+                _request.MIDDLE_NAME = MIDDLE_NAME;
+                _request.LAST_NAME = LAST_NAME;
+                _request.EXTENSION_NAME = EXTENSION_NAME;
+                _request.EMAIL_ADDRESS = EMAIL_ADDRESS;
+                _request.CONTACTNO = CONTACTNO;
+                _request.REGION = REGION;
+                _request.PROVINCE = PROVINCE;
+                _request.CITY = CITY;
+                _request.AGE = AGE;
+                _request.DATE_OF_BIRTH = DATE_OF_BIRTH;
+                _request.SEX = SEX;
+                _request.MARITAL_STATUS = MARITAL_STATUS;
+                _request.SPOUSE_NAME = SPOUSE_NAME;
+                _request.BARANGAY = BARANGAY;
+                _request.ZIPCODE = ZIPCODE;
+                _request.STREET_NO = STREET_NO;
+                _request.BUSSINESS_NAME = BUSSINESS_NAME;
+                _request.MONTHLY_GROSS = MONTHLY_GROSS;
+                _request.CO_GUARANTOR_NAME = CO_GUARANTOR_NAME;
+                _request.NATURE_OF_WORK = NATURE_OF_WORK;
+                _request.CHARACTER_REFERENCE = CHARACTER_REFERENCE;
+                _request.CO_GUARANTOR_NUMBER = CO_GUARANTOR_NUMBER;
+                _request.CREATED_BY = CREATED_BY;
+                _request.UPDATED_BY = UPDATED_BY;
+
+                $.ajax({
+                    url: 'Borrowers.aspx/UpdateBorrowerDetails',
+                    type: 'POST',
+                    contentType: 'application/json;charset=utf-8',
+                    dataType: 'json',
+                    data: JSON.stringify({ request: _request }),
+                    success: function (e) {
+                        notification('success', 'Updated successfully!');
+                        LoadBorrowerListDatatable();
+                    }
+                });
             }
         });
     }
