@@ -1,6 +1,6 @@
 ﻿
 var baseUrl = "http://lendgetgo-001-site1.atempurl.com/UploadedFiles/";
-
+//var baseUrl = "http://" + _ipaddress + "/Getgo/Images/";
 $(document).ready(function () {
     $('#lblCollateral').click(function () {
         window.location.replace("./Collateral.aspx");

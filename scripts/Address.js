@@ -7,13 +7,14 @@
         }).appendTo($("#txtRegion"));
         for (var i in e) {
             $('<option/>', {
-                value: e[i]['REGION_CODE'],
-                text: e[i]['REGION_DESCRIPTION']
+                value: e[i]['REGION_DESCRIPTION'],
+                text: e[i]['REGION_DESCRIPTION'],
+                'data-REGION_CODE': e[i]['REGION_CODE']
             }).appendTo($("#txtRegion"));
         }
 
         $("#txtRegion").change(function () {
-            var REGION_CODE = $("#txtRegion").val();
+            var REGION_CODE = $("#txtRegion").find(':selected').attr('data-REGION_CODE');
             GetProvince(REGION_CODE, function (e) {
                 $("#txtProvince").html("");
                 $('<option/>', {
@@ -22,14 +23,15 @@
                 }).appendTo($("#txtProvince"));
                 for (var i in e) {
                     $('<option/>', {
-                        value: e[i]['PROVINCE_CODE'],
-                        text: e[i]['PROVINCE_DESCRIPTION']
+                        value: e[i]['PROVINCE_DESCRIPTION'],
+                        text: e[i]['PROVINCE_DESCRIPTION'],
+                        'data-PROVINCE_CODE': e[i]['PROVINCE_CODE']
                     }).appendTo($("#txtProvince"));
                 }
             });
 
             $("#txtProvince").change(function () {
-                var PROVINCE_CODE = $("#txtProvince").val();
+                var PROVINCE_CODE = $("#txtProvince").find(':selected').attr('data-PROVINCE_CODE');
                 GetCity(PROVINCE_CODE, function (e) {
                     $("#txtCity").html("");
                     $('<option/>', {
@@ -40,14 +42,15 @@
                         $('<option/>', {
                             value: e[i]['CITY_CODE'],
                             text: e[i]['CITY_DESCRIPTION'],
-                            'data-zipcode': e[i]['ZIPCODE']
+                            'data-zipcode': e[i]['ZIPCODE'],
+                            'data-CITY_CODE': e[i]['CITY_CODE']
                         }).appendTo($("#txtCity"));
                     }
                 });
 
                 $("#txtCity").change(function () {
                     $("#txtZipCode").val($("#txtCity").find(':selected').attr('data-zipcode'));
-                    var CITY_CODE = $("#txtCity").val();
+                    var CITY_CODE = $("#txtCity").find(':selected').attr('data-CITY_CODE');
                     GetBarangay(CITY_CODE, function (e) {
                         $("#txtBarangay").html("");
                         $('<option/>', {
@@ -56,7 +59,7 @@
                         }).appendTo($("#txtBarangay"));
                         for (var i in e) {
                             $('<option/>', {
-                                value: e[i]['BRGY_CODE'],
+                                value: e[i]['BRGY_DESC'],
                                 text: e[i]['BRGY_DESC'],
                                 'style':  "text-transform: uppercase" 
                             }).appendTo($("#txtBarangay"));

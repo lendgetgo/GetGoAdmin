@@ -205,15 +205,16 @@
     <script src="../bower_components/jquery/dist/jquery.min.js"></script>
     <script src="../bower_components/toastr/toastr.min.js"></script>
     <script src="../scripts/notification.js"></script>
-    <script src="../scripts/userAccount.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
     <script src="../scripts/Address.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
+    <script src="../scripts/userAccount.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
     <script>
         var _ipaddress = "<%= this.ipAddress %>";
-        var USERID = "<%= this.userid %>";
+        //var USERID = "<%= this.userid %>";
         var baseUrl = "http://lendgetgo-001-site1.atempurl.com/UploadedFiles/";
+        //var baseUrl = "http://" + _ipaddress + "/Getgo/Images/";
         var filesArray = [];
         console.log(baseUrl);
-        var files = $('.custom-file-input-loan');
+        var files = $('.custom-file-input');
         $(() => {
 
         });
@@ -246,7 +247,6 @@
                 var BARANGAY = data[0].BARANGAY;
                 var ZIPCODE = data[0].ZIPCODE;
                 var STREET_NO = data[0].STREET_NO;
-
                 $('#slctAccess').val(USER_ACCESS);
                 $('#txtUserName').val(USER_NAME);
                 $('#txtFirstName').val(FIRST_NAME);
@@ -255,14 +255,14 @@
                 $('#txtExtensionName').val(EXTENSION_NAME);
                 $('#txtEmail').val(EMAIL_ADDRESS);
                 $('#txtRegion').val(REGION);
-                $('#txtProvince').val(PROVINCE);
-                $('#txtCity').val(CITY);
+                $('#txtProvince').text(PROVINCE);
+                $('#txtCity').text(CITY);
                 $('#txtPassword').val(PASSWORD);
                 $('#txtAge').val(AGE);
                 $('#datepicker').val(DATE_OF_BIRTH);
                 $('#slctSex').val(SEX);
                 $('#txtContactNo').val(CONTACTNO.substring(2));
-                $('#txtBarangay').val(BARANGAY);
+                $('#txtBarangay').text(BARANGAY);
                 $('#txtZipCode').val(ZIPCODE);
                 $('#txtStNo').val(STREET_NO);
 
@@ -276,15 +276,15 @@
                 var LAST_NAME = $('#txtLastName').val();
                 var EXTENSION_NAME = $('#txtExtensionName').val();
                 var EMAIL_ADDRESS = $('#txtEmail').val();
-                var REGION = $('#txtRegion').text();
-                var PROVINCE = $('#txtProvince').text();
-                var CITY = $('#txtCity').text();
+                var REGION = $('#txtRegion').val();
+                var PROVINCE = $('#txtProvince').val();
+                var CITY = $('#txtCity').val();
                 var PASSWORD = $('#txtPassword').val();
                 var AGE = $('#txtAge').val();
                 var DATE_OF_BIRTH = $('#datepicker').val();
                 var SEX = $('#slctSex').val();
                 var CONTACTNO = $('#txt63').val() + '' + $('#txtContactNo').val();
-                var BARANGAY = $('#txtBarangay').text();
+                var BARANGAY = $('#txtBarangay').val();
                 var ZIPCODE = $('#txtZipCode').val();
                 var STREET_NO = $('#txtStNo').val();
                 var CREATED_BY = '12345';

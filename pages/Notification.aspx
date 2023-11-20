@@ -31,8 +31,8 @@
                     <button type="button" id="btnWithdrawal" class="btn btn-primary" style="left: -38px">
                         <i class="ace-icon fa fa-floppy-o bigger-110"></i>&nbsp; Withdrawal</button>
 
-                    <button type="button" id="btnRepayments" class="btn btn-primary" style="left: -38px">
-                        <i class="ace-icon fa fa-floppy-o bigger-110"></i>&nbsp; Repayments</button>
+                   <%-- <button type="button" id="btnRepayments" class="btn btn-primary" style="left: -38px">
+                        <i class="ace-icon fa fa-floppy-o bigger-110"></i>&nbsp; Repayments</button>--%>
                 </div>
                 <!-- /.box-header -->
                 <div class="box-body" id="AccountContent">
