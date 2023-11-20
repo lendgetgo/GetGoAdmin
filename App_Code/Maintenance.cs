@@ -129,6 +129,21 @@ public class Maintenance
         return JsonConvert.SerializeObject(dt);
     }
 
+    public string DeclineUser(string _USER_ID)
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("UPDATE [TBL_M_USER_MASTER] SET APPROVED_STATUS = 1 WHERE USER_ID = @USER_ID", con) { })
+            {
+                cmd.Parameters.AddWithValue("@USER_ID", _USER_ID);
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+
     public string DeleteUser(string _USER_ID)
     {
         DataTable dt = new DataTable();

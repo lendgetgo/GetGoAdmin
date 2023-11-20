@@ -75,6 +75,13 @@ public partial class Notification : System.Web.UI.Page
     }
     
     [WebMethod]
+    public static void DeclineUser(string _USER_ID)
+    {
+        User.DeclineUser(_USER_ID);
+    }
+    
+    
+    [WebMethod]
     public static void UpdateBorrowerLoanStatus(string _LOAN_ID, string _STATUS)
     {
         User.UpdateBorrowerLoanStatus(_LOAN_ID, _STATUS);

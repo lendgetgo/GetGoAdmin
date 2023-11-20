@@ -425,9 +425,9 @@
                                     <button type="button" id="btnNotifyBorrower" class="btn btn-success">
                                         <i class="ace-icon fa fa-check bigger-110"></i>&nbsp; Notify Borrower
                                     </button>
-                                    <button type="button" id="btnInProcess" class="btn btn-danger">
+                                    <%--<button type="button" id="btnInProcess" class="btn btn-danger">
                                         <i class="ace-icon fa fa-check bigger-110"></i>&nbsp; In-Process
-                                    </button>
+                                    </button>--%>
                                 </div>
                             </div>
                         </div>

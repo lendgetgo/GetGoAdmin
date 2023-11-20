@@ -35,6 +35,15 @@ $(document).ready(function () {
                 });
             }
         });
+
+        $('#btnDeclineUser_Loan').on('click', function (e) {
+            if (confirm("Are you sure you want to Decline?")) {
+                _STATUS = 'DECLINED';
+                DeclineUserLoan(USER_ID_loan, _STATUS, function () {
+                    _emailaddress = '';
+                });
+            }
+        });
     });
    
     $('#btnAccount').on('click', function () {
@@ -72,6 +81,12 @@ $(document).ready(function () {
 
 
                 });
+            }
+        });
+
+        $('#btnDeclineUser').on('click', function () {
+            if (confirm("Are you sure you want to Decline?")) {
+                DeclineUser(USER_ID_view, function () {});
             }
         });
     });
@@ -480,6 +495,50 @@ function UpdateCreditLimitForApproval(_USERID, _AMOUNT, callback) {
             SendSMS(_CONTACTNO, output, function () { });
             _emailaddress = '';
             //window.location.replace('Notification.aspx');
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}
+
+function DeclineUser(_USERID, callback) {
+    var output = 'Your Account was declined!';
+    $.ajax({
+        url: "Notification.aspx/DeclineUser",
+        type: "POST",
+        data: JSON.stringify({ _USER_ID: _USERID }),
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (e) {
+            displayUsersForApproval();
+            $('#UserModal').modal('toggle');
+            notification("success", "Successfully Declined!");
+            GetUserID(output, _emailaddress, function () { });
+            SendSMS(_CONTACTNO, output, function () { });
+            _emailaddress = '';
+        },
+        error: function (errormessage) {
+            alert(errormessage.responseText);
+        }
+    });
+}
+
+function DeclineUserLoan(_LOAN_ID, _STATUS, callback) {
+    var output = 'Your Loan was declined!';
+    $.ajax({
+        url: "Notification.aspx/UpdateBorrowerLoanStatus",
+        type: "POST",
+        data: JSON.stringify({ _LOAN_ID: _LOAN_ID, _STATUS: _STATUS }),
+        contentType: "application/json;charset=utf-8",
+        dataType: "json",
+        success: function (e) {
+            displayLoanForApproval();
+            $('#LoanModal').modal('toggle');
+            notification("success", "Successfully Declined!");
+            GetUserID(output, _emailaddress, function () { });
+            SendSMS(_CONTACTNO, output, function () { });
+            _emailaddress = '';
         },
         error: function (errormessage) {
             alert(errormessage.responseText);
