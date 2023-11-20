@@ -379,36 +379,37 @@
                 });
 
                 GetFullyPaid(dtFrom, dtTo, function (d) {
-                    var FullyPaid_data = {
-                        // data: [['January', 10], ['February', 8], ['March', 4], ['April', 13], ['May', 17], ['June', 9]],
-                        data: d,
-                        color: '#3c8dbc'
-                    }
-                    $.plot('#FullyPaid-chart', [FullyPaid_data], {
-                        grid: {
-                            borderWidth: 1,
-                            borderColor: '#f3f3f3',
-                            tickColor: '#f3f3f3'
-                        },
-                        series: {
-                            bars: {
-                                show: true,
-                                barWidth: 0.5,
-                                align: 'center'
-                            }
-                        },
-                        xaxis: {
-                            mode: 'categories',
-                            tickLength: 0
-                        }
-                    })
+                    //var FullyPaid_data = {
+                    //    // data: [['January', 10], ['February', 8], ['March', 4], ['April', 13], ['May', 17], ['June', 9]],
+                    //    data: d,
+                    //    color: '#3c8dbc'
+                    //}
+                    //$.plot('#FullyPaid-chart', [FullyPaid_data], {
+                    //    grid: {
+                    //        borderWidth: 1,
+                    //        borderColor: '#f3f3f3',
+                    //        tickColor: '#f3f3f3'
+                    //    },
+                    //    series: {
+                    //        bars: {
+                    //            show: true,
+                    //            barWidth: 0.5,
+                    //            align: 'center'
+                    //        }
+                    //    },
+                    //    xaxis: {
+                    //        mode: 'categories',
+                    //        tickLength: 0
+                    //    }
+                    //})
                 });
             });
 
             GetActiveBygender(function (d) {
-                console.log(d);
+                //console.log(d);
                 var donutData = [
                     { label: 'Female', data: 10, color: '#3c8dbc' },
+                    { label: 'Male', data: 19, color: '#f3f3f3' },
                 ]
                 $.plot('#donut-chart', donutData, {
                     series: {
@@ -520,13 +521,13 @@
                             result.push(value);
                         }
                     }
-                    console.log(result);
+                    //console.log(result);
                     var NumberRelease_data = {
                         //data: [['January', 10]],
                         data: [result],
                         color: '#3c8dbc'
                     }
-                    console.log(NumberRelease_data);
+                    //console.log(NumberRelease_data);
                     $.plot('#NumberRelease-chart', [NumberRelease_data], {
                         grid: {
                             borderWidth: 1,
@@ -564,8 +565,58 @@
                 data: JSON.stringify({ dtFrom: dtFrom, dtTo: dtTo }),
                 contentType: "application/json;charset=utf-8",
                 dataType: "json",
+                traditional: false,
                 success: function (e) {
                     var d = JSON.parse(e.d);
+                    console.log(d);
+                    console.log(e);
+                    var result = [];
+                    for (var i = 0; i < d.length; i++) {
+                        var obj = d[i];
+                        for (var key in obj) {
+                            var value = obj[key];
+                                result.push(value);
+                        }
+                    }
+                    var final = [];
+                    var count = 0;
+                    for (var i = 1; i < result.length; i++) {
+                        if (count <= 2) {
+                            final.push
+                            count = count + 1;
+                        } else {
+                            count = 0;
+                        }
+                    }
+
+                    var array = $.map(e, function (value, index) {
+                        console.log([value]);
+                        return [value];
+                    });
+                    console.log(array);
+                    var FullyPaid_data = {
+                        // data: [['January', 10], ['February', 8], ['March', 4], ['April', 13], ['May', 17], ['June', 9]],
+                        data: [result],
+                        color: '#3c8dbc'
+                    }
+                    $.plot('#FullyPaid-chart', [FullyPaid_data], {
+                        grid: {
+                            borderWidth: 1,
+                            borderColor: '#f3f3f3',
+                            tickColor: '#f3f3f3'
+                        },
+                        series: {
+                            bars: {
+                                show: true,
+                                barWidth: 0.5,
+                                align: 'center'
+                            }
+                        },
+                        xaxis: {
+                            mode: 'categories',
+                            tickLength: 0
+                        }
+                    })
                     if (callback !== undefined) {
                         callback(d);
                     }

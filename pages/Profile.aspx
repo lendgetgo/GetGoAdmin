@@ -77,21 +77,24 @@
                                     <label for="txtRegion" class="col-sm-3 control-label">Region</label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtRegion" placeholder="Region">
+                                        <%--<input type="text" class="form-control" id="txtRegion" placeholder="Region">--%>
+                                        <select class="form-control" id="txtRegion"></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="txtProvince" class="col-sm-3 control-label">Province</label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtProvince" placeholder="Province">
+                                        <%--<input type="text" class="form-control" id="txtProvince" placeholder="Province">--%>
+                                        <select class="form-control" id="txtProvince"></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="txtLastName" class="col-sm-3 control-label">City</label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtCity" placeholder="City">
+                                        <%--<input type="text" class="form-control" id="txtCity" placeholder="City">--%>
+                                        <select class="form-control" id="txtCity"></select>
                                     </div>
                                 </div>
                             </div>
@@ -158,7 +161,8 @@
                                     <label for="txtBarangay" class="col-sm-3 control-label">Barangay</label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtBarangay" placeholder="Barangay">
+                                        <%--<input type="text" class="form-control" id="txtBarangay" placeholder="Barangay">--%>
+                                        <select class="form-control" id="txtBarangay" style="text-transform:uppercase"></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -202,13 +206,17 @@
     <script src="../bower_components/toastr/toastr.min.js"></script>
     <script src="../scripts/notification.js"></script>
     <script src="../scripts/userAccount.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
-
+    <script src="../scripts/Address.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
     <script>
         var _ipaddress = "<%= this.ipAddress %>";
         var USERID = "<%= this.userid %>";
         var baseUrl = "http://lendgetgo-001-site1.atempurl.com/UploadedFiles/";
-        
+        var filesArray = [];
         console.log(baseUrl);
+        var files = $('.custom-file-input-loan');
+        $(() => {
+
+        });
         var ProfileImage = $('#image_upload_preview');
         $(() => {
 
@@ -268,15 +276,15 @@
                 var LAST_NAME = $('#txtLastName').val();
                 var EXTENSION_NAME = $('#txtExtensionName').val();
                 var EMAIL_ADDRESS = $('#txtEmail').val();
-                var REGION = $('#txtRegion').val();
-                var PROVINCE = $('#txtProvince').val();
-                var CITY = $('#txtCity').val();
+                var REGION = $('#txtRegion').text();
+                var PROVINCE = $('#txtProvince').text();
+                var CITY = $('#txtCity').text();
                 var PASSWORD = $('#txtPassword').val();
                 var AGE = $('#txtAge').val();
                 var DATE_OF_BIRTH = $('#datepicker').val();
                 var SEX = $('#slctSex').val();
                 var CONTACTNO = $('#txt63').val() + '' + $('#txtContactNo').val();
-                var BARANGAY = $('#txtBarangay').val();
+                var BARANGAY = $('#txtBarangay').text();
                 var ZIPCODE = $('#txtZipCode').val();
                 var STREET_NO = $('#txtStNo').val();
                 var CREATED_BY = '12345';
@@ -333,7 +341,7 @@
 
         });
 
-        const upload = (filesArray, loanID) => {
+        const upload = (filesArray, USERID) => {
 
             //for (const value of files.values()) {
             //    console.log(value);
@@ -353,7 +361,7 @@
             /*alert("Uploading now to file server ");*/
             $.ajax({
                 type: 'post',
-                url: '../Home/Handlers/UploadProfile.ashx?USERID=' + params.USERID,
+                url: 'Upload.ashx?USERID=' + USERID,
                 data: allFilesFormData,
                 cache: false,
                 processData: false,
@@ -369,7 +377,6 @@
                         alert('An error occurred during the request. Status: ' + xhr.status + ' - ' + xhr.statusText);
                     }
                     $('#ERROR').text('Error: ' + error);
-                    loaderContainer.hide();
                 }
 
             })
@@ -377,6 +384,30 @@
 
         }
 
+        const GetData = (config) => {
+            config.type = config.type || "POST";
+            config.data = config.data || "";
+            return $.ajax({
+                type: config.type,
+                url: config.url,
+                data: config.data,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: data => { },
+                error: function (xhr, status, error) {
+                    if (xhr.status === 413) {
+                        alert('Request Entity Too Large: The file you are trying to upload is too large.');
+                    } else {
+                        alert('An error occurred during the request. Status: ' + xhr.status + ' - ' + xhr.statusText);
+                    }
+                    $('#ERROR').text('Error: ' + error);
+
+                }
+
+
+            });
+
+        };
        
 
     </script>

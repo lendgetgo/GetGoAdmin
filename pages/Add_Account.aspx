@@ -84,21 +84,24 @@
                                     <label for="txtRegion" class="col-sm-3 control-label">Region</label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtRegion" placeholder="Region">
+                                        <%--<input type="text" class="form-control" id="txtRegion" placeholder="Region">--%>
+                                        <select class="form-control" id="txtRegion"></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="txtProvince" class="col-sm-3 control-label">Province</label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtProvince" placeholder="Province">
+                                        <%--<input type="text" class="form-control" id="txtProvince" placeholder="Province">--%>
+                                        <select class="form-control" id="txtProvince"></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label for="txtLastName" class="col-sm-3 control-label">City</label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtCity" placeholder="City">
+                                        <%--<input type="text" class="form-control" id="txtCity" placeholder="City">--%>
+                                        <select class="form-control" id="txtCity"></select>
                                     </div>
                                 </div>
                             </div>
@@ -165,7 +168,8 @@
                                     <label for="txtBarangay" class="col-sm-3 control-label">Barangay</label>
 
                                     <div class="col-sm-9">
-                                        <input type="text" class="form-control" id="txtBarangay" placeholder="Barangay">
+                                        <%--<input type="text" class="form-control" id="txtBarangay" placeholder="Barangay">--%>
+                                        <select class="form-control" id="txtBarangay" style="text-transform:uppercase"></select>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -210,6 +214,7 @@
     <script src="../bower_components/toastr/toastr.min.js"></script>
     <script src="../scripts/userAccount.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
     <script src="../scripts/notification.js"></script>
+    <script src="../scripts/Address.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
     <script type="text/javascript">
         var files = $('.custom-file-input');
         $(() => {

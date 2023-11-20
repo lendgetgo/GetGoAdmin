@@ -1106,4 +1106,21 @@ public class Maintenance
         }
         return JsonConvert.SerializeObject(dt);
     }
+
+    public string GetLoginUserDetails()
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("SELECT [ID],[USER_ACCESS],[USER_ID],[USERNAME],[FIRST_NAME],[MIDDLE_NAME],[LAST_NAME],[EXTENSION_NAME],[EMAIL_ADDRESS],[REGION],[PROVINCE],[CITY],[PASSWORD],[AGE],[DATE_OF_BIRTH],[SEX],[CONTACT_NO],[BARANGAY],[ZIPCODE],[STREET_NO],[PROFILE_PIC],[ACTIVEFLAG] FROM [TBL_M_USER] " +
+                            " WHERE [USER_ID] = @USER_ID", con)
+            { })
+            {
+                cmd.Parameters.AddWithValue("@USER_ID", HttpContext.Current.Session["UserId"]);
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
 }
