@@ -32,6 +32,7 @@ $(document).ready(function () {
             $('#USERID').val(USER_ID_edit);
 
             GetBorrowerDetails(USER_ID_edit, function (d) {
+                console.log(d);
                 $('#txtFirstName').val(d[0]['FIRST_NAME']);
                 $('#txtMiddleName').val(d[0]['MIDDLE_NAME']);
                 $('#txtLastName').val(d[0]['LAST_NAME']);

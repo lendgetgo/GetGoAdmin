@@ -3,26 +3,28 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="Server">
     <link href="../bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="../bower_components/toastr/toastr.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css"> 
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.dataTables.min.css">
 
-<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
-<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
-<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
-<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/dataTables.buttons.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.html5.min.js"></script>
+    <script type="text/javascript" language="javascript" src="https://cdn.datatables.net/buttons/2.0.1/js/buttons.print.min.js"></script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="Server">
     <style>
         .datepicker-dropdown {
             z-index: 9999 !important;
         }
+
         input {
             text-transform: capitalize;
         }
+
         .box-header.with-border {
             background-color: ghostwhite;
         }
@@ -328,7 +330,7 @@
                                                     <label for="txtBusinessName" class="col-sm-3 control-label">Nature of Work</label>
 
                                                     <div class="col-sm-9">
-                                                        <select class="form-control select2" id="slctNatureOfWork">
+                                                        <%--<select class="form-control select2" id="slctNatureOfWork">
                                                             <option selected="selected">Alabama</option>
                                                             <option>Alaska</option>
                                                             <option>California</option>
@@ -336,7 +338,8 @@
                                                             <option>Tennessee</option>
                                                             <option>Texas</option>
                                                             <option>Washington</option>
-                                                        </select>
+                                                        </select>--%>
+                                                        <input type="text" class="form-control" id="slctNatureOfWork" placeholder="Nature of Work">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -368,7 +371,7 @@
                             </div>
                         </div>
 
-                        
+
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -407,7 +410,7 @@
                             <div class="col-sm-2 invoice-col">
                                 <div class="box-body box-profile">
                                     <img class="profile-user-img img-responsive img-circle" src="../dist/img/user4-128x128.jpg" alt="User profile picture" id="image_upload_preview">
-                                    <input type="hidden" runat="server" id="txtUserID"/>
+                                    <input type="hidden" runat="server" id="txtUserID" />
                                 </div>
                             </div>
                             <div class="col-sm-3 invoice-col">
@@ -450,7 +453,7 @@
                         </div>
                     </section>
 
-                    <section class="invoice" id="addloan_content" style="display:none">
+                    <section class="invoice" id="addloan_content" style="display: none">
                         <div class="row">
                             <div class="col-xs-12">
                                 <div class="box-header with-border">
@@ -732,10 +735,10 @@
                                     </thead>
                                 </table>
                             </div>
-                             <div class="box-body" style="text-align: center; background-color: whitesmoke;">
-                                 <label>Amount to Pay :</label>
-                                 <input type="text" id="txtAmounttoPaid" />
-                                 </div>
+                            <div class="box-body" style="text-align: center; background-color: whitesmoke;">
+                                <label>Amount to Pay :</label>
+                                <input type="text" id="txtAmounttoPaid" />
+                            </div>
                             <div class="box-body">
                                 <table id="tblBorrowersLoanDetails" class="table table-bordered table-striped" style="width: 100% !important">
                                     <thead>
@@ -827,7 +830,8 @@
             </div>
         </div>
     </div>--%>
-    <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+    <%--<script src="../bower_components/jquery/dist/jquery.min.js"></script>--%>
+    <script src="../datatable/jquery-3.7.0.js"></script>
     <script src="../bower_components/toastr/toastr.min.js"></script>
     <script type="text/javascript">
         var _ipaddress = "<%= this.ipAddress %>";
@@ -878,7 +882,8 @@
     <script src="../datatable/jquery.dataTables.min.js"></script>
     <script src="../bower_components/datatables.net/js/dataTables.editor.min.js"></script>
     <script src="../datatable/dataTables.bootstrap.min.js"></script>
-     <%--<script src="../datatable/dataTables.buttons.min.js"></script>
+
+<%--    <script src="../datatable/dataTables.buttons.min.js"></script>
     <script src="../datatable/buttons.html5.min.js"></script>
     <script src="../datatable/buttons.print.min.js"></script>
     <script src="../datatable/htmlencode.min.js"></script>
