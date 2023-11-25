@@ -329,15 +329,19 @@
                 $('#txtLastName').val(LAST_NAME);
                 $('#txtExtensionName').val(EXTENSION_NAME);
                 $('#txtEmail').val(EMAIL_ADDRESS);
-                $('#txtRegion').val(REGION);
-                $('#txtProvince').val(PROVINCE);
-                $('#txtCity').val(CITY);
+                $("#txtRegion option:contains(" + REGION + ")").attr('selected', true);
+                //$('#txtRegion').val(REGION);
+                $("#txtProvince").append(new Option(PROVINCE, PROVINCE));
+                //$('#txtProvince').val(PROVINCE);
+                //$('#txtCity').val(CITY);
+                $("#txtCity").append(new Option(CITY, CITY));
                 $('#txtPassword').val(PASSWORD);
                 $('#txtAge').val(AGE);
                 $('#datepicker').val(DATE_OF_BIRTH);
                 $('#slctSex').val(SEX);
                 $('#txtContactNo').val(CONTACTNO.substring(2));
                 $('#txtBarangay').val(BARANGAY);
+                $("#txtBarangay").append(new Option(BARANGAY, BARANGAY));
                 $('#txtZipCode').val(ZIPCODE);
                 $('#txtStNo').val(STREET_NO);
                 //DeleteUser(USER_ID, function () {
