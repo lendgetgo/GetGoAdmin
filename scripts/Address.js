@@ -9,12 +9,12 @@
             $('<option/>', {
                 value: e[i]['REGION_DESCRIPTION'],
                 text: e[i]['REGION_DESCRIPTION'],
-                'data-REGION_CODE': e[i]['REGION_CODE']
+                'data-region_code': e[i]['REGION_CODE']
             }).appendTo($("#txtRegion"));
         }
 
         $("#txtRegion").change(function () {
-            var REGION_CODE = $("#txtRegion").find(':selected').attr('data-REGION_CODE');
+            var REGION_CODE = $("#txtRegion").find(':selected').attr('data-region_code') ? $("#txtRegion").find(':selected').attr('data-region_code') : null;
             GetProvince(REGION_CODE, function (e) {
                 $("#txtProvince").html("");
                 $('<option/>', {
@@ -31,7 +31,7 @@
             });
 
             $("#txtProvince").change(function () {
-                var PROVINCE_CODE = $("#txtProvince").find(':selected').attr('data-PROVINCE_CODE');
+                var PROVINCE_CODE = $("#txtProvince").find(':selected').attr('data-PROVINCE_CODE') ? $("#txtProvince").find(':selected').attr('data-PROVINCE_CODE') : null;
                 GetCity(PROVINCE_CODE, function (e) {
                     $("#txtCity").html("");
                     $('<option/>', {
@@ -40,7 +40,7 @@
                     }).appendTo($("#txtCity"));
                     for (var i in e) {
                         $('<option/>', {
-                            value: e[i]['CITY_CODE'],
+                            value: e[i]['CITY_DESCRIPTION'],
                             text: e[i]['CITY_DESCRIPTION'],
                             'data-zipcode': e[i]['ZIPCODE'],
                             'data-CITY_CODE': e[i]['CITY_CODE']

@@ -209,7 +209,7 @@
     <script src="../scripts/userAccount.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
     <script>
         var _ipaddress = "<%= this.ipAddress %>";
-        //var USERID = "<%= this.userid %>";
+        var USERID = "<%= this.userid %>";
         var baseUrl = "http://lendgetgo-001-site1.atempurl.com/UploadedFiles/";
         //var baseUrl = "http://" + _ipaddress + "/Getgo/Images/";
         var filesArray = [];
@@ -224,13 +224,14 @@
             GetData({
                 url: "Profile.aspx/GetSessionValue"
             }).then(e => {
+                var defaultImage = "../dist/img/avatar.png";
                 let data = JSON.parse(e.d);
                 console.log(data);
-                ProfileImage.attr('src', baseUrl + data[0].PROFILE_PIC);
+                ProfileImage.attr('src', data[0].PROFILE_PIC ? baseUrl + data[0].PROFILE_PIC : defaultImage);
                 /*                ProfileImage.attr('src', baseUrl + "APP231007001/collateral.jpeg");*/
                 //USER_ID = data[0].USER_ID;
                 var USER_ACCESS = data[0].USER_ACCESS;
-                var USER_NAME = data[0].USER_NAME;
+                var USER_NAME = data[0].USERNAME;
                 var FIRST_NAME = data[0].FIRST_NAME;
                 var MIDDLE_NAME = data[0].MIDDLE_NAME;
                 var LAST_NAME = data[0].LAST_NAME;
@@ -254,15 +255,18 @@
                 $('#txtLastName').val(LAST_NAME);
                 $('#txtExtensionName').val(EXTENSION_NAME);
                 $('#txtEmail').val(EMAIL_ADDRESS);
-                $('#txtRegion').val(REGION);
-                $('#txtProvince').text(PROVINCE);
-                $('#txtCity').text(CITY);
+                $("#txtRegion option:contains(" + REGION + ")").attr('selected', true);
+                $("#txtProvince").append(new Option(PROVINCE, PROVINCE));
+                //$('#txtProvince').val(PROVINCE);
+                //$('#txtCity').val(CITY).trigger('change');
+                $("#txtCity").append(new Option(CITY, CITY));
                 $('#txtPassword').val(PASSWORD);
                 $('#txtAge').val(AGE);
                 $('#datepicker').val(DATE_OF_BIRTH);
                 $('#slctSex').val(SEX);
                 $('#txtContactNo').val(CONTACTNO.substring(2));
-                $('#txtBarangay').text(BARANGAY);
+                //$('#txtBarangay').text(BARANGAY).trigger('change');
+                $("#txtBarangay").append(new Option(BARANGAY, BARANGAY));
                 $('#txtZipCode').val(ZIPCODE);
                 $('#txtStNo').val(STREET_NO);
 
@@ -342,7 +346,7 @@
         });
 
         const upload = (filesArray, USERID) => {
-
+            
             //for (const value of files.values()) {
             //    console.log(value);
             //}
@@ -355,10 +359,10 @@
                     allFilesFormData.append(key, value);
                 }
             });
-            //for (const value of allFilesFormData.values()) {
-            //    console.log(value);
-            //}
-            /*alert("Uploading now to file server ");*/
+            for (const value of allFilesFormData.values()) {
+                console.log(value);
+            }
+            alert("Uploading now to file server " + USERID);
             $.ajax({
                 type: 'post',
                 url: 'Upload.ashx?USERID=' + USERID,
@@ -368,7 +372,6 @@
                 contentType: false,
                 success: function (e) {
                     notification('success', 'Updated successfully!');
-
                 },
                 error: function (xhr, status, error) {
                     if (xhr.status === 413) {

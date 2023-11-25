@@ -57,8 +57,8 @@ public partial class _Default : System.Web.UI.Page
                                 ,[BARANGAY]
                                 ,[ZIPCODE]
                                 ,[STREET_NO]
-                                ,B.USER_ID +'/' +B.DESCRIPTION AS PROFILE_PIC
-                    FROM [db_Getgo].[dbo].[TBL_M_USER] AS A LEFT JOIN TBL_M_USER_MASTER_ATTACHMENT AS B ON A.USER_ID = B.USER_ID WHERE A.USER_ID = @USERID AND IMAGE_TYPE = 'PROFILE'";
+                                ,B.USER_ID + '/' + B.DESCRIPTION AS PROFILE_PIC
+                    FROM [TBL_M_USER] AS A LEFT JOIN TBL_M_USER_MASTER_ATTACHMENT AS B ON A.USER_ID = B.USER_ID WHERE A.USER_ID = @USERID AND IMAGE_TYPE = 'PROFILE'";
             var data = maint.QueryGetOrPopulate2(commandText, parameters);
             return JsonConvert.SerializeObject(data);
         }

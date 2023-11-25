@@ -10,5 +10,6 @@
     <script>
         var _ipaddress = "<%= this.ipAddress %>";
     </script>
+    <script src="../scripts/Home.js?v=<%= DateTimeOffset.Now.ToUnixTimeMilliseconds() %>"></script>
 </asp:Content>
 
