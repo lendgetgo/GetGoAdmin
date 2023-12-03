@@ -1109,9 +1109,9 @@ public class Maintenance
                                                     "FROM [TBL_T_USER_LOAN] " +
                                                     "WHERE[USER_ID] = @USER_ID AND STATUS IN ('APPROVED','ONGOING')) " +
 
-                            "SET @CREDIT_LIMIT = (SELECT TOP 1 [AMOUNT] FROM [TBL_T_USER_CREDIT_LIMIT] WHERE[USER_ID] = @USER_ID) " +
-                            "SET @RESULT = @CREDIT_LIMIT - @TOTAL_LOAN " +
-                            "SELECT @RESULT AS REMAINING_CREDIT", con)
+                            "SET @CREDIT_LIMIT = ISNULL((SELECT TOP 1 [AMOUNT] FROM [TBL_T_USER_CREDIT_LIMIT] WHERE[USER_ID] = @USER_ID),15000) " +
+                            "SET @RESULT = @CREDIT_LIMIT - ISNULL(@TOTAL_LOAN,0) " +
+                            "SELECT ISNULL(@RESULT,0) AS REMAINING_CREDIT", con)
             { })
             {
                 cmd.Parameters.AddWithValue("@USER_ID", USER_ID);

@@ -227,7 +227,11 @@
                 var defaultImage = "../dist/img/avatar.png";
                 let data = JSON.parse(e.d);
                 console.log(data);
-                ProfileImage.attr('src', data[0].PROFILE_PIC ? baseUrl + data[0].PROFILE_PIC : defaultImage);
+                if (data[0].PROFILE_PIC != null) {
+                    ProfileImage.attr('src', data[0].PROFILE_PIC ? baseUrl + data[0].PROFILE_PIC : defaultImage);
+                } else {
+                    ProfileImage.attr('src', defaultImage);
+                }
                 /*                ProfileImage.attr('src', baseUrl + "APP231007001/collateral.jpeg");*/
                 //USER_ID = data[0].USER_ID;
                 var USER_ACCESS = data[0].USER_ACCESS;
