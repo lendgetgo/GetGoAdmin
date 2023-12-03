@@ -1085,7 +1085,7 @@ public class Maintenance
         DataTable dt = new DataTable();
         using (var con = new SqlConnection(strConn))
         {
-            using (var cmd = new SqlCommand("SELECT COUNT(SEX) AS GENDER FROM [TBL_M_USER] " +
+            using (var cmd = new SqlCommand("SELECT SEX, COUNT(SEX) AS GENDER FROM [TBL_M_USER_MASTER] " +
                             "WHERE SEX IS NOT NULL GROUP BY SEX ORDER BY SEX", con)
             { })
             {

@@ -406,10 +406,10 @@
             });
 
             GetActiveBygender(function (d) {
-                //console.log(d);
+                console.log(d);
                 var donutData = [
-                    { label: 'Female', data: 10, color: '#3c8dbc' },
-                    { label: 'Male', data: 19, color: '#f3f3f3' },
+                    { label: 'Female', data: d[0]['GENDER'], color: '#3c8dbc' },
+                    { label: 'Male', data: d[1]['GENDER'], color: '#f3f3f3' },
                 ]
                 $.plot('#donut-chart', donutData, {
                     series: {
