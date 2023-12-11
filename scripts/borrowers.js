@@ -30,6 +30,9 @@ $(document).ready(function () {
 
             $('#borrowerModal').modal('show');
             $('#USERID').val(USER_ID_edit);
+            var $datepicker = $('#datepicker');
+            $datepicker.datepicker();
+            
 
             GetBorrowerDetails(USER_ID_edit, function (d) {
                 console.log(d);
@@ -45,7 +48,8 @@ $(document).ready(function () {
                 //$("#txtCity option:contains('" + d[0]['CITY'] + "')").attr('selected', true);
                 $("#txtCity").append(new Option(d[0]['CITY'], d[0]['CITY']));
                 $('#txtAge').val(d[0]['AGE']);
-                $('#datepicker').val(d[0]['DATE_OF_BIRTH']);
+                //$('#datepicker').val(d[0]['DATE_OF_BIRTH']);
+                $datepicker.datepicker('setDate', new Date(d[0]['DATE_OF_BIRTH']));
                 $('#slctSex').val(d[0]['SEX']);
                 $('#txtMaritalStatus').val(d[0]['MARITAL_STATUS']);
                 $('#txtSpouseName').val(d[0]['SPOUSE_NAME']);
@@ -194,7 +198,7 @@ $(document).ready(function () {
                 var ZIPCODE = $('#txtZipCode').val();
                 var STREET_NO = $('#txtStNo').val();
                 var BUSSINESS_NAME = $('#txtBusinessName').val();
-                var MONTHLY_GROSS = $('#txtMonthlyGrossIncome').val();
+                var MONTHLY_GROSS = $('#txtMonthlyGrossIncome').val() ? $('#txtMonthlyGrossIncome').val() : 0;
                 var CO_GUARANTOR_NAME = $('#txtCoguarantorName').val();
                 var NATURE_OF_WORK = $('#slctNatureOfWork').val();
                 var CHARACTER_REFERENCE = $('#txtCharacterReference').val();

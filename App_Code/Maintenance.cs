@@ -940,9 +940,9 @@ public class Maintenance
         {
             using (var cmd = new SqlCommand("SELECT A.[ID], C.[USER_ID] + '/' + [DESCRIPTION] AS IMAGE_LINK, FIRST_NAME + ' ' + MIDDLE_NAME + ' ' + LAST_NAME AS COMPLETENAME,B.[LOAN_ID],[DESCRIPTION],[TYPE],A.[CREATED_DATE] " +
                      " FROM [TBL_T_USER_LOAN_ATTACHMENT] A" +
-                     " LEFT JOIN [TBL_T_USER_LOAN] B" +
+                     " INNER JOIN [TBL_T_USER_LOAN] B" +
                      " ON B.LOAN_ID = A.LOAN_ID" +
-                     " LEFT JOIN [TBL_M_USER_MASTER] C" +
+                     " INNER JOIN [TBL_M_USER_MASTER] C" +
                      " ON C.USER_ID = B.USER_ID" +
                      " ORDER BY B.LOAN_ID", con) { })
             {        
