@@ -1095,7 +1095,49 @@ public class Maintenance
         }
         return JsonConvert.SerializeObject(dt);
     }
-    
+
+    public string GetAdvancePayment()
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("SELECT COUNT(LATE_PAYMENT) AS ADVANCE_PAYMENT " +  
+                                                "FROM( " +
+                                                        "SELECT *, (CASE WHEN[DUE_DATE] >= ISNULL([COLLECTED_DATE], 0) THEN 0 ELSE 1 END) AS LATE_PAYMENT " +
+                                                          "FROM TBL_T_BORROWER_LOAN_PLAN_DETAILS " +
+                                                          "WHERE COLLECTED_DATE IS NOT NULL " +
+                                                  ") TBL " +
+                                                  "WHERE LATE_PAYMENT = 0 ", con)
+            { })
+            {
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+
+    public string GetLatePayment()
+    {
+        DataTable dt = new DataTable();
+        using (var con = new SqlConnection(strConn))
+        {
+            using (var cmd = new SqlCommand("SELECT COUNT(LATE_PAYMENT) AS LATE_PAYMENT " +
+                                                "FROM( " +
+                                                        "SELECT *, (CASE WHEN[DUE_DATE] >= ISNULL([COLLECTED_DATE], 0) THEN 0 ELSE 1 END) AS LATE_PAYMENT " +
+                                                          "FROM TBL_T_BORROWER_LOAN_PLAN_DETAILS " +
+                                                          "WHERE COLLECTED_DATE IS NOT NULL " +
+                                                  ") TBL " +
+                                                  "WHERE LATE_PAYMENT = 1 ", con)
+            { })
+            {
+                using (var da = new SqlDataAdapter(cmd))
+                    da.Fill(dt);
+            }
+        }
+        return JsonConvert.SerializeObject(dt);
+    }
+
     public string GetRemainingCredit(string USER_ID)
     {
         DataTable dt = new DataTable();

@@ -54,4 +54,20 @@ public partial class CollectionReport : System.Web.UI.Page
         var data = report.GetActiveBygender();
         return data;
     }
+
+    [WebMethod]
+    public static string GetAdvancePayment()
+    {
+        var report = new Maintenance();
+        var data = report.GetAdvancePayment();
+        return data;
+    }
+
+    [WebMethod]
+    public static string GetLatePayment()
+    {
+        var report = new Maintenance();
+        var data = report.GetLatePayment();
+        return data;
+    }
 }

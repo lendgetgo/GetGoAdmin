@@ -89,7 +89,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        TEST
+                        <span id="lblAdvancePayment"></span>
                     </div>
                 </div>
             </div>
@@ -101,7 +101,7 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        TEST
+                        <span id="lblLatePayment"></span>
                     </div>
                 </div>
             </div>
@@ -320,6 +320,14 @@
                     $('#lblActiveCount').text(d['Table6'][0] && d['Table6'][0]['ACTIVE_COUNT'] ? d['Table6'][0]['ACTIVE_COUNT'] : 0);
 
                     $('#lblSAVINGS').text(d['Table7'][0] && d['Table7'][0]['SAVINGS'] ? d['Table7'][0]['SAVINGS'] : 0);
+                });
+
+                GetAdvancePayment(function (d) {
+                    $('#lblAdvancePayment').text(d[0]['ADVANCE_PAYMENT']);
+                });
+
+                GetLatePayment(function (d) {
+                    $('#lblLatePayment').text(d[0]['LATE_PAYMENT']);
                 });
 
                 GetLoanRelease(dtFrom, dtTo, function (d) {
@@ -630,6 +638,44 @@
         function GetActiveBygender(callback) {
             $.ajax({
                 url: "CollectionReport.aspx/GetActiveBygender",
+                type: "POST",
+                data: "{}",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (e) {
+                    var d = JSON.parse(e.d);
+                    if (callback !== undefined) {
+                        callback(d);
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+        function GetAdvancePayment(callback) {
+            $.ajax({
+                url: "CollectionReport.aspx/GetAdvancePayment",
+                type: "POST",
+                data: "{}",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (e) {
+                    var d = JSON.parse(e.d);
+                    if (callback !== undefined) {
+                        callback(d);
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+        function GetLatePayment(callback) {
+            $.ajax({
+                url: "CollectionReport.aspx/GetLatePayment",
                 type: "POST",
                 data: "{}",
                 contentType: "application/json;charset=utf-8",
